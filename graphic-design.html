@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scribble</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      color: white;
+    }
+
+    /* Background video with blur */
+    #bg-video {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -2;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      filter: brightness(0.8) blur(6px);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-family: 'Trebuchet MS', sans-serif;
+      margin-bottom: 1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .intro {
+      font-size: 1.1rem;
+      color: #ddd;
+      max-width: 700px;
+      margin: 0 auto 3rem auto;
+      line-height: 1.6;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .image-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      opacity: 0;
+      transform: translateY(50px) scale(0.95);
+      transition: all 0.6s ease;
+      cursor: pointer;
+    }
+
+    .image-card.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      animation: wiggleIn 0.9s ease;
+    }
+
+    @keyframes wiggleIn {
+      0% { transform: translateY(50px) scale(0.9) rotate(-3deg); opacity: 0; }
+      40% { transform: translateY(-10px) scale(1.05) rotate(3deg); opacity: 1; }
+      60% { transform: translateY(5px) scale(0.98) rotate(-2deg); }
+      80% { transform: translateY(-5px) scale(1.02) rotate(1deg); }
+      100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+      display: block;
+      position: relative;
+      z-index: 0;
+    }
+
+    .image-card:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Overlay */
+    .image-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0);
+      transition: background 0.3s ease;
+      z-index: 1;
+    }
+
+    .image-card:hover::after {
+      background: rgba(0,0,0,0.4);
+    }
+
+    .image-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      color: white;
+      padding: 1.5rem;
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+      z-index: 2;
+    }
+
+    .image-card:hover .image-overlay {
+      transform: translateY(0);
+    }
+
+    .image-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: rgba(20,20,20,0.9);
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      animation: popIn 0.4s ease;
+      position: relative;
+    }
+
+    .modal-content img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .modal-description {
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.8rem;
+      color: #aaa;
+      cursor: pointer;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .modal-close:hover {
+      color: white;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      .gallery { grid-template-columns: 1fr !important; gap: 1.5rem; }
+      .image-card img { height: 220px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="bgvideo.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+
+  <div class="container">
+    <h1>Graphic Design</h1>
+    <p class="intro">
+      Crafting creative visuals that inspire and communicate.  
+      A blend of typography, imagery, and imagination  
+      for impactful digital experiences.
+    </p>
+
+    <!-- Gallery -->
+    <div class="gallery">
+      <div class="image-card" data-desc="Relaxing vibe art"><img src="gimage1.jpeg" alt="gimage1"></div>
+      <div class="image-card" data-desc="Creative illustration"><img src="gimage2.jpeg" alt="gimage2"></div>
+      <div class="image-card" data-desc="Digital poster design"><img src="gimage3.jpeg" alt="gimage3"></div>
+      <div class="image-card" data-desc="Abstract artwork"><img src="gimage4.jpeg" alt="gimage4"></div>
+      <div class="image-card" data-desc="Modern typography"><img src="gimage5.jpeg" alt="gimage5"></div>
+      <div class="image-card" data-desc="Illustrator sketch"><img src="gimage6.jpeg" alt="gimage6"></div>
+      <div class="image-card" data-desc="Creative doodle"><img src="gimage7.jpeg" alt="gimage7"></div>
+      <div class="image-card" data-desc="Photo manipulation"><img src="gimage8.jpeg" alt="gimage8"></div>
+      <div class="image-card" data-desc="3D style render"><img src="gimage9.jpeg" alt="gimage9"></div>
+      <div class="image-card" data-desc="Experimental design"><img src="gimage10.jpeg" alt="gimage10"></div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="imgModal">
+    <div class="modal-content">
+      <span class="modal-close" id="modalClose">&times;</span>
+      <img id="modalImg" src="" alt="Expanded">
+      <div class="modal-description" id="modalDesc"></div>
+    </div>
+  </div>
+
+  <script>
+    const cards = document.querySelectorAll('.image-card');
+    const modal = document.getElementById('imgModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalClose = document.getElementById('modalClose');
+
+    // Show modal on click
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const img = card.querySelector('img').src;
+        const desc = card.getAttribute('data-desc');
+        modalImg.src = img;
+        modalDesc.textContent = desc;
+        modal.style.display = 'flex';
+      });
+    });
+
+    // Close modal
+    modalClose.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    // Close on outside click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+
+    // Scroll animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    cards.forEach(card => observer.observe(card));
+  </script>
+</body>
+</html>

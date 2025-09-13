@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manjot's Portfolio</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: #fff;
+      overflow-x: hidden;
+      background: #111;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .bg-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: blur(8px);
+      z-index: -2;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: -1;
+    }
+
+    .hero-content {
+      text-align: center;
+      z-index: 1;
+    }
+
+    .small-video {
+      width: 400px;
+      height: 300px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      margin-bottom: 20px;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      width: auto;
+    }
+
+    /* Wiggle Animation */
+    @keyframes wiggle {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(3deg); }
+      50% { transform: rotate(-3deg); }
+      75% { transform: rotate(2deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .nav-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      overflow: hidden;
+      position: relative;
+      animation: wiggle 1s infinite;
+      z-index: 10;
+    }
+
+    .nav-circle:hover {
+      width: 200px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.2);
+      justify-content: flex-start;
+      padding-left: 10px;
+      animation: none;
+    }
+
+    .nav-circle img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: all 0.4s ease;
+      position: absolute;
+      left: 10px;
+    }
+
+    .nav-circle:hover img {
+      left: 20px;
+    }
+
+    .nav-text {
+      margin-left: 0;
+      white-space: nowrap;
+      opacity: 0;
+      transition: all 0.4s ease;
+      font-weight: bold;
+      color: #fff;
+      text-align: center;
+      width: 100%;
+    }
+    .nav-circle:hover .nav-text { 
+      opacity: 1;
+      margin-left: 20px;
+    }
+
+    .nav-arrow {
+      position: absolute;
+      right: 15px;
+      opacity: 0;
+      transition: all 0.4s ease;
+      font-size: 12px;
+    }
+    .nav-circle:hover .nav-arrow { opacity: 1; }
+
+    /* Side nav items */
+    .nav-items-left, .nav-items-right {
+      display: flex;
+      position: absolute;
+      opacity: 0;
+      transition: all 0.4s ease;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .nav-items-left {
+      right: 220px;
+      transform: translateX(20px);
+    }
+
+    .nav-items-right {
+      left: 220px;
+      transform: translateX(-20px);
+    }
+
+    .navbar:hover .nav-items-left,
+    .navbar:hover .nav-items-right {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .nav-item {
+      padding: 15px 20px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .nav-item:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* About */
+    .about {
+      padding: 100px 50px;
+      background: #222;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-radius: 20px;
+      margin-top: -50px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .about-image img {
+      width: 100%;
+      max-width: 400px;
+      height: 500px;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .about-content h2 { font-size: 3em; margin-bottom: 30px; }
+    .about-content p { font-size: 1.2em; line-height: 1.8; opacity: 0.9; }
+
+    /* Work Section */
+    .work {
+      padding: 100px 50px;
+      background: #111;
+      text-align: center;
+    }
+
+    .work h2 { font-size: 3em; margin-bottom: 60px; }
+
+    .work-grid {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .work-item {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      flex-shrink: 0;
+    }
+
+    .work-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: all 0.4s ease;
+    }
+
+    .work-text {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      color: #fff;
+      font-size: 1.2em;
+      font-weight: bold;
+      line-height: 1.6;
+      width: 90%;
+    }
+
+    /* Hover logic */
+    .work-item:hover img { filter: brightness(40%); }
+    .work-item:hover .work-text { opacity: 1; }
+
+    .work-item.left:hover ~ .center,
+    .work-item.left:hover ~ .right {
+      transform: translateX(350px);
+      opacity: 0;
+    }
+
+    .work-item.center:hover ~ .right {
+      transform: translateX(350px);
+      opacity: 0;
+    }
+    .work-item.center:hover ~ .left {
+      transform: translateX(-350px);
+      opacity: 0;
+    }
+
+    .work-item.right:hover ~ .left,
+    .work-item.right:hover ~ .center {
+      transform: translateX(-350px);
+      opacity: 0;
+    }
+
+    /* Contact */
+    .contact {
+      padding: 100px 50px;
+      background: #222;
+      text-align: center;
+    }
+    .contact h2 { font-size: 3em; margin-bottom: 30px; }
+    .contact p { font-size: 1.2em; opacity: 0.8; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-items-left">
+      <div class="nav-item" onclick="scrollToSection('about')">about me</div>
+    </div>
+    
+    <div class="nav-circle" onclick="scrollToSection('contact')">
+      <img src="circle.jpeg" alt="Profile">
+      <span class="nav-text">work with manjot</span>
+      <span class="nav-arrow">→</span>
+    </div>
+    
+    <div class="nav-items-right">
+      <div class="nav-item" onclick="scrollToSection('work')">my work</div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <video class="bg-video" autoplay muted loop>
+      <source src="bgvideo.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <video class="small-video" autoplay muted loop>
+        <source src="small video.mp4" type="video/mp4">
+      </video>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="about">
+    <div class="about-image">
+      <img src="mypic.jpeg" alt="Manjot">
+    </div>
+    <div class="about-content">
+      <h2>About Me</h2>
+      <p>Hello! I'm Manjot, a passionate creative professional dedicated to bringing innovative ideas to life.</p>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section id="work" class="work">
+    <h2>My Work</h2>
+    <div class="work-grid">
+      <div class="work-item left">
+        <img src="https://via.placeholder.com/400x300/FF6B6B/FFFFFF?text=Project+1">
+        <div class="work-text">First steps → Sketching ✏️ to Designing 🎨</div>
+      </div>
+      <div class="work-item center">
+        <img src="https://via.placeholder.com/400x300/4ECDC4/FFFFFF?text=Project+2">
+        <div class="work-text">Here it all started → Drawing ✏️ to Graphics 🎨 → Illustrator 💻</div>
+      </div>
+      <div class="work-item right">
+        <img src="https://via.placeholder.com/400x300/45B7D1/FFFFFF?text=Project+3">
+        <div class="work-text">Final evolution → Ideas 💡 to Professional Work 🚀</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact">
+    <h2>Let's Work Together</h2>
+    <p>Ready to bring your ideas to life? Get in touch and let's create something amazing together.</p>
+  </section>
+
+  <script>
+    function scrollToSection(sectionId) {
+      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+</body>
+</html>
