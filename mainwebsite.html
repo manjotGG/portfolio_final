@@ -78,7 +78,7 @@
       width: 80vw;
       height: 70vh;
       border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      box-shadow: none;
       margin-bottom: 20px;
       display: block;
       background: transparent;
@@ -98,6 +98,10 @@
     .small-video.scroll-init { opacity: 0; transform: translateY(40px) scale(0.98); }
     .small-video.in-view { opacity: 1; transform: translateY(0) scale(1); }
 
+    /* Global on-scroll animation helper */
+    .reveal-init { opacity: 0; transform: translateY(24px); }
+    .reveal-in { opacity: 1; transform: translateY(0); transition: opacity 800ms ease, transform 800ms ease; will-change: opacity, transform; }
+
     /* Animated video placeholder content */
     .small-video::before { content: none; }
 
@@ -114,9 +118,30 @@
 
     .small-video:hover {
       transform: scale(1.02);
-      box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+      box-shadow: none;
     }
 
+
+    /* Small video overlay image */
+    .small-video-wrap { position: relative; display: inline-block; }
+    .overlay-image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70%;
+      max-width: 720px;
+      border-radius: 12px;
+      box-shadow: none;
+      pointer-events: none;
+      opacity: 0;
+      animation: overlayImageIn 1.2s ease 0.6s forwards;
+    }
+
+    @keyframes overlayImageIn {
+      from { opacity: 0; transform: translate(-50%, -55%) scale(0.98); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
 
     /* Enhanced Navbar */
     .navbar {
@@ -690,6 +715,7 @@
       .navbar.expanded .nav-circle { width: 180px; }
       .nav-items-left, .nav-items-right { position: relative; right: auto; left: auto; margin-top: 10px; }
       .small-video { width: 95vw; height: 45vh; }
+      .overlay-image { width: 85%; max-width: 480px; }
     }
   </style>
 </head>
@@ -721,7 +747,10 @@
   <!-- Hero -->
   <section class="hero">
     <div class="hero-content">
-      <video class="small-video scroll-init" src="small video.mp4" autoplay muted loop playsinline></video>
+      <div class="small-video-wrap">
+        <video class="small-video scroll-init" src="small video.mp4" autoplay muted loop playsinline></video>
+        <img class="overlay-image" src="manjot.png" alt="Manjot" />
+      </div>
     </div>
   </section>
 
@@ -829,9 +858,16 @@
       }
 
       setupEventListeners() {
-        // Smooth scroll indicator
+        // Smooth scroll indicator using rAF
+        let ticking = false;
         window.addEventListener('scroll', () => {
-          this.updateScrollIndicator();
+          if (!ticking) {
+            window.requestAnimationFrame(() => {
+              this.updateScrollIndicator();
+              ticking = false;
+            });
+            ticking = true;
+          }
         });
 
         // Enhanced navbar interactions
@@ -875,14 +911,18 @@
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('in');
+              entry.target.classList.add('reveal-in');
               if (entry.target.classList.contains('small-video')) {
                 entry.target.classList.add('in-view');
               }
             }
           });
-        }, { threshold: 0.2 });
+        }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
 
-        document.querySelectorAll('.about, .work-container, .work-item, .contact, .small-video').forEach(el => observer.observe(el));
+        document.querySelectorAll('.about, .work-container, .work-item, .contact, .small-video').forEach(el => {
+          el.classList.add('reveal-init');
+          observer.observe(el);
+        });
       }
 
       // Simple ripple effect on clicks
