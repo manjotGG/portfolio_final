@@ -11,12 +11,18 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 20px;
+    }
+
     body {
       font-family: 'Arial', sans-serif;
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
       color: white;
+      background: #0a0a0a;
     }
 
     /* Background video with blur */
@@ -31,11 +37,25 @@
       z-index: -2;
       transform: translate(-50%, -50%);
       object-fit: cover;
-      filter: brightness(0.8) blur(6px);
+      filter: brightness(0.6) blur(8px) saturate(1.2);
+      transition: filter 0.3s ease;
+    }
+
+    /* Overlay for better text readability */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(20,20,40,0.3));
+      z-index: -1;
+      pointer-events: none;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 2rem;
       text-align: center;
@@ -44,82 +64,168 @@
     }
 
     h1 {
-      font-size: 3rem;
+      font-size: clamp(2.5rem, 5vw, 4rem);
       font-family: 'Trebuchet MS', sans-serif;
       margin-bottom: 1rem;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       text-transform: uppercase;
+      background: linear-gradient(45deg, #fff, #ccc, #fff);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(255,255,255,0.3);
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
     .intro {
-      font-size: 1.1rem;
-      color: #ddd;
+      font-size: 1.2rem;
+      color: #e0e0e0;
       max-width: 700px;
-      margin: 0 auto 3rem auto;
-      line-height: 1.6;
+      margin: 0 auto 4rem auto;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease 0.5s forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
+      padding: 1rem 0;
     }
 
     .image-card {
       position: relative;
-      border-radius: 20px;
+      border-radius: 0;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       opacity: 0;
-      transform: translateY(50px) scale(0.95);
-      transition: all 0.6s ease;
+      transform: translateY(80px) scale(0.9) rotateX(15deg);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       cursor: pointer;
+      will-change: transform, opacity;
     }
+
+    /* Different sizes for variety */
+    .image-card:nth-child(1) { grid-row: span 1; }
+    .image-card:nth-child(2) { grid-row: span 2; }
+    .image-card:nth-child(3) { grid-row: span 1; }
+    .image-card:nth-child(4) { grid-row: span 2; }
+    .image-card:nth-child(5) { grid-row: span 1; }
+    .image-card:nth-child(6) { grid-row: span 2; }
+    .image-card:nth-child(7) { grid-row: span 1; }
+    .image-card:nth-child(8) { grid-row: span 2; }
+    .image-card:nth-child(9) { grid-row: span 1; }
+    .image-card:nth-child(10) { grid-row: span 2; }
 
     .image-card.show {
       opacity: 1;
-      transform: translateY(0) scale(1);
-      animation: wiggleIn 0.9s ease;
+      transform: translateY(0) scale(1) rotateX(0deg);
+      animation: smoothFloat 0.6s ease forwards;
     }
 
-    @keyframes wiggleIn {
-      0% { transform: translateY(50px) scale(0.9) rotate(-3deg); opacity: 0; }
-      40% { transform: translateY(-10px) scale(1.05) rotate(3deg); opacity: 1; }
-      60% { transform: translateY(5px) scale(0.98) rotate(-2deg); }
-      80% { transform: translateY(-5px) scale(1.02) rotate(1deg); }
-      100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+    @keyframes smoothFloat {
+      0% { 
+        transform: translateY(80px) scale(0.8) rotateX(20deg); 
+        opacity: 0; 
+      }
+      50% { 
+        transform: translateY(-10px) scale(1.02) rotateX(-2deg); 
+        opacity: 0.8; 
+      }
+      100% { 
+        transform: translateY(0) scale(1) rotateX(0deg); 
+        opacity: 1; 
+      }
     }
 
     .image-card img {
       width: 100%;
-      height: 280px;
+      height: 100%;
+      min-height: 250px;
       object-fit: cover;
-      transition: transform 0.4s ease;
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       display: block;
       position: relative;
       z-index: 0;
+      filter: brightness(0.9) contrast(1.1);
+    }
+
+    .image-card:nth-child(even) img {
+      min-height: 350px;
+    }
+
+    .image-card:hover {
+      transform: translateY(-15px) scale(1.03);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .image-card:hover img {
-      transform: scale(1.1);
+      transform: scale(1.08);
+      filter: brightness(0.9) contrast(1.1);
     }
 
-    /* Overlay */
+    /* Smooth overlay */
     .image-card::after {
       content: "";
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0);
-      transition: background 0.3s ease;
+      background: linear-gradient(135deg, 
+        rgba(0,0,0,0) 0%, 
+        rgba(0,0,0,0.1) 50%, 
+        rgba(0,0,0,0.3) 100%);
+      opacity: 0;
+      transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       z-index: 1;
     }
 
     .image-card:hover::after {
-      background: rgba(0,0,0,0.4);
+      opacity: 1;
+    }
+
+    /* Floating elements */
+    .image-card::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      z-index: 2;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 0.3s ease;
+    }
+
+    .image-card:hover::before {
+      opacity: 1;
+      transform: scale(1);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.2); opacity: 1; }
     }
 
     .image-overlay {
@@ -129,9 +235,11 @@
       right: 0;
       color: white;
       padding: 1.5rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
       transform: translateY(100%);
-      transition: transform 0.4s ease;
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       z-index: 2;
+      backdrop-filter: blur(5px);
     }
 
     .image-card:hover .image-overlay {
@@ -141,68 +249,136 @@
     .image-title {
       font-size: 1.2rem;
       font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
-    /* Modal */
+    /* Modal with enhanced animations */
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(8px);
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(12px);
       justify-content: center;
       align-items: center;
       z-index: 1000;
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .modal-content {
-      background: rgba(20,20,20,0.9);
-      padding: 20px;
-      border-radius: 15px;
-      max-width: 600px;
+      background: linear-gradient(135deg, 
+        rgba(20,20,20,0.95), 
+        rgba(40,40,60,0.9));
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 700px;
       width: 90%;
       text-align: center;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-      animation: popIn 0.4s ease;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+      animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       position: relative;
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
     .modal-content img {
       width: 100%;
-      border-radius: 10px;
-      margin-bottom: 1rem;
+      border-radius: 15px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-content img:hover {
+      transform: scale(1.02);
     }
 
     .modal-description {
-      font-size: 1rem;
-      color: #ccc;
+      font-size: 1.1rem;
+      color: #e0e0e0;
+      line-height: 1.6;
     }
 
     .modal-close {
       position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 1.8rem;
+      top: 15px;
+      right: 20px;
+      font-size: 2rem;
       color: #aaa;
       cursor: pointer;
       font-weight: bold;
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .modal-close:hover {
       color: white;
+      background: rgba(255,255,255,0.1);
+      transform: scale(1.1);
     }
 
-    @keyframes popIn {
-      0% { transform: scale(0.8); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+    @keyframes modalSlideIn {
+      0% { 
+        transform: scale(0.7) translateY(-50px); 
+        opacity: 0; 
+      }
+      100% { 
+        transform: scale(1) translateY(0); 
+        opacity: 1; 
+      }
     }
 
-    /* Responsive */
+    /* Smooth scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.2);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.2));
+    }
+
+    /* Responsive adjustments */
     @media (max-width: 768px) {
       .container { padding: 1rem; }
-      .gallery { grid-template-columns: 1fr !important; gap: 1.5rem; }
-      .image-card img { height: 220px; }
+      .gallery { 
+        grid-template-columns: 1fr !important; 
+        gap: 1.5rem; 
+      }
+      .image-card { 
+        grid-row: span 1 !important; 
+      }
+      .image-card img { 
+        min-height: 220px !important; 
+      }
+      h1 { font-size: 2.5rem; }
+    }
+
+    /* Loading animation */
+    @keyframes loadingPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .loading .image-card {
+      animation: loadingPulse 1.5s ease-in-out infinite;
     }
   </style>
 </head>
@@ -222,17 +398,67 @@
     </p>
 
     <!-- Gallery -->
-    <div class="gallery">
-      <div class="image-card" data-desc="Relaxing vibe art"><img src="gimage1.jpeg" alt="gimage1"></div>
-      <div class="image-card" data-desc="Creative illustration"><img src="gimage2.jpeg" alt="gimage2"></div>
-      <div class="image-card" data-desc="Digital poster design"><img src="gimage3.jpeg" alt="gimage3"></div>
-      <div class="image-card" data-desc="Abstract artwork"><img src="gimage4.jpeg" alt="gimage4"></div>
-      <div class="image-card" data-desc="Modern typography"><img src="gimage5.jpeg" alt="gimage5"></div>
-      <div class="image-card" data-desc="Illustrator sketch"><img src="gimage6.jpeg" alt="gimage6"></div>
-      <div class="image-card" data-desc="Creative doodle"><img src="gimage7.jpeg" alt="gimage7"></div>
-      <div class="image-card" data-desc="Photo manipulation"><img src="gimage8.jpeg" alt="gimage8"></div>
-      <div class="image-card" data-desc="3D style render"><img src="gimage9.jpeg" alt="gimage9"></div>
-      <div class="image-card" data-desc="Experimental design"><img src="gimage10.jpeg" alt="gimage10"></div>
+    <div class="gallery loading">
+      <div class="image-card" data-desc="Relaxing vibe art with soothing colors and peaceful composition">
+        <img src="gimage1.jpeg" alt="gimage1" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Relaxing Vibe</div>
+        </div>
+      </div>
+      <div class="image-card" data-desc="Creative illustration showcasing artistic expression and unique style">
+        <img src="gimage2.jpeg" alt="gimage2" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Creative Illustration</div>
+        </div>
+      </div>
+      <div class="image-card" data-desc="Digital poster design with modern typography and bold visuals">
+        <img src="gimage3.jpeg" alt="gimage3" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Digital Poster</div>
+        </div>
+      </div>
+      <div class="image-card" data-desc="Abstract artwork exploring form, color, and conceptual depth">
+        <img src="gimage4.jpeg" alt="gimage4" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Abstract Art</div>
+        </div>
+      </div>
+      <div class="image-card" data-desc="Modern typography design featuring clean lines and innovative lettering">
+        <img src="gimage5.jpeg" alt="gimage5" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Modern Typography</div>
+        </div>
+      </div>
+      <div class="image-card" data-desc="Illustrator sketch demonstrating technical skill and artistic vision">
+        <img src="gimage6.jpeg" alt="gimage6" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Illustrator Sketch</div>
+        </div>
+      </div>
+      <div class="image-card" data-desc="Creative doodle expressing spontaneous artistic thoughts and ideas">
+        <img src="gimage7.jpeg" alt="gimage7" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Creative Doodle</div>
+        </div>
+      </div>
+      <div class="image-card" data-desc="Photo manipulation blending reality with digital artistry">
+        <img src="gimage8.jpeg" alt="gimage8" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Photo Manipulation</div>
+        </div>
+      </div>
+      <div class="image-card" data-desc="3D style render showcasing dimensional design and lighting techniques">
+        <img src="gimage9.jpeg" alt="gimage9" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">3D Render</div>
+        </div>
+      </div>
+      <div class="image-card" data-desc="Experimental design pushing creative boundaries and exploring new concepts">
+        <img src="gimage10.jpeg" alt="gimage10" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Experimental Design</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -246,45 +472,170 @@
   </div>
 
   <script>
-    const cards = document.querySelectorAll('.image-card');
-    const modal = document.getElementById('imgModal');
-    const modalImg = document.getElementById('modalImg');
-    const modalDesc = document.getElementById('modalDesc');
-    const modalClose = document.getElementById('modalClose');
-
-    // Show modal on click
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        const img = card.querySelector('img').src;
-        const desc = card.getAttribute('data-desc');
-        modalImg.src = img;
-        modalDesc.textContent = desc;
-        modal.style.display = 'flex';
-      });
-    });
-
-    // Close modal
-    modalClose.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
-
-    // Close on outside click
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
+    // Enhanced smooth scrolling and animations
+    class SmoothPortfolio {
+      constructor() {
+        this.cards = document.querySelectorAll('.image-card');
+        this.modal = document.getElementById('imgModal');
+        this.modalImg = document.getElementById('modalImg');
+        this.modalDesc = document.getElementById('modalDesc');
+        this.modalClose = document.getElementById('modalClose');
+        this.gallery = document.querySelector('.gallery');
+        
+        this.init();
       }
+
+      init() {
+        // Remove loading class after a short delay
+        setTimeout(() => {
+          this.gallery.classList.remove('loading');
+        }, 500);
+
+        this.setupIntersectionObserver();
+        this.setupModalEvents();
+        this.setupSmoothScrolling();
+        this.setupParallaxEffect();
+        this.setupImageLoading();
+      }
+
+      setupIntersectionObserver() {
+        const observerOptions = {
+          threshold: 0.2,
+          rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+              // Stagger the animation
+              setTimeout(() => {
+                entry.target.classList.add('show');
+              }, index * 100);
+            }
+          });
+        }, observerOptions);
+
+        this.cards.forEach(card => observer.observe(card));
+      }
+
+      setupModalEvents() {
+        // Show modal on click
+        this.cards.forEach(card => {
+          card.addEventListener('click', (e) => {
+            e.preventDefault();
+            const img = card.querySelector('img').src;
+            const desc = card.getAttribute('data-desc');
+            
+            this.modalImg.src = img;
+            this.modalDesc.textContent = desc;
+            this.modal.style.display = 'flex';
+            
+            // Prevent body scroll when modal is open
+            document.body.style.overflow = 'hidden';
+          });
+        });
+
+        // Close modal events
+        this.modalClose.addEventListener('click', () => this.closeModal());
+        
+        this.modal.addEventListener('click', (e) => {
+          if (e.target === this.modal) this.closeModal();
+        });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.modal.style.display === 'flex') {
+            this.closeModal();
+          }
+        });
+      }
+
+      closeModal() {
+        this.modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+
+      setupSmoothScrolling() {
+        // Simple smooth scrolling without interference
+        document.documentElement.style.scrollBehavior = 'smooth';
+      }
+
+      smoothScrollTo(target, duration) {
+        const start = window.pageYOffset;
+        const distance = target - start;
+        let startTime = null;
+
+        const animation = (currentTime) => {
+          if (startTime === null) startTime = currentTime;
+          const timeElapsed = currentTime - startTime;
+          const run = this.easeInOutQuad(timeElapsed, start, distance, duration);
+          
+          window.scrollTo(0, run);
+          
+          if (timeElapsed < duration) {
+            requestAnimationFrame(animation);
+          }
+        };
+
+        requestAnimationFrame(animation);
+      }
+
+      easeInOutQuad(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+      }
+
+      setupParallaxEffect() {
+        // Simplified parallax for better performance
+        let ticking = false;
+        
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              const scrolled = window.pageYOffset;
+              const parallax = scrolled * 0.1; // Reduced parallax effect
+              const bgVideo = document.getElementById('bg-video');
+              
+              if (bgVideo) {
+                bgVideo.style.transform = `translate(-50%, calc(-50% + ${parallax}px))`;
+              }
+              ticking = false;
+            });
+            ticking = true;
+          }
+        });
+      }
+
+      setupImageLoading() {
+        // Lazy loading with smooth fade-in
+        const imageObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              img.style.opacity = '0';
+              img.style.transition = 'opacity 0.6s ease';
+              
+              img.onload = () => {
+                img.style.opacity = '1';
+              };
+              
+              imageObserver.unobserve(img);
+            }
+          });
+        });
+
+        document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+          imageObserver.observe(img);
+        });
+      }
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      new SmoothPortfolio();
     });
-
-    // Scroll animation
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('show');
-        }
-      });
-    }, { threshold: 0.3 });
-
-    cards.forEach(card => observer.observe(card));
   </script>
 </body>
 </html>
