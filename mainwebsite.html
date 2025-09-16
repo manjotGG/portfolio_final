@@ -16,6 +16,16 @@
       background: #111;
     }
 
+    /* Global background video */
+    .bg-video-global {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: blur(8px);
+      z-index: -2;
+    }
+
     /* Hero Section */
     .hero {
       height: 100vh;
@@ -155,12 +165,13 @@
       transition: all 0.4s ease;
       font-weight: bold;
       color: #fff;
-      text-align: center;
+      text-align: left; /* Changed from center to left */
       width: 100%;
+      padding-left: 60px; /* Move text away from image */
     }
     .nav-circle:hover .nav-text { 
       opacity: 1;
-      margin-left: 20px;
+      margin-left: 10px; /* Reduced margin */
     }
 
     .nav-arrow {
@@ -176,7 +187,7 @@
       display: flex;
       position: absolute;
       opacity: 0;
-      transition: all 0.4s ease;
+      transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s; /* Added delay */
       pointer-events: none;
       z-index: 15;
     }
@@ -191,15 +202,15 @@
       transform: translateX(-20px);
     }
 
-    .navbar:hover .nav-items-left,
-    .navbar:hover .nav-items-right {
+    .navbar.expanded .nav-items-left,
+    .navbar.expanded .nav-items-right {
       opacity: 1;
       transform: translateX(0);
       pointer-events: auto;
     }
 
     .nav-item {
-      padding: 15px 20px;
+      padding: 18px 25px; /* Bigger click area */
       background: rgba(255,255,255,0.1);
       backdrop-filter: blur(10px);
       border-radius: 25px;
@@ -208,6 +219,11 @@
       font-size: 14px;
       font-weight: 500;
       white-space: nowrap;
+      text-decoration: none;
+      color: #fff;
+      display: block;
+      min-width: 80px; /* Minimum width for easier clicking */
+      text-align: center;
     }
     .nav-item:hover {
       background: rgba(255,255,255,0.2);
@@ -244,73 +260,138 @@
     /* Work Section */
     .work {
       padding: 100px 50px;
-      background: #111;
-      text-align: center;
+      background: transparent;
     }
 
-    .work h2 { font-size: 3em; margin-bottom: 60px; }
+    .work h2 { font-size: 3em; margin-bottom: 30px; text-align: center; }
+
+    .work-container {
+      background: #222;
+      border-radius: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 80px;
+      position: relative;
+      overflow: visible;
+    }
+
+    .work-layout {
+      display: flex;
+      gap: 30px;
+      align-items: start;
+      min-height: 400px;
+      position: relative;
+    }
 
     .work-grid {
       display: flex;
       justify-content: center;
-      gap: 40px;
-      max-width: 1200px;
-      margin: 0 auto;
+      gap: 20px;
+      flex-wrap: nowrap;
+      transition: all 0.5s ease;
+      flex: 1;
+      position: relative;
+      padding: 20px 0;
     }
 
     .work-item {
       position: relative;
-      width: 300px;
-      height: 300px;
+      width: 320px;
+      height: 320px;
       border-radius: 15px;
       overflow: hidden;
       cursor: pointer;
-      transition: all 0.4s ease;
+      transition: all 0.5s ease;
       flex-shrink: 0;
+      background: rgba(0,0,0,0.4);
+      opacity: 1;
+      transform: translateX(0);
+      z-index: 1;
     }
 
-    .work-item img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: all 0.4s ease;
+    /* When hovering any item */
+    .work-grid:hover .work-item {
+      opacity: 0.2;
+      transform: translateX(0);
+    }
+
+    /* The hovered item enlarges and moves to center */
+    .work-grid .work-item:hover {
+      opacity: 1;
+      width: 700px; /* Much bigger expansion */
+      height: 400px; /* Taller too */
+      transform: translateX(-190px) translateY(-40px) scale(1.02);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      z-index: 10;
+      background: rgba(0,0,0,0.7);
+    }
+
+    /* Show description inside the expanded box */
+    .work-item .work-description {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 320px;
+      opacity: 0;
+      transition: all 0.5s ease;
+      padding: 25px;
+      background: rgba(0,0,0,0.85);
+      border-radius: 12px;
+      backdrop-filter: blur(15px);
+    }
+
+    .work-item:hover .work-description {
+      opacity: 1;
+    }
+
+    .work-description h4 {
+      font-size: 1.6em;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .work-description p {
+      font-size: 1em;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .work-item a { 
+      display: block; 
+      width: 100%; 
+      height: 100%; 
+      text-decoration: none; 
+      color: inherit; 
+    }
+
+    .work-item iframe {
+      width: 1280px;
+      height: 960px;
+      transform: scale(0.25);
+      transform-origin: top left;
+      border: 0;
+      pointer-events: none;
+    }
+
+    /* Scale iframe differently when expanded */
+    .work-item:hover iframe {
+      transform: scale(0.35);
     }
 
     .work-text {
       position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      color: #fff;
-      font-size: 1.2em;
+      bottom: 12px; left: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.7);
+      padding: 10px 12px;
+      border-radius: 10px;
       font-weight: bold;
-      line-height: 1.6;
-      width: 90%;
+      font-size: 1.05em;
     }
 
-    .work-item:hover img { filter: brightness(40%); }
-    .work-item:hover .work-text { opacity: 1; }
-
-    .work-item.left:hover ~ .center,
-    .work-item.left:hover ~ .right {
-      transform: translateX(350px);
-      opacity: 0;
-    }
-
-    .work-item.center:hover ~ .right {
-      transform: translateX(350px);
-      opacity: 0;
-    }
-    .work-item.center:hover ~ .left {
-      transform: translateX(-350px);
-      opacity: 0;
-    }
-
-    .work-item.right:hover ~ .left,
-    .work-item.right:hover ~ .center {
-      transform: translateX(-350px);
-      opacity: 0;
+    .work-detail {
+      display: none; /* Hide the separate description box */
     }
 
     /* Contact */
@@ -324,10 +405,15 @@
   </style>
 </head>
 <body>
+  <!-- Global background video -->
+  <video class="bg-video-global" autoplay muted loop>
+    <source src="bgvideo.mp4" type="video/mp4">
+  </video>
+  
   <!-- Navbar -->
   <nav class="navbar">
     <div class="nav-items-left">
-      <div class="nav-item" onclick="scrollToSection('about')">about me</div>
+      <a href="about-me.html" class="nav-item" style="display: block;">about me</a>
     </div>
     
     <div class="nav-circle" onclick="scrollToSection('contact')">
@@ -372,18 +458,44 @@
   <!-- Work -->
   <section id="work" class="work">
     <h2>My Work</h2>
-    <div class="work-grid">
-      <div class="work-item left">
-        <img src="https://via.placeholder.com/400x300/FF6B6B/FFFFFF?text=Project+1">
-        <div class="work-text">First steps → Sketching ✏️ to Designing 🎨</div>
-      </div>
-      <div class="work-item center">
-        <img src="https://via.placeholder.com/400x300/4ECDC4/FFFFFF?text=Project+2">
-        <div class="work-text">Here it all started → Drawing ✏️ to Graphics 🎨 → Illustrator 💻</div>
-      </div>
-      <div class="work-item right">
-        <img src="https://via.placeholder.com/400x300/45B7D1/FFFFFF?text=Project+3">
-        <div class="work-text">Final evolution → Ideas 💡 to Professional Work 🚀</div>
+    <div class="work-container">
+      <div class="work-layout">
+        <div class="work-grid">
+          <div class="work-item">
+            <a href="scribbling.html">
+              <iframe src="scribbling.html"></iframe>
+              <div class="work-text">First steps → Sketching ✏️ to Designing 🎨</div>
+            </a>
+            <div class="work-description">
+              <h4>Scribbling Journey</h4>
+              <p>From first strokes to clean compositions. Traditional sketching evolving into structured design practice. This journey showcases the foundation of creative thinking through hand-drawn explorations and conceptual development.</p>
+            </div>
+          </div>
+          <div class="work-item">
+            <a href="graphic-design.html">
+              <iframe src="graphic-design.html"></iframe>
+              <div class="work-text">Drawing ✏️ → Graphics 🎨 → Illustrator 💻</div>
+            </a>
+            <div class="work-description">
+              <h4>Graphic Design Evolution</h4>
+              <p>Exploring layout, typography and color theory across posters, social graphics and branding studies. A comprehensive look at visual communication through digital mediums and print design principles.</p>
+            </div>
+          </div>
+          <div class="work-item">
+            <a href="illustrator.html">
+              <iframe src="illustrator.html"></iframe>
+              <div class="work-text">Ideas 💡 → Professional Work 🚀</div>
+            </a>
+            <div class="work-description">
+              <h4>Professional Artworks</h4>
+              <p>Personal artworks and experiments that inform my visual language and style. Creative explorations that bridge the gap between artistic expression and commercial design solutions.</p>
+            </div>
+          </div>
+        </div>
+        <div class="work-detail" id="work-detail">
+          <h3>Discover My Work</h3>
+          <p>Hover over any project on the left to explore its details and see how each piece contributes to my creative journey. Click any preview to dive deeper into the full collection.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -397,6 +509,18 @@
   <script>
     function scrollToSection(sectionId) {
       document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Expand submenu when hovering the circle without changing existing animations
+    const navbar = document.querySelector('.navbar');
+    const navCircle = document.querySelector('.nav-circle');
+    if (navbar && navCircle) {
+      navCircle.addEventListener('mouseenter', function() {
+        navbar.classList.add('expanded');
+      });
+      navbar.addEventListener('mouseleave', function() {
+        navbar.classList.remove('expanded');
+      });
     }
   </script>
 </body>
