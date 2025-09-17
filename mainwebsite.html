@@ -122,26 +122,38 @@
     }
 
 
-    /* Small video overlay image */
-    .small-video-wrap { position: relative; display: inline-block; }
+    /* Small video overlay image and gradient wrapper */
+    .small-video-wrap {
+      display: inline-block;
+      padding: 6px; /* gradient border thickness */
+      border-radius: 24px;
+      background: linear-gradient(135deg, #ff7a7a, #6be1d6, #6aa0ff);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.6);
+      transition: transform 0.35s ease;
+    }
+
+    .small-video-wrap .small-video {
+      border-radius: 18px; /* inner radius slightly smaller */
+      display: block;
+    }
+
     .overlay-image {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -52%) scale(0.98);
       width: 70%;
       max-width: 720px;
       border-radius: 12px;
-      box-shadow: none;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.6);
       pointer-events: none;
       opacity: 0;
-      animation: overlayImageIn 1.2s ease 0.6s forwards;
+      transition: opacity 750ms ease, transform 750ms cubic-bezier(.2,.9,.2,1);
     }
 
-    @keyframes overlayImageIn {
-      from { opacity: 0; transform: translate(-50%, -55%) scale(0.98); }
-      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    }
+    /* Reveal states for overlay image (observed by IntersectionObserver) */
+    .overlay-image.reveal-init { opacity: 0; transform: translate(-50%, -54%) scale(0.98); }
+    .overlay-image.reveal-in { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
     /* Enhanced Navbar */
     .navbar {
@@ -155,16 +167,16 @@
       align-items: center;
       gap: 0;
       width: auto;
-      transition: all 0.5s ease;
+      transition: all 0.45s cubic-bezier(.2,.9,.2,1);
     }
 
     .nav-circle {
       width: 60px;
       height: 60px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: linear-gradient(180deg, rgba(20,20,20,0.6), rgba(30,30,30,0.6));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.06);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -188,13 +200,13 @@
     .navbar.expanded .nav-circle {
       width: 220px;
       border-radius: 30px;
-      background: rgba(255,255,255,0.2);
+      background: linear-gradient(90deg, rgba(80,30,120,0.18), rgba(30,130,180,0.12));
       justify-content: flex-start;
       padding-left: 10px;
       animation: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.45);
       transform: translateY(-2px);
-      transition-delay: 150ms;
+      transition-delay: 220ms; /* slightly longer so items are clickable */
     }
 
     /* Profile image placeholder */
@@ -281,9 +293,9 @@
 
     .nav-item {
       padding: 18px 25px;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.04);
       border-radius: 25px;
       cursor: pointer;
       transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -291,7 +303,7 @@
       font-weight: 500;
       white-space: nowrap;
       text-decoration: none;
-      color: #fff;
+      color: #f2f2f2;
       display: block;
       min-width: 80px;
       text-align: center;
@@ -315,10 +327,13 @@
     }
 
     .nav-item:hover {
-      background: rgba(255,255,255,0.25);
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.35);
     }
+
+    /* Make navbar expanded remain while interacting with nav-items */
+    .navbar:hover, .navbar.expanded { box-shadow: 0 30px 90px rgba(0,0,0,0.6); }
 
     /* Enhanced About Section */
     .about {
@@ -717,6 +732,44 @@
       .small-video { width: 95vw; height: 45vh; }
       .overlay-image { width: 85%; max-width: 480px; }
     }
+
+    /* Connect button hover */
+    .connect-btn {
+      background: #000;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: transform 220ms ease, background 220ms ease, box-shadow 220ms ease;
+    }
+
+    .connect-btn:hover {
+      background: linear-gradient(90deg,#ff6b6b,#4ecdc4);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+      color: #061018;
+    }
+
+    /* Bottom video section */
+    .bottom-video-section {
+      padding: 80px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6,6,8,0.5);
+      margin-top: 60px;
+    }
+
+    .bottom-video {
+      width: 90%;
+      max-width: 1100px;
+      border-radius: 18px;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.6);
+      border: 6px solid rgba(255,255,255,0.03);
+      opacity: 0;
+      transform: translateY(30px) scale(0.995);
+      transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    .bottom-video.reveal-in { opacity: 1; transform: translateY(0) scale(1); }
   </style>
 </head>
 <body>
@@ -831,7 +884,7 @@
         <label for="message" style="font-weight:600;opacity:.95">Message</label>
         <textarea id="message" name="message" rows="5" placeholder="Tell me about your project" style="padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.18);background:rgba(0,0,0,0.6);color:#fff;outline:none"></textarea>
       </div>
-      <button type="submit" style="padding:16px 22px;border-radius:14px;border:1px solid rgba(255,255,255,0.25);background:#000;color:#fff;font-weight:800;cursor:pointer;transition:transform .25s ease,background .25s ease,box-shadow .25s ease;font-size:1.05em;box-shadow:0 12px 28px rgba(0,0,0,.45)">Connect</button>
+      <button id="connect-btn" class="connect-btn" type="submit" style="padding:16px 22px;border-radius:14px;border:1px solid rgba(255,255,255,0.25);background:#000;color:#fff;font-weight:800;cursor:pointer;transition:transform .25s ease,background .25s ease,box-shadow .25s ease;font-size:1.05em;box-shadow:0 12px 28px rgba(0,0,0,.45)">Connect</button>
       <div id="form-status" style="opacity:.9"></div>
     </form>
 
@@ -876,11 +929,23 @@
         
         if (navbar && navCircle) {
           let toggleTimeout;
+          // click toggles explicitly
           const toggleExpanded = () => {
             clearTimeout(toggleTimeout);
-            toggleTimeout = setTimeout(() => navbar.classList.toggle('expanded'), 200);
+            navbar.classList.toggle('expanded');
           };
           navCircle.addEventListener('click', toggleExpanded);
+
+          // hover should expand but with a longer delay so items are clickable
+          navCircle.addEventListener('mouseenter', () => {
+            clearTimeout(toggleTimeout);
+            toggleTimeout = setTimeout(() => navbar.classList.add('expanded'), 220);
+          });
+          // remove expanded when leaving navbar after a short delay
+          navbar.addEventListener('mouseleave', () => {
+            clearTimeout(toggleTimeout);
+            toggleTimeout = setTimeout(() => navbar.classList.remove('expanded'), 260);
+          });
         }
 
         // Enhanced hover effects for work items
@@ -912,14 +977,25 @@
             if (entry.isIntersecting) {
               entry.target.classList.add('in');
               entry.target.classList.add('reveal-in');
+              // small video gets an extra in-view state
               if (entry.target.classList.contains('small-video')) {
                 entry.target.classList.add('in-view');
               }
+              // overlay-image specific reveal
+              if (entry.target.classList.contains('overlay-image')) {
+                entry.target.classList.add('reveal-in');
+              }
+              // bottom video reveal
+              if (entry.target.classList.contains('bottom-video')) {
+                entry.target.classList.add('reveal-in');
+              }
             }
           });
-        }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+        }, { threshold: 0.22, rootMargin: '0px 0px -12% 0px' });
 
-        document.querySelectorAll('.about, .work-container, .work-item, .contact, .small-video').forEach(el => {
+        // Elements to observe
+        const els = document.querySelectorAll('.about, .work-container, .work-item, .contact, .small-video, .overlay-image, .bottom-video');
+        els.forEach(el => {
           el.classList.add('reveal-init');
           observer.observe(el);
         });
@@ -945,12 +1021,33 @@
       }
     }
 
-    // Smooth section scroll helper
+    // Fast, custom smooth scroll helper (easier control over duration/easing)
+    function fastSmoothScroll(targetY, duration = 520) {
+      const startY = window.pageYOffset;
+      const diff = targetY - startY;
+      let startTime = null;
+
+      function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const time = Math.min(1, (timestamp - startTime) / duration);
+        const eased = easeInOutCubic(time);
+        window.scrollTo(0, Math.round(startY + diff * eased));
+        if (time < 1) window.requestAnimationFrame(step);
+      }
+
+      window.requestAnimationFrame(step);
+    }
+
     function scrollToSection(id) {
       const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const targetY = window.pageYOffset + rect.top;
+      fastSmoothScroll(targetY - 8, 480); // slight offset and faster duration
     }
 
     // Boot
@@ -971,6 +1068,11 @@
       }
     });
   </script>
+
+  <!-- Bottom Video Section -->
+  <section class="bottom-video-section">
+    <video class="bottom-video" src="bgvideo.mp4" autoplay muted loop playsinline></video>
+  </section>
 
 </body>
 </html>
