@@ -12,7 +12,7 @@
     }
 
     html { 
-      scroll-behavior: smooth; 
+      scroll-behavior: auto; /* disable smooth scroll */
     }
     
     body {
@@ -1056,33 +1056,12 @@
       }
     }
 
-    // Fast, custom smooth scroll helper (easier control over duration/easing)
-    function fastSmoothScroll(targetY, duration = 520) {
-      const startY = window.pageYOffset;
-      const diff = targetY - startY;
-      let startTime = null;
-
-      function easeInOutCubic(t) {
-        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      }
-
-      function step(timestamp) {
-        if (!startTime) startTime = timestamp;
-        const time = Math.min(1, (timestamp - startTime) / duration);
-        const eased = easeInOutCubic(time);
-        window.scrollTo(0, Math.round(startY + diff * eased));
-        if (time < 1) window.requestAnimationFrame(step);
-      }
-
-      window.requestAnimationFrame(step);
-    }
-
+    // Instant jump helper (no smooth animation)
     function scrollToSection(id) {
       const el = document.getElementById(id);
       if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const targetY = window.pageYOffset + rect.top;
-      fastSmoothScroll(targetY - 8, 480); // slight offset and faster duration
+      // Immediate jump
+      el.scrollIntoView({ behavior: 'auto', block: 'start' });
     }
 
     // Boot
