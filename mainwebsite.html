@@ -12,7 +12,7 @@
     }
 
     html { 
-      scroll-behavior: auto; /* disable smooth scroll */
+      scroll-behavior: auto; 
     }
     
     body {
@@ -23,7 +23,6 @@
       background: #111;
     }
 
-    /* Background video */
     .bg-video {
       position: fixed;
       top: 0; left: 0;
@@ -34,7 +33,6 @@
       pointer-events: none;
     }
 
-    /* Global black overlay above bg video, below content */
     .bg-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -44,7 +42,6 @@
       pointer-events: none;
     }
 
-    /* Hero Section */
     .hero {
       height: 100vh;
       position: relative;
@@ -53,8 +50,6 @@
       justify-content: center;
       overflow: hidden;
     }
-
-    /* Removed hero gradient overlay */
 
     .hero-content {
       position: relative;
@@ -73,7 +68,6 @@
       }
     }
 
-    /* Enhanced Small Video with animated background */
     .small-video {
       width: 80vw;
       height: 70vh;
@@ -94,15 +88,12 @@
       50% { transform: translateY(-6px) rotate(0.3deg); }
     }
 
-    /* On-scroll states for small video */
     .small-video.scroll-init { opacity: 0; transform: translateY(40px) scale(0.98); }
     .small-video.in-view { opacity: 1; transform: translateY(0) scale(1); }
 
-    /* Global on-scroll animation helper */
     .reveal-init { opacity: 0; transform: translateY(24px); }
     .reveal-in { opacity: 1; transform: translateY(0); transition: opacity 800ms ease, transform 800ms ease; will-change: opacity, transform; }
 
-    /* Animated video placeholder content */
     .small-video::before { content: none; }
 
     @keyframes videoContent {
@@ -121,20 +112,17 @@
       box-shadow: none;
     }
 
-
-    /* Small video overlay image and gradient wrapper */
     .small-video-wrap {
       display: inline-block;
-      padding: 6px; /* gradient border thickness */
+      padding: 6px;
       border-radius: 24px;
-      /* dark gradient replacing bright color scheme */
       background: linear-gradient(135deg, #07070a, #0f1115, #0a0c10);
       box-shadow: 0 18px 60px rgba(0,0,0,0.6);
       transition: transform 0.35s ease;
     }
 
     .small-video-wrap .small-video {
-      border-radius: 18px; /* inner radius slightly smaller */
+      border-radius: 18px;
       display: block;
     }
 
@@ -152,11 +140,9 @@
       transition: opacity 750ms ease, transform 750ms cubic-bezier(.2,.9,.2,1);
     }
 
-    /* Reveal states for overlay image (observed by IntersectionObserver) */
     .overlay-image.reveal-init { opacity: 0; transform: translate(-50%, -54%) scale(0.98); }
     .overlay-image.reveal-in { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
-    /* Enhanced Navbar */
     .navbar {
       position: fixed;
       top: 20px;
@@ -207,15 +193,13 @@
       animation: none;
       box-shadow: 0 14px 40px rgba(0,0,0,0.45);
       transform: translateY(-2px);
-      transition-delay: 220ms; /* slightly longer so items are clickable */
+      transition-delay: 220ms;
     }
 
-    /* Profile image placeholder */
     .nav-circle .profile-img {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      /* darker profile circle */
       background: linear-gradient(45deg, #1b1b1f, #2b2f36);
       transition: all 0.6s ease;
       position: absolute;
@@ -334,10 +318,8 @@
       box-shadow: 0 8px 22px rgba(0,0,0,0.35);
     }
 
-    /* Make navbar expanded remain while interacting with nav-items */
     .navbar:hover, .navbar.expanded { box-shadow: 0 30px 90px rgba(0,0,0,0.6); }
 
-    /* Enhanced About Section */
     .about {
       padding: 100px 50px;
       background: rgba(34, 34, 34, 0.95);
@@ -371,7 +353,6 @@
       position: relative;
     }
 
-    /* Profile image placeholder */
     .about-image .profile-placeholder {
       width: 100%;
       max-width: 400px;
@@ -398,9 +379,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: 
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
-        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
       animation: shimmer 3s ease-in-out infinite;
     }
 
@@ -417,7 +397,6 @@
 
     .about-image:hover .profile-placeholder { transform: scale(1.03) rotate(-0.5deg); filter: brightness(1.08); box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
 
-    /* Scroll-in for about content */
     .about .about-content h2, .about .about-content p { opacity: 0; transform: translateY(20px); }
     .about.in .about-content h2, .about.in .about-content p { opacity: 1; transform: translateY(0); transition: all 0.8s ease; }
     .about.in .about-content p { transition-delay: 150ms; }
@@ -449,7 +428,6 @@
       }
     }
 
-    /* Enhanced Work Section */
     .work {
       padding: 100px 50px;
       background: transparent;
@@ -521,7 +499,6 @@
       will-change: transform, opacity, filter;
     }
 
-    /* Staggered animation for work items */
     .work-item:nth-child(1) { animation: workItemAppear 1.8s ease-out 1.6s forwards; }
     .work-item:nth-child(2) { animation: workItemAppear 1.8s ease-out 2.1s forwards; }
     .work-item:nth-child(3) { animation: workItemAppear 1.8s ease-out 2.6s forwards; }
@@ -551,7 +528,6 @@
       border: 1px solid rgba(255,255,255,0.3);
     }
 
-    /* Work item content placeholders */
     .work-placeholder {
       width: 100%;
       height: 100%;
@@ -585,9 +561,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: 
-        radial-gradient(circle at 25% 25%, rgba(255,255,255,0.2) 0%, transparent 50%),
-        radial-gradient(circle at 75% 75%, rgba(255,255,255,0.2) 0%, transparent 50%);
+      background: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.2) 0%, transparent 50%),
+                  radial-gradient(circle at 75% 75%, rgba(255,255,255,0.2) 0%, transparent 50%);
       animation: workShimmer 4s ease-in-out infinite;
     }
 
@@ -660,7 +635,6 @@
       transform: translateY(-5px);
     }
 
-    /* Enhanced Contact */
     .contact {
       padding: 100px 50px;
       background: rgba(34, 34, 34, 0.95);
@@ -695,20 +669,17 @@
       opacity: 1;
     }
 
-    /* Scroll indicator */
     .scroll-indicator {
       position: fixed;
       top: 0;
       left: 0;
       width: 0%;
       height: 3px;
-      /* darker progress gradient */
       background: linear-gradient(90deg, #0b0b0f, #15161a, #202226);
       z-index: 9999;
       transition: width 0.1s ease;
     }
 
-    /* Ripple effect */
     @keyframes ripple {
       to {
         transform: scale(4);
@@ -716,7 +687,6 @@
       }
     }
 
-    /* Media queries for responsiveness */
     @media (max-width: 768px) {
       .navbar { left: 50%; transform: translateX(-50%); }
       .nav-circle { margin: 0 auto; }
@@ -736,7 +706,6 @@
       .overlay-image { width: 85%; max-width: 480px; }
     }
 
-    /* Connect button hover */
     .connect-btn {
       background: #000;
       color: #fff;
@@ -751,7 +720,6 @@
       color: #e6eef6;
     }
 
-    /* Bottom video section - sits at page end, revealed when scrolled into view */
     .bottom-video-section {
       padding: 60px 20px;
       display: flex;
@@ -777,7 +745,6 @@
 
     .bottom-video.reveal-in { opacity: 1; transform: translateY(0) scale(1); }
 
-    /* Work item iframe preview (hidden by default, visible on hover) */
     .work-item .preview-iframe {
       position: absolute;
       top: 12px;
@@ -802,14 +769,11 @@
   </style>
 </head>
 <body>
-  <!-- Scroll Indicator -->
   <div class="scroll-indicator" id="scroll-indicator"></div>
 
-  <!-- Global background video and overlay -->
   <video class="bg-video" src="bgvideo.mp4" autoplay muted loop playsinline></video>
   <div class="bg-overlay"></div>
   
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="nav-items-left">
       <a href="#about" class="nav-item">about me</a>
@@ -826,7 +790,6 @@
     </div>
   </nav>
 
-  <!-- Hero -->
   <section class="hero">
     <div class="hero-content">
       <div class="small-video-wrap">
@@ -836,7 +799,6 @@
     </div>
   </section>
 
-  <!-- About -->
   <section id="about" class="about">
     <div class="about-image">
       <div class="profile-placeholder">M</div>
@@ -847,7 +809,6 @@
     </div>
   </section>
 
-  <!-- Work -->
   <section id="work" class="work">
     <h2>My Work</h2>
     <div class="work-container">
@@ -897,12 +858,10 @@
     </div>
   </section>
 
-  <!-- Contact -->
   <section id="contact" class="contact">
     <h2>Let's Work Together</h2>
     <p>Ready to bring your ideas to life? Get in touch and let's create something amazing together.</p>
 
-    <!-- Work With Me form -->
     <form id="work-form" style="max-width:720px;margin:30px auto 0;display:grid;gap:18px;text-align:left;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.1);padding:24px;border-radius:16px">
       <div style="display:grid;gap:8px">
         <label for="name" style="font-weight:600;opacity:.95">Name</label>
@@ -920,7 +879,6 @@
       <div id="form-status" style="opacity:.9"></div>
     </form>
 
-    <!-- Social buttons -->
     <div class="social" style="margin-top:30px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
       <a href="#" class="nav-item" style="padding:10px 14px">Instagram</a>
       <a href="#" class="nav-item" style="padding:10px 14px">LinkedIn</a>
@@ -930,7 +888,6 @@
   </section>
 
   <script>
-    // Enhanced smooth portfolio class
     class SmoothPortfolio {
       constructor() {
         this.init();
@@ -943,7 +900,6 @@
       }
 
       setupEventListeners() {
-        // Smooth scroll indicator using rAF
         let ticking = false;
         window.addEventListener('scroll', () => {
           if (!ticking) {
@@ -955,32 +911,27 @@
           }
         });
 
-        // Enhanced navbar interactions
         const navbar = document.querySelector('.navbar');
         const navCircle = document.querySelector('.nav-circle');
         
         if (navbar && navCircle) {
           let toggleTimeout;
-          // click toggles explicitly
           const toggleExpanded = () => {
             clearTimeout(toggleTimeout);
             navbar.classList.toggle('expanded');
           };
           navCircle.addEventListener('click', toggleExpanded);
 
-          // hover should expand but with a longer delay so items are clickable
           navCircle.addEventListener('mouseenter', () => {
             clearTimeout(toggleTimeout);
             toggleTimeout = setTimeout(() => navbar.classList.add('expanded'), 220);
           });
-          // remove expanded when leaving navbar after a short delay
           navbar.addEventListener('mouseleave', () => {
             clearTimeout(toggleTimeout);
             toggleTimeout = setTimeout(() => navbar.classList.remove('expanded'), 260);
           });
         }
 
-        // Enhanced hover effects for work items
         const workItems = document.querySelectorAll('.work-item');
         workItems.forEach((item, index) => {
           item.addEventListener('mouseenter', () => {
@@ -992,7 +943,6 @@
           });
         });
 
-        // Ripple effects
         this.setupRippleEffects();
       }
 
@@ -1009,15 +959,12 @@
             if (entry.isIntersecting) {
               entry.target.classList.add('in');
               entry.target.classList.add('reveal-in');
-              // small video gets an extra in-view state
               if (entry.target.classList.contains('small-video')) {
                 entry.target.classList.add('in-view');
               }
-              // overlay-image specific reveal
               if (entry.target.classList.contains('overlay-image')) {
                 entry.target.classList.add('reveal-in');
               }
-              // bottom video reveal
               if (entry.target.classList.contains('bottom-video')) {
                 entry.target.classList.add('reveal-in');
               }
@@ -1025,7 +972,6 @@
           });
         }, { threshold: 0.22, rootMargin: '0px 0px -12% 0px' });
 
-        // Elements to observe
         const els = document.querySelectorAll('.about, .work-container, .work-item, .contact, .small-video, .overlay-image, .bottom-video');
         els.forEach(el => {
           el.classList.add('reveal-init');
@@ -1033,14 +979,12 @@
         });
       }
 
-      // Lazy-load preview iframes when user hovers a work item
       setupIframePreviews() {
         const items = document.querySelectorAll('.work-item');
         items.forEach(item => {
           const link = item.querySelector('a');
           const iframe = item.querySelector('.preview-iframe');
           if (!link || !iframe) return;
-          // On first hover, set iframe src to the link href so preview loads
           let loaded = false;
           item.addEventListener('mouseenter', () => {
             if (!loaded) {
@@ -1050,17 +994,14 @@
                 loaded = true;
               }
             }
-            // Allow interactions once visible
             iframe.style.pointerEvents = 'auto';
           });
           item.addEventListener('mouseleave', () => {
-            // keep loaded but disable pointer events when not hovered to avoid accidental clicks
             iframe.style.pointerEvents = 'none';
           });
         });
       }
 
-      // Simple ripple effect on clicks
       setupRippleEffects() {
         document.addEventListener('click', (e) => {
           const ripple = document.createElement('span');
@@ -1080,28 +1021,22 @@
       }
     }
 
-    // Instant jump helper (no smooth animation)
     function scrollToSection(id) {
       const el = document.getElementById(id);
       if (!el) return;
-      // Immediate jump
       el.scrollIntoView({ behavior: 'auto', block: 'start' });
     }
 
-    // Boot
     document.addEventListener('DOMContentLoaded', () => {
       const sp = new SmoothPortfolio();
-      // Setup iframe previews
       if (sp && typeof sp.setupIframePreviews === 'function') sp.setupIframePreviews();
 
-      // Ensure background video loops
       const bgVideo = document.querySelector('.bg-video');
       if (bgVideo) {
         bgVideo.addEventListener('ended', () => {
           bgVideo.currentTime = 0;
           bgVideo.play();
         });
-        // Force play if autoplay fails
         bgVideo.play().catch(() => {
           console.log('Autoplay prevented, user interaction required');
         });
@@ -1109,7 +1044,6 @@
     });
   </script>
 
-  <!-- Bottom Video Section -->
   <section class="bottom-video-section">
     <video class="bottom-video" src="bgvideo.mp4" autoplay muted loop playsinline></video>
   </section>
