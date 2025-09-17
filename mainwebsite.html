@@ -751,34 +751,31 @@
       color: #e6eef6;
     }
 
-    /* Bottom video section */
-    /* Bottom video as a fixed thin strip */
+    /* Bottom video section - sits at page end, revealed when scrolled into view */
     .bottom-video-section {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 78px; /* thin strip */
+      padding: 60px 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(180deg, rgba(0,0,0,0.7), rgba(8,8,10,0.5));
-      z-index: 1200;
-      pointer-events: none; /* make it non-interactive unless needed */
+      background: rgba(6,6,8,0.45);
+      margin-top: 60px;
+      z-index: 20;
     }
 
     .bottom-video {
-      width: 100%;
-      height: 100%;
+      width: 90%;
+      max-width: 1100px;
+      height: auto;
+      border-radius: 14px;
       object-fit: cover;
-      border: none;
-      opacity: 0.9;
-      transform: none;
-      transition: opacity 400ms ease;
-      pointer-events: none;
+      border: 6px solid rgba(255,255,255,0.03);
+      opacity: 0;
+      transform: translateY(18px) scale(0.995);
+      transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.9,.2,1);
+      pointer-events: auto;
     }
 
-    .bottom-video.reveal-in { opacity: 1; }
+    .bottom-video.reveal-in { opacity: 1; transform: translateY(0) scale(1); }
 
     /* Work item iframe preview (hidden by default, visible on hover) */
     .work-item .preview-iframe {
@@ -1036,6 +1033,33 @@
         });
       }
 
+      // Lazy-load preview iframes when user hovers a work item
+      setupIframePreviews() {
+        const items = document.querySelectorAll('.work-item');
+        items.forEach(item => {
+          const link = item.querySelector('a');
+          const iframe = item.querySelector('.preview-iframe');
+          if (!link || !iframe) return;
+          // On first hover, set iframe src to the link href so preview loads
+          let loaded = false;
+          item.addEventListener('mouseenter', () => {
+            if (!loaded) {
+              const href = link.getAttribute('href');
+              if (href) {
+                iframe.src = href;
+                loaded = true;
+              }
+            }
+            // Allow interactions once visible
+            iframe.style.pointerEvents = 'auto';
+          });
+          item.addEventListener('mouseleave', () => {
+            // keep loaded but disable pointer events when not hovered to avoid accidental clicks
+            iframe.style.pointerEvents = 'none';
+          });
+        });
+      }
+
       // Simple ripple effect on clicks
       setupRippleEffects() {
         document.addEventListener('click', (e) => {
@@ -1066,8 +1090,10 @@
 
     // Boot
     document.addEventListener('DOMContentLoaded', () => {
-      new SmoothPortfolio();
-      
+      const sp = new SmoothPortfolio();
+      // Setup iframe previews
+      if (sp && typeof sp.setupIframePreviews === 'function') sp.setupIframePreviews();
+
       // Ensure background video loops
       const bgVideo = document.querySelector('.bg-video');
       if (bgVideo) {
