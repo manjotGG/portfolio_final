@@ -23,7 +23,11 @@
       overflow-x: hidden;
       background: #111;
       scroll-behavior: smooth;
-      overscroll-behavior: auto;
+      overscroll-behavior: smooth;
+    }
+    
+    * {
+      scroll-behavior: smooth;
     }
 
     .bg-video {
@@ -59,16 +63,9 @@
       text-align: center;
       z-index: 1;
       display: inline-block;
-      opacity: 0;
-      transform: scale(0.8) translateY(50px);
-      animation: heroAppear 2s ease-out forwards;
-    }
-
-    @keyframes heroAppear {
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition: all 0.8s ease-out;
     }
 
     .small-video {
@@ -91,7 +88,7 @@
       50% { transform: translateY(-6px) rotate(0.3deg); }
     }
 
-    .small-video.scroll-init { opacity: 0; transform: translateY(40px) scale(0.98); }
+    .small-video.scroll-init { opacity: 1; transform: translateY(0) scale(1); }
     .small-video.in-view { opacity: 1; transform: translateY(0) scale(1); }
 
     .reveal-init { opacity: 0; transform: translateY(24px); }
@@ -117,16 +114,16 @@
 
     .small-video-wrap {
       display: inline-block;
-      padding: 6px;
+      padding: 0;
       border-radius: 24px;
-      background: linear-gradient(135deg, #07070a, #0f1115, #0a0c10);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.6);
+      background: transparent;
+      box-shadow: none;
       transition: transform 0.35s ease;
       position: relative;
     }
 
     .small-video-wrap .small-video {
-      border-radius: 18px;
+      border-radius: 20px;
       display: block;
     }
 
@@ -147,6 +144,91 @@
     .overlay-image.reveal-init { opacity: 0; transform: translate(-50%, -54%) scale(0.98); }
     .overlay-image.reveal-in { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
+    /* LETTER IMAGES - BIGGER AND CLOSER TOGETHER */
+    .letter-images {
+      display: flex;
+      gap: 0;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .letter-img {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      margin: 0 -20px;
+      opacity: 1;
+      filter: drop-shadow(0 0 0 transparent);
+      transform: translateY(0) scale(1) rotate(0deg);
+      transition: transform 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    /* Ensure letters start static and only animate on scroll */
+    .letter-images {
+      display: flex;
+      gap: 0;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    
+    .letter-img.explode {
+      transform: translateY(-100px) scale(0.3) rotate(360deg);
+      opacity: 0;
+      filter: blur(8px);
+    }
+    
+    .letter-img.m-letter.explode {
+      transform: translateY(-120px) scale(0.2) rotate(450deg) translateX(-50px);
+    }
+    
+    .letter-img.a-letter.explode {
+      transform: translateY(-110px) scale(0.4) rotate(-360deg) translateX(60px);
+    }
+    
+    .letter-img.n-letter.explode {
+      transform: translateY(-130px) scale(0.1) rotate(720deg) translateX(-30px);
+    }
+    
+    .letter-img.j-letter.explode {
+      transform: translateY(-105px) scale(0.3) rotate(-450deg) translateX(70px);
+    }
+    
+    .letter-img.o-letter.explode {
+      transform: translateY(-115px) scale(0.2) rotate(180deg) translateX(-80px);
+    }
+    
+    .letter-img.t-letter.explode {
+      transform: translateY(-125px) scale(0.1) rotate(-720deg) translateX(40px);
+    }
+    
+    /* OFFBEAT GIF - BIG AND POSITIONED BENEATH N LETTER */
+    .offbeat-gif {
+      position: absolute;
+      left: 50%;
+      top: 30%;
+      transform: translate(-50%, 0) rotate(-8deg);
+      width: 380px;
+      height: 380px;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
     /* NAVBAR - CENTERED AT TOP */
     .navbar {
       position: fixed;
@@ -159,7 +241,7 @@
       align-items: center;
       gap: 0;
       width: auto;
-      transition: all 0.45s cubic-bezier(.2,.9,.2,1);
+      transition: all 0.8s cubic-bezier(.2,.9,.2,1);
     }
 
     .nav-circle {
@@ -173,7 +255,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.6s ease;
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       overflow: hidden;
       position: relative;
       animation: wiggle 4s ease-in-out infinite;
@@ -190,7 +272,7 @@
 
     .nav-circle:hover,
     .navbar.expanded .nav-circle {
-      transition-delay: 520ms; /* Increased delay */
+      transition-delay: 600ms; /* Increased delay */
       width: 220px;
       border-radius: 30px;
       background: linear-gradient(90deg, rgba(80,30,120,0.18), rgba(30,130,180,0.12));
@@ -198,8 +280,8 @@
       padding-left: 10px;
       animation: none;
       box-shadow: 0 14px 40px rgba(0,0,0,0.45);
-      transform: translateY(-2px);
-      transition-delay: 220ms;
+      transform: translateY(0px); /* Remove vertical movement */
+      transition-delay: 300ms;
     }
 
     .nav-circle .profile-img {
@@ -258,8 +340,10 @@
       animation: arrowBounce 0.8s infinite;
     }
     @keyframes arrowBounce {
-      0%, 100% { transform: translateX(0); }
-      50% { transform: translateX(8px); }
+      0%, 100% { transform: translateX(0) scale(1); }
+      25% { transform: translateX(8px) scale(1.1); }
+      50% { transform: translateX(12px) scale(1.2); }
+      75% { transform: translateX(8px) scale(1.1); }
     }
 
     .nav-items-left, .nav-items-right {
@@ -525,18 +609,41 @@
       opacity: 0.6;
       transform: translateX(0) scale(0.997);
       filter: blur(0.15px);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     .work-grid .work-item:hover {
       opacity: 1;
       width: 580px;
       height: 340px;
-      transform: translateX(-120px) translateY(-12px) scale(1.01);
-      box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+      transform: translateX(-120px) translateY(-12px) scale(1.01) rotateY(2deg);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 30px rgba(255,255,255,0.1);
       z-index: 10;
       background: rgba(0,0,0,0.8);
-      filter: blur(0);
+      filter: blur(0) brightness(1.1) contrast(1.05);
       border: 1px solid rgba(255,255,255,0.3);
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .work-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, 
+        rgba(255,255,255,0.1) 0%, 
+        transparent 50%, 
+        rgba(255,255,255,0.05) 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .work-item:hover::before {
+      opacity: 1;
     }
 
     .work-placeholder {
@@ -679,6 +786,18 @@
     .contact:hover p {
       opacity: 1;
     }
+    
+    .connect-btn:hover {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      transform: translateY(-3px) scale(1.05) !important;
+      box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4) !important;
+      border-color: rgba(255,255,255,0.4) !important;
+    }
+    
+    .connect-btn:active {
+      transform: translateY(-1px) scale(1.02) !important;
+      transition: all 0.1s ease !important;
+    }
 
     .scroll-indicator {
       position: fixed;
@@ -698,46 +817,7 @@
       }
     }
 
-    /* LETTER IMAGES - BIGGER AND CLOSER TOGETHER */
-    .letter-images {
-      display: flex;
-      gap: 0;
-      justify-content: center;
-      align-items: center;
-      margin-top: 18px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 2;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-    .letter-img {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      margin: 0 -5px;
-      transition: transform 1.2s cubic-bezier(.2,.9,.2,1), opacity 1.2s cubic-bezier(.2,.9,.2,1);
-      opacity: 1;
-    }
-    .letter-img.explode {
-      transform: translateY(-60px) scale(1.3) rotate(18deg);
-      opacity: 0;
-    }
     
-    /* OFFBEAT GIF - BIGGER AND POSITIONED BENEATH LETTERS */
-    .offbeat-gif {
-      position: absolute;
-      left: 50%;
-      top: 65%;
-      transform: translate(-50%, 0);
-      width: 60px;
-      height: 60px;
-      z-index: 3;
-      pointer-events: none;
-    }
 
     /* BOTTOM SOLID LAYER */
     .bottom-solid {
@@ -747,23 +827,31 @@
       width: 100%;
       background: rgba(20, 20, 20, 0.95);
       backdrop-filter: blur(10px);
-      border-top: 2px solid rgba(255, 255, 255, 0.1);
-      padding: 15px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px 0;
       z-index: 100;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .bottom-solid.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .bottom-solid-text {
-      font-family: 'Georgia', serif;
-      font-size: 1.5em;
+      font-family: 'Arial', sans-serif;
+      font-size: 0.8em;
       color: #fff;
-      font-weight: 700;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-      text-transform: uppercase;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      text-transform: lowercase;
     }
     
     .bottom-letter-images {
@@ -774,10 +862,10 @@
     }
     
     .bottom-letter-img {
-      width: 40px;
-      height: 40px;
+      width: 16px;
+      height: 16px;
       object-fit: contain;
-      margin: 0 -3px;
+      margin: 0 -2px;
       animation: bounceLetter 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
     
@@ -810,48 +898,221 @@
     
     .bottom-video {
       width: 100%;
-      height: 120px;
+      height: 4px;
       object-fit: cover;
       border: none;
+      background: linear-gradient(90deg, #667eea, #764ba2);
     }
 
     @media (max-width: 768px) {
-      .navbar { left: 50%; transform: translateX(-50%); }
-      .nav-circle { margin: 0 auto; }
+      .navbar { 
+        left: 50%; 
+        transform: translateX(-50%);
+        top: 15px;
+      }
+      .nav-circle { 
+        margin: 0 auto;
+        width: 50px;
+        height: 50px;
+      }
+      .nav-circle:hover,
+      .navbar.expanded .nav-circle {
+        width: 180px;
+        transition-delay: 400ms;
+      }
 
       .about {
         flex-direction: column;
         text-align: center;
         gap: 30px;
-        margin: 0 12px;
+        margin: 0 15px;
+        padding: 60px 30px;
+      }
+      
+      .about-image .profile-placeholder {
+        height: 300px;
+        font-size: 3em;
+      }
+      
+      .about-content h2 {
+        font-size: 2.2em;
+        margin-bottom: 20px;
+      }
+      
+      .about-content p {
+        font-size: 1em;
+        line-height: 1.6;
       }
 
-      .work-grid { flex-direction: column; align-items: center; }
-      .work-item:hover { width: 90vw; transform: translateX(0) translateY(-12px) scale(1); }
+      .work {
+        padding: 60px 30px;
+      }
+      
+      .work h2 {
+        font-size: 2.2em;
+        margin-bottom: 20px;
+      }
+      
+      .work-container {
+        padding: 40px 30px;
+        margin: 0 15px;
+      }
+      
+      .work-grid { 
+        flex-direction: column; 
+        align-items: center;
+        gap: 15px;
+      }
+      
+      .work-item {
+        width: 100%;
+        max-width: 300px;
+        height: 250px;
+      }
+      
+      .work-item:hover { 
+        width: 100%;
+        max-width: 320px;
+        transform: translateX(0) translateY(-8px) scale(1.02);
+      }
+      
       .navbar.expanded .nav-circle { width: 180px; }
-      .nav-items-left, .nav-items-right { position: relative; right: auto; left: auto; margin-top: 10px; }
-      .small-video { width: 95vw; height: 45vh; }
-      .overlay-image { width: 85%; max-width: 480px; }
+      .nav-items-left, .nav-items-right { 
+        position: relative; 
+        right: auto; 
+        left: auto; 
+        margin-top: 10px;
+        opacity: 1;
+        transform: none;
+      }
+      
+      .small-video { 
+        width: 95vw; 
+        height: 50vh;
+        max-width: 400px;
+      }
+      
+      .small-video-wrap {
+        padding: 0;
+        margin: 0 auto;
+      }
+      
+      .overlay-image { 
+        width: 85%; 
+        max-width: 350px;
+      }
       
       .letter-img {
-        width: 50px;
-        height: 50px;
+        width: 100px;
+        height: 100px;
+        margin: 0 -15px;
       }
       
       .offbeat-gif {
-        width: 40px;
-        height: 40px;
+        width: 200px;
+        height: 200px;
         top: 60%;
       }
       
+      
+      .contact {
+        padding: 60px 30px;
+        margin: 30px 15px;
+      }
+      
+      .contact h2 {
+        font-size: 2.2em;
+        margin-bottom: 20px;
+      }
+      
+      .contact p {
+        font-size: 1em;
+      }
+      
+      #work-form {
+        margin: 20px auto 0;
+        padding: 20px;
+      }
+      
       .bottom-solid-text {
-        font-size: 1.2em;
+        font-size: 0.7em;
+        margin-bottom: 10px;
       }
       
       .bottom-letter-img {
-        width: 30px;
-        height: 30px;
+        width: 15px;
+        height: 15px;
+        margin: 0 -1px;
       }
+      
+      .bottom-video {
+        height: 3px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .navbar {
+        top: 10px;
+      }
+      
+      .nav-circle {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .nav-circle:hover,
+      .navbar.expanded .nav-circle {
+        width: 160px;
+      }
+      
+      .about {
+        padding: 40px 20px;
+        margin: 0 10px;
+      }
+      
+      .about-image .profile-placeholder {
+        height: 250px;
+        font-size: 2.5em;
+      }
+      
+      .about-content h2 {
+        font-size: 1.8em;
+      }
+      
+      .work {
+        padding: 40px 20px;
+      }
+      
+      .work-container {
+        padding: 30px 20px;
+        margin: 0 10px;
+      }
+      
+      .work-item {
+        height: 200px;
+      }
+      
+      .contact {
+        padding: 40px 20px;
+        margin: 20px 10px;
+      }
+      
+      .small-video {
+        height: 40vh;
+      }
+      
+      .letter-img {
+        width: 70px;
+        height: 70px;
+        margin: 0 -10px;
+      }
+      
+      .offbeat-gif {
+        width: 150px;
+        height: 150px;
+        top: 60%;
+      }
+      
     }
   </style>
 </head>
@@ -878,7 +1139,7 @@
   <section class="hero">
     <div class="hero-content">
       <div class="small-video-wrap">
-        <video class="small-video scroll-init" src="small video.mp4" autoplay muted loop playsinline></video>
+        <video class="small-video" src="small video.mp4" autoplay muted loop playsinline></video>
         <div class="letter-images">
           <img src="m_letter.png" class="letter-img m-letter" alt="M" />
           <img src="a_letter.png" class="letter-img a-letter" alt="A" />
@@ -886,8 +1147,8 @@
           <img src="j_letter.png" class="letter-img j-letter" alt="J" />
           <img src="o_letter.png" class="letter-img o-letter" alt="O" />
           <img src="t_letter.png" class="letter-img t-letter" alt="T" />
-          <img src="offbeat.gif" class="offbeat-gif" alt="offbeat" />
         </div>
+        <img src="offbeat.gif" class="offbeat-gif" alt="offbeat" />
       </div>
     </div>
   </section>
@@ -968,7 +1229,7 @@
         <label for="message" style="font-weight:600;opacity:.95">Message</label>
         <textarea id="message" name="message" rows="5" placeholder="Tell me about your project" style="padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.18);background:rgba(0,0,0,0.6);color:#fff;outline:none"></textarea>
       </div>
-      <button id="connect-btn" class="connect-btn" type="submit" style="padding:16px 22px;border-radius:14px;border:1px solid rgba(255,255,255,0.25);background:#000;color:#fff;font-weight:800;cursor:pointer;transition:transform .25s ease,background .25s ease,box-shadow .25s ease;font-size:1.05em;box-shadow:0 12px 28px rgba(0,0,0,.45)">Connect</button>
+      <button id="connect-btn" class="connect-btn" type="submit" style="padding:16px 22px;border-radius:14px;border:1px solid rgba(255,255,255,0.25);background:#000;color:#fff;font-weight:800;cursor:pointer;transition:all .4s cubic-bezier(0.68, -0.55, 0.265, 1.55);font-size:1.05em;box-shadow:0 12px 28px rgba(0,0,0,.45)">Connect</button>
       <div id="form-status" style="opacity:.9"></div>
     </form>
 
@@ -981,7 +1242,7 @@
   </section>
 
   <section class="bottom-video-section">
-    <video class="bottom-video" src="bottom.gif" autoplay muted loop playsinline></video>
+    <video class="bottom-video" src="bottom.mp4" autoplay muted loop playsinline></video>
   </section>
   
   <div class="bottom-solid">
@@ -1014,6 +1275,7 @@
           if (!ticking) {
             window.requestAnimationFrame(() => {
               this.updateScrollIndicator();
+              this.updateBottomSolidVisibility();
               ticking = false;
             });
             ticking = true;
@@ -1033,11 +1295,11 @@
 
           navCircle.addEventListener('mouseenter', () => {
             clearTimeout(toggleTimeout);
-            toggleTimeout = setTimeout(() => navbar.classList.add('expanded'), 220);
+            toggleTimeout = setTimeout(() => navbar.classList.add('expanded'), 600);
           });
           navbar.addEventListener('mouseleave', () => {
             clearTimeout(toggleTimeout);
-            toggleTimeout = setTimeout(() => navbar.classList.remove('expanded'), 260);
+            toggleTimeout = setTimeout(() => navbar.classList.remove('expanded'), 800);
           });
         }
 
@@ -1061,6 +1323,22 @@
         const progress = (window.pageYOffset / totalHeight) * 100;
         scrollIndicator.style.width = progress + '%';
       }
+      
+      updateBottomSolidVisibility() {
+        const bottomSolid = document.querySelector('.bottom-solid');
+        if (!bottomSolid) return;
+        
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // Show bottom solid when scrolled to bottom (within 100px)
+        if (scrollTop + windowHeight >= documentHeight - 100) {
+          bottomSolid.classList.add('visible');
+        } else {
+          bottomSolid.classList.remove('visible');
+        }
+      }
 
       setupScrollAnimations() {
         const observer = new IntersectionObserver((entries) => {
@@ -1074,17 +1352,35 @@
               // Animate letter images on scroll (explode effect)
               if (entry.target.classList.contains('letter-images')) {
                 const imgs = entry.target.querySelectorAll('.letter-img');
-                imgs.forEach((img, i) => {
-                  setTimeout(() => {
-                    img.classList.add('explode');
-                  }, i * 120);
-                });
+                // Only trigger if not already exploded
+                if (!entry.target.classList.contains('exploded')) {
+                  entry.target.classList.add('exploded');
+                  imgs.forEach((img, i) => {
+                    setTimeout(() => {
+                      img.classList.add('explode');
+                    }, i * 300);
+                  });
+                }
               }
               if (entry.target.classList.contains('overlay-image')) {
                 entry.target.classList.add('reveal-in');
               }
               if (entry.target.classList.contains('bottom-video')) {
                 entry.target.classList.add('reveal-in');
+              }
+            } else {
+              // Reverse animation when scrolling back up
+              if (entry.target.classList.contains('letter-images')) {
+                const imgs = entry.target.querySelectorAll('.letter-img');
+                // Only reverse if was exploded
+                if (entry.target.classList.contains('exploded')) {
+                  entry.target.classList.remove('exploded');
+                  imgs.forEach((img, i) => {
+                    setTimeout(() => {
+                      img.classList.remove('explode');
+                    }, i * 200);
+                  });
+                }
               }
             }
           });
@@ -1142,7 +1438,34 @@
     function scrollToSection(id) {
       const el = document.getElementById(id);
       if (!el) return;
-      el.scrollIntoView({ behavior: 'auto', block: 'start' });
+      
+      // Enhanced smooth scrolling with custom easing
+      const start = window.pageYOffset;
+      const target = el.offsetTop - 80; // Account for navbar
+      const distance = target - start;
+      const duration = 1200; // Slightly longer for smoother feel
+      let startTime = null;
+
+      const animation = (currentTime) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const run = easeInOutCubic(timeElapsed, start, distance, duration);
+        
+        window.scrollTo(0, run);
+        
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animation);
+        }
+      };
+
+      requestAnimationFrame(animation);
+    }
+
+    function easeInOutCubic(t, b, c, d) {
+      t /= d / 2;
+      if (t < 1) return c / 2 * t * t * t + b;
+      t -= 2;
+      return c / 2 * (t * t * t + 2) + b;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -1151,6 +1474,16 @@
 
       // Fast scroll
       document.documentElement.style.scrollBehavior = 'smooth';
+      document.body.style.scrollBehavior = 'smooth';
+      
+      // Enhanced smooth scrolling
+      const smoothScrollTo = (target) => {
+        target.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start',
+          inline: 'nearest'
+        });
+      };
 
       const bgVideo = document.querySelector('.bg-video');
       if (bgVideo) {
