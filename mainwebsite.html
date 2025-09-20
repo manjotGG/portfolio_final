@@ -81,6 +81,7 @@
       animation: videoFloat 10s ease-in-out infinite;
       transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.6s ease;
       will-change: transform, opacity;
+      object-fit: cover;
     }
 
     @keyframes videoFloat {
@@ -164,10 +165,11 @@
       height: 140px;
       object-fit: contain;
       margin: 0 -20px;
-      opacity: 1;
+      opacity: 0;
       filter: drop-shadow(0 0 0 transparent);
       transform: translateY(0) scale(1) rotate(0deg);
       transition: transform 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: none;
     }
     
     /* Ensure letters start static and only animate on scroll */
@@ -226,7 +228,8 @@
       height: 380px;
       z-index: 3;
       pointer-events: none;
-      opacity: 0.9;
+      opacity: 0;
+      display: none;
     }
 
     /* NAVBAR - CENTERED AT TOP */
@@ -867,6 +870,7 @@
       object-fit: contain;
       margin: 0 -2px;
       animation: bounceLetter 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      display: none;
     }
     
     @keyframes bounceLetter {
@@ -1139,7 +1143,7 @@
   <section class="hero">
     <div class="hero-content">
       <div class="small-video-wrap">
-        <video class="small-video" src="small video.mp4" autoplay muted loop playsinline></video>
+        <img class="small-video" src="small video.gif" alt="Small video" />
         <div class="letter-images">
           <img src="m_letter.png" class="letter-img m-letter" alt="M" />
           <img src="a_letter.png" class="letter-img a-letter" alt="A" />
