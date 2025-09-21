@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scribble</title>
+  <title>Graphic Design - Manjot's Portfolio</title>
+  <link rel="stylesheet" href="scroll-animations.css">
   <style>
     * {
       margin: 0;
@@ -41,6 +42,7 @@
       object-fit: cover;
       filter: brightness(0.6) blur(8px) saturate(1.2);
       transition: filter 0.3s ease;
+      will-change: transform;
     }
 
     /* Overlay for better text readability */
@@ -91,9 +93,6 @@
       max-width: 700px;
       margin: 0 auto 4rem auto;
       line-height: 1.8;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 1s ease 0.5s forwards;
     }
 
     @keyframes fadeInUp {
@@ -118,9 +117,6 @@
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(15px);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      opacity: 0;
-      transform: translateY(80px) scale(0.9) rotateX(15deg);
-      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       cursor: pointer;
       will-change: transform, opacity;
     }
@@ -159,8 +155,6 @@
     .image-card:nth-child(10) { grid-row: span 2; }
 
     .image-card.show {
-      opacity: 1;
-      transform: translateY(0) scale(1) rotateX(0deg);
       animation: smoothFloat 0.6s ease forwards;
     }
 
@@ -410,76 +404,76 @@
 </head>
 <body>
   <!-- Background Video -->
-  <video autoplay muted loop playsinline id="bg-video">
+  <video autoplay muted loop playsinline id="bg-video" class="parallax-slow">
     <source src="bgvideo.mp4" type="video/mp4">
     Your browser does not support HTML5 video.
   </video>
 
   <div class="container">
-    <h1>Graphic Design</h1>
-    <p class="intro">
+    <h1 class="text-reveal glitch-effect">Graphic Design</h1>
+    <p class="intro text-reveal">
       Crafting creative visuals that inspire and communicate.  
       A blend of typography, imagery, and imagination  
       for impactful digital experiences.
     </p>
 
     <!-- Gallery -->
-    <div class="gallery loading">
-      <div class="image-card" data-desc="Relaxing vibe art with soothing colors and peaceful composition">
+    <div class="gallery stagger-container">
+      <div class="image-card image-fade-scale hover-lift" data-desc="Relaxing vibe art with soothing colors and peaceful composition">
         <img src="gimage1.jpeg" alt="gimage1" loading="lazy">
         <div class="image-overlay">
           <div class="image-title">Relaxing Vibe</div>
         </div>
       </div>
-      <div class="image-card" data-desc="Creative illustration showcasing artistic expression and unique style">
+      <div class="image-card image-slide-up hover-scale" data-desc="Creative illustration showcasing artistic expression and unique style">
         <img src="gimage2.jpeg" alt="gimage2" loading="lazy">
         <div class="image-overlay">
           <div class="image-title">Creative Illustration</div>
         </div>
       </div>
-      <div class="image-card" data-desc="Digital poster design with modern typography and bold visuals">
+      <div class="image-card image-rotate-in hover-rotate" data-desc="Digital poster design with modern typography and bold visuals">
         <img src="gimage3.jpeg" alt="gimage3" loading="lazy">
         <div class="image-overlay">
           <div class="image-title">Digital Poster</div>
         </div>
       </div>
-      <div class="image-card" data-desc="Abstract artwork exploring form, color, and conceptual depth">
+      <div class="image-card image-fade-scale hover-lift" data-desc="Abstract artwork exploring form, color, and conceptual depth">
         <img src="gimage4.jpeg" alt="gimage4" loading="lazy">
         <div class="image-overlay">
           <div class="image-title">Abstract Art</div>
         </div>
       </div>
-      <div class="image-card" data-desc="Modern typography design featuring clean lines and innovative lettering">
+      <div class="image-card image-slide-up hover-scale" data-desc="Modern typography design featuring clean lines and innovative lettering">
         <img src="gimage5.jpeg" alt="gimage5" loading="lazy">
         <div class="image-overlay">
           <div class="image-title">Modern Typography</div>
         </div>
       </div>
-      <div class="image-card" data-desc="Illustrator sketch demonstrating technical skill and artistic vision">
+      <div class="image-card image-rotate-in hover-rotate" data-desc="Illustrator sketch demonstrating technical skill and artistic vision">
         <img src="gimage6.jpeg" alt="gimage6" loading="lazy">
         <div class="image-overlay">
           <div class="image-title">Illustrator Sketch</div>
         </div>
       </div>
-      <div class="image-card" data-desc="Creative doodle expressing spontaneous artistic thoughts and ideas">
+      <div class="image-card image-fade-scale hover-lift" data-desc="Creative doodle expressing spontaneous artistic thoughts and ideas">
         <img src="gimage7.jpeg" alt="gimage7" loading="lazy">
         <div class="image-overlay">
           <div class="image-title">Creative Doodle</div>
         </div>
       </div>
-      <div class="image-card" data-desc="Photo manipulation blending reality with digital artistry">
+      <div class="image-card image-slide-up hover-scale" data-desc="Photo manipulation blending reality with digital artistry">
         <img src="gimage8.jpeg" alt="gimage8" loading="lazy">
         <div class="image-overlay">
           <div class="image-title">Photo Manipulation</div>
         </div>
       </div>
-      <div class="image-card" data-desc="3D style render showcasing dimensional design and lighting techniques">
+      <div class="image-card image-rotate-in hover-rotate" data-desc="3D style render showcasing dimensional design and lighting techniques">
         <img src="gimage9.jpeg" alt="gimage9" loading="lazy">
         <div class="image-overlay">
           <div class="image-title">3D Render</div>
         </div>
       </div>
-      <div class="image-card" data-desc="Experimental design pushing creative boundaries and exploring new concepts">
+      <div class="image-card image-fade-scale hover-lift" data-desc="Experimental design pushing creative boundaries and exploring new concepts">
         <img src="gimage10.jpeg" alt="gimage10" loading="lazy">
         <div class="image-overlay">
           <div class="image-title">Experimental Design</div>
@@ -663,5 +657,8 @@
       new SmoothPortfolio();
     });
   </script>
+  
+  <!-- Scroll Animation System -->
+  <script src="scroll-animations.js"></script>
 </body>
 </html>

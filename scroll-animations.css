@@ -1,0 +1,471 @@
+/* ========================================
+   SCROLL-DRIVEN ANIMATIONS SYSTEM
+   ======================================== */
+
+/* Performance optimizations */
+* {
+  will-change: auto;
+}
+
+.animate-element {
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ========================================
+   BASE ANIMATION CLASSES
+   ======================================== */
+
+/* Initial states - elements start hidden/transformed */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-reveal-scale {
+  opacity: 0;
+  transform: scale(0.8) translateY(40px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-reveal-rotate {
+  opacity: 0;
+  transform: rotate(-5deg) translateY(40px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Active states - when element is in viewport */
+.scroll-reveal.animate-in,
+.scroll-reveal-left.animate-in,
+.scroll-reveal-right.animate-in,
+.scroll-reveal-scale.animate-in,
+.scroll-reveal-rotate.animate-in {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+}
+
+/* ========================================
+   STAGGERED ANIMATIONS
+   ======================================== */
+
+.stagger-container > * {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.stagger-container.animate-in > *:nth-child(1) { animation: staggerIn 0.6s ease forwards; animation-delay: 0.1s; }
+.stagger-container.animate-in > *:nth-child(2) { animation: staggerIn 0.6s ease forwards; animation-delay: 0.2s; }
+.stagger-container.animate-in > *:nth-child(3) { animation: staggerIn 0.6s ease forwards; animation-delay: 0.3s; }
+.stagger-container.animate-in > *:nth-child(4) { animation: staggerIn 0.6s ease forwards; animation-delay: 0.4s; }
+.stagger-container.animate-in > *:nth-child(5) { animation: staggerIn 0.6s ease forwards; animation-delay: 0.5s; }
+.stagger-container.animate-in > *:nth-child(6) { animation: staggerIn 0.6s ease forwards; animation-delay: 0.6s; }
+.stagger-container.animate-in > *:nth-child(7) { animation: staggerIn 0.6s ease forwards; animation-delay: 0.7s; }
+.stagger-container.animate-in > *:nth-child(8) { animation: staggerIn 0.6s ease forwards; animation-delay: 0.8s; }
+
+@keyframes staggerIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   PARALLAX EFFECTS
+   ======================================== */
+
+.parallax-slow {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.parallax-medium {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.parallax-fast {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ========================================
+   IMAGE ANIMATIONS
+   ======================================== */
+
+.image-fade-scale {
+  opacity: 0;
+  transform: scale(0.9) translateY(30px);
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  filter: blur(2px);
+}
+
+.image-fade-scale.animate-in {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0px);
+}
+
+.image-slide-up {
+  opacity: 0;
+  transform: translateY(80px) scale(0.95);
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.image-slide-up.animate-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.image-rotate-in {
+  opacity: 0;
+  transform: rotate(10deg) scale(0.8) translateY(40px);
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.image-rotate-in.animate-in {
+  opacity: 1;
+  transform: rotate(0deg) scale(1) translateY(0);
+}
+
+/* ========================================
+   TEXT ANIMATIONS
+   ======================================== */
+
+.text-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.text-reveal.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.text-slide-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.text-slide-left.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.text-slide-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.text-slide-right.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ========================================
+   SCROLL PROGRESS ANIMATIONS
+   ======================================== */
+
+.scroll-progress-element {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+}
+
+/* Progress-based transformations */
+.progress-scale {
+  transform: scale(var(--scroll-progress, 0));
+}
+
+.progress-rotate {
+  transform: rotate(calc(var(--scroll-progress, 0) * 360deg));
+}
+
+.progress-opacity {
+  opacity: var(--scroll-progress, 0);
+}
+
+.progress-translate-x {
+  transform: translateX(calc(var(--scroll-progress, 0) * 100px));
+}
+
+.progress-translate-y {
+  transform: translateY(calc(var(--scroll-progress, 0) * -100px));
+}
+
+/* ========================================
+   SPECIAL EFFECTS
+   ======================================== */
+
+.morphing-shape {
+  border-radius: 50%;
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.morphing-shape.animate-in {
+  border-radius: 20px;
+}
+
+.glitch-effect {
+  position: relative;
+}
+
+.glitch-effect::before,
+.glitch-effect::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glitch-effect.animate-in::before {
+  animation: glitch1 0.5s infinite;
+  color: #ff0040;
+  z-index: -1;
+}
+
+.glitch-effect.animate-in::after {
+  animation: glitch2 0.5s infinite;
+  color: #00ffff;
+  z-index: -2;
+}
+
+@keyframes glitch1 {
+  0%, 14%, 15%, 49%, 50%, 99%, 100% {
+    transform: translate(0);
+    opacity: 0;
+  }
+  15%, 49% {
+    transform: translate(-2px, 2px);
+    opacity: 0.8;
+  }
+}
+
+@keyframes glitch2 {
+  0%, 20%, 21%, 62%, 63%, 99%, 100% {
+    transform: translate(0);
+    opacity: 0;
+  }
+  21%, 62% {
+    transform: translate(2px, -2px);
+    opacity: 0.8;
+  }
+}
+
+/* ========================================
+   FLOATING ANIMATIONS
+   ======================================== */
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+/* ========================================
+   HOVER ENHANCEMENTS
+   ======================================== */
+
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hover-lift:hover {
+  transform: translateY(-10px);
+}
+
+.hover-scale {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-rotate {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hover-rotate:hover {
+  transform: rotate(5deg);
+}
+
+/* ========================================
+   MOBILE OPTIMIZATIONS
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Reduce animation intensity on mobile */
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-rotate {
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+  }
+  
+  .scroll-reveal-left {
+    transform: translateX(-30px);
+  }
+  
+  .scroll-reveal-right {
+    transform: translateX(30px);
+  }
+  
+  .scroll-reveal-scale {
+    transform: scale(0.9) translateY(20px);
+  }
+  
+  /* Disable parallax on mobile for performance */
+  .parallax-slow,
+  .parallax-medium,
+  .parallax-fast {
+    transform: none !important;
+  }
+  
+  /* Reduce stagger delays */
+  .stagger-container.animate-in > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger-container.animate-in > *:nth-child(2) { animation-delay: 0.1s; }
+  .stagger-container.animate-in > *:nth-child(3) { animation-delay: 0.15s; }
+  .stagger-container.animate-in > *:nth-child(4) { animation-delay: 0.2s; }
+  .stagger-container.animate-in > *:nth-child(5) { animation-delay: 0.25s; }
+  .stagger-container.animate-in > *:nth-child(6) { animation-delay: 0.3s; }
+  
+  /* Disable complex effects on mobile */
+  .glitch-effect::before,
+  .glitch-effect::after {
+    display: none;
+  }
+  
+  .float-animation,
+  .float-delayed {
+    animation: none;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further reduce animations on small screens */
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-rotate {
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+  }
+  
+  .scroll-reveal-left {
+    transform: translateX(-20px);
+  }
+  
+  .scroll-reveal-right {
+    transform: translateX(20px);
+  }
+  
+  .scroll-reveal-scale {
+    transform: scale(0.95) translateY(15px);
+  }
+}
+
+/* ========================================
+   PERFORMANCE UTILITIES
+   ======================================== */
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+.no-animation {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-rotate,
+  .image-fade-scale,
+  .image-slide-up,
+  .image-rotate-in,
+  .text-reveal,
+  .text-slide-left,
+  .text-slide-right {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  
+  .float-animation,
+  .float-delayed {
+    animation: none;
+  }
+  
+  .parallax-slow,
+  .parallax-medium,
+  .parallax-fast {
+    transform: none !important;
+  }
+  
+  .glitch-effect::before,
+  .glitch-effect::after {
+    display: none;
+  }
+}
+
+/* ========================================
+   CUSTOM EASING FUNCTIONS
+   ======================================== */
+
+.ease-bounce {
+  transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.ease-elastic {
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.ease-smooth {
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}

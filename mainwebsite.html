@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manjot's Portfolio</title>
+  <link rel="stylesheet" href="scroll-animations.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     * { 
       margin: 0; 
@@ -40,6 +42,10 @@
       pointer-events: none;
     }
 
+    .bg-video.parallax-slow {
+      will-change: transform;
+    }
+
     .bg-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -68,20 +74,236 @@
       transition: all 0.8s ease-out;
     }
 
-    .small-video {
+    .typewriter-container {
       width: 80vw;
       height: 70vh;
       border-radius: 20px;
       box-shadow: none;
       margin-bottom: 20px;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: transparent;
       position: relative;
       overflow: hidden;
       animation: videoFloat 10s ease-in-out infinite;
       transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.6s ease;
       will-change: transform, opacity;
-      object-fit: cover;
+    }
+
+    .terminal-window {
+      background: rgba(0, 0, 0, 0.85);
+      border: 2px solid #ffffff;
+      border-radius: 15px;
+      padding: 60px;
+      min-width: 850px;
+      max-width: 950px;
+      min-height: 400px;
+      box-shadow: 
+        0 0 15px rgba(255, 255, 255, 0.2),
+        inset 0 0 15px rgba(255, 255, 255, 0.08);
+      position: relative;
+      font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform: translateY(0) scale(1);
+      opacity: 0;
+    }
+
+    .terminal-window.scroll-animate {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      animation: terminalGlow 2s ease-in-out;
+    }
+
+    .terminal-window:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 
+        0 0 50px rgba(255, 255, 255, 0.6),
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        inset 0 0 40px rgba(255, 255, 255, 0.2);
+      border-color: #ffffff;
+    }
+
+    @keyframes terminalGlow {
+      0% {
+        box-shadow: 
+          0 0 30px rgba(255, 255, 255, 0.4),
+          inset 0 0 30px rgba(255, 255, 255, 0.15);
+      }
+      50% {
+        box-shadow: 
+          0 0 60px rgba(255, 255, 255, 0.8),
+          0 0 100px rgba(255, 255, 255, 0.4),
+          inset 0 0 40px rgba(255, 255, 255, 0.3);
+      }
+      100% {
+        box-shadow: 
+          0 0 30px rgba(255, 255, 255, 0.4),
+          inset 0 0 30px rgba(255, 255, 255, 0.15);
+      }
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ffffff;
+      transition: all 0.4s ease;
+    }
+
+    .terminal-window:hover .terminal-header {
+      border-bottom-color: #ffffff;
+      border-bottom-width: 2px;
+    }
+
+    .terminal-window:hover .terminal-title {
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+      transform: scale(1.02);
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 8px;
+      margin-right: 15px;
+    }
+
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .terminal-dot:nth-child(1) { 
+      background: #ff5f56; 
+      transition: all 0.3s ease;
+    }
+    .terminal-dot:nth-child(2) { 
+      background: #ffbd2e; 
+      transition: all 0.3s ease;
+    }
+    .terminal-dot:nth-child(3) { 
+      background: #27ca3f; 
+      transition: all 0.3s ease;
+    }
+
+    .terminal-window:hover .terminal-dot:nth-child(1) {
+      background: #ff6b6b;
+      box-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
+      transform: scale(1.1);
+    }
+
+    .terminal-window:hover .terminal-dot:nth-child(2) {
+      background: #ffd93d;
+      box-shadow: 0 0 10px rgba(255, 217, 61, 0.6);
+      transform: scale(1.1);
+    }
+
+    .terminal-window:hover .terminal-dot:nth-child(3) {
+      background: #4ade80;
+      box-shadow: 0 0 10px rgba(74, 222, 128, 0.6);
+      transform: scale(1.1);
+    }
+
+    .terminal-title {
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .typewriter-text {
+      color: #ffffff;
+      font-size: 36px;
+      line-height: 1.4;
+      min-height: 100px;
+      font-weight: bold;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+      transition: all 0.4s ease;
+      text-transform: uppercase;
+    }
+
+    .terminal-window:hover .typewriter-text {
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
+      transform: scale(1.05);
+      color: #ffffff;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 4px;
+      height: 36px;
+      background: #ffffff;
+      margin-left: 3px;
+      animation: blink 1s infinite;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    .terminal-line {
+      margin: 15px 0;
+      font-size: 22px;
+      color: #ffffff;
+      opacity: 0.8;
+      transition: all 0.4s ease;
+    }
+
+    .terminal-window:hover .terminal-line {
+      opacity: 1;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      transform: translateX(5px);
+    }
+
+    .terminal-prompt {
+      color: #ffffff;
+      margin-right: 10px;
+    }
+
+    .glitch-effect {
+      position: relative;
+    }
+
+    .glitch-effect::before,
+    .glitch-effect::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .glitch-effect::before {
+      animation: glitch-1 0.5s infinite;
+      color: #ff0040;
+      z-index: -1;
+    }
+
+    .glitch-effect::after {
+      animation: glitch-2 0.5s infinite;
+      color: #00ffff;
+      z-index: -2;
+    }
+
+    @keyframes glitch-1 {
+      0%, 14%, 15%, 49%, 50%, 99%, 100% {
+        transform: translate(0);
+      }
+      15%, 49% {
+        transform: translate(-2px, 2px);
+      }
+    }
+
+    @keyframes glitch-2 {
+      0%, 20%, 21%, 62%, 63%, 99%, 100% {
+        transform: translate(0);
+      }
+      21%, 62% {
+        transform: translate(2px, -2px);
+      }
     }
 
     @keyframes videoFloat {
@@ -89,13 +311,13 @@
       50% { transform: translateY(-6px) rotate(0.3deg); }
     }
 
-    .small-video.scroll-init { opacity: 1; transform: translateY(0) scale(1); }
-    .small-video.in-view { opacity: 1; transform: translateY(0) scale(1); }
+    .typewriter-container.scroll-init { opacity: 1; transform: translateY(0) scale(1); }
+    .typewriter-container.in-view { opacity: 1; transform: translateY(0) scale(1); }
 
     .reveal-init { opacity: 0; transform: translateY(24px); }
     .reveal-in { opacity: 1; transform: translateY(0); transition: opacity 800ms ease, transform 800ms ease; will-change: opacity, transform; }
 
-    .small-video::before { content: none; }
+    .typewriter-container::before { content: none; }
 
     @keyframes videoContent {
       0%, 100% { 
@@ -108,7 +330,7 @@
       }
     }
 
-    .small-video:hover {
+    .typewriter-container:hover {
       transform: scale(1.02);
       box-shadow: none;
     }
@@ -123,9 +345,9 @@
       position: relative;
     }
 
-    .small-video-wrap .small-video {
+    .small-video-wrap .typewriter-container {
       border-radius: 20px;
-      display: block;
+      display: flex;
     }
 
     .overlay-image {
@@ -418,6 +640,258 @@
 
     .navbar:hover, .navbar.expanded { box-shadow: 0 30px 90px rgba(0,0,0,0.6); }
 
+    /* NAVBAR BACKGROUND */
+    .navbar-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 999;
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .navbar-background.visible {
+      opacity: 1;
+    }
+
+    /* RIGHT SIDE DROPDOWN MENU */
+    .right-menu {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(-100px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .right-menu.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* HAMBURGER MENU BUTTON */
+    .menu-toggle {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      z-index: 1001;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.4s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu-toggle:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .menu-toggle.active {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* HAMBURGER BARS */
+    .hamburger-bar {
+      width: 20px;
+      height: 2px;
+      background: #ffffff;
+      border-radius: 1px;
+      transition: all 0.4s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .menu-toggle.active .hamburger-bar:nth-child(1) {
+      transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .menu-toggle.active .hamburger-bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.active .hamburger-bar:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    .right-menu-item {
+      position: relative;
+      padding: 8px 15px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      overflow: hidden;
+      min-width: 80px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 5px;
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    .right-menu.expanded .right-menu-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .right-menu.expanded .right-menu-item:nth-child(1) {
+      transition-delay: 0.1s;
+    }
+
+    .right-menu.expanded .right-menu-item:nth-child(2) {
+      transition-delay: 0.2s;
+    }
+
+    .right-menu.expanded .right-menu-item:nth-child(3) {
+      transition-delay: 0.3s;
+    }
+
+    .right-menu-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .right-menu-item:hover::before {
+      left: 100%;
+    }
+
+    .right-menu-item:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateX(-8px) scale(1.03);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .right-menu-text {
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      position: relative;
+      z-index: 2;
+      transition: all 0.4s ease;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .right-menu-item:hover .right-menu-text {
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+      transform: scale(1.05);
+    }
+
+    /* MENU ITEM ANIMATIONS */
+    .right-menu-item:nth-child(1) {
+      animation-delay: 0.1s;
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .right-menu-item:nth-child(2) {
+      animation-delay: 0.2s;
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .right-menu-item:nth-child(3) {
+      animation-delay: 0.3s;
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .right-menu.visible .right-menu-item:nth-child(1) {
+      opacity: 1;
+      transform: translateX(0);
+      transition-delay: 0.1s;
+    }
+
+    .right-menu.visible .right-menu-item:nth-child(2) {
+      opacity: 1;
+      transform: translateX(0);
+      transition-delay: 0.2s;
+    }
+
+    .right-menu.visible .right-menu-item:nth-child(3) {
+      opacity: 1;
+      transform: translateX(0);
+      transition-delay: 0.3s;
+    }
+
+    /* MENU ICONS */
+    .menu-icon {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin-right: 6px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: all 0.4s ease;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+    }
+
+    .menu-icon.about { background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>'); }
+    .menu-icon.work { background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>'); }
+    .menu-icon.contact { background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>'); }
+
+    .right-menu-item:hover .menu-icon {
+      transform: scale(1.2) rotate(5deg);
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+    }
+
+    /* Make menu more visible with subtle pulse */
+    .right-menu.visible .right-menu-item {
+      animation: subtlePulse 3s ease-in-out infinite;
+    }
+
+    .right-menu.visible .right-menu-item:nth-child(1) {
+      animation-delay: 0.5s;
+    }
+
+    .right-menu.visible .right-menu-item:nth-child(2) {
+      animation-delay: 1s;
+    }
+
+    .right-menu.visible .right-menu-item:nth-child(3) {
+      animation-delay: 1.5s;
+    }
+
+    @keyframes subtlePulse {
+      0%, 100% {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      50% {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+    }
+
     .about {
       padding: 100px 50px;
       background: rgba(34, 34, 34, 0.95);
@@ -433,9 +907,6 @@
       z-index: 10;
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      opacity: 0;
-      transform: translateY(50px);
-      animation: slideUp 1s ease-out 0.5s forwards;
     }
 
     @keyframes slideUp {
@@ -555,9 +1026,6 @@
       overflow: visible;
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      opacity: 0;
-      transform: translateY(50px);
-      animation: slideUp 1s ease-out 1.4s forwards;
     }
 
     .work-layout {
@@ -590,8 +1058,6 @@
       transition: transform 1.4s ease, opacity 1.4s ease, filter 1.4s ease, box-shadow 1.4s ease, border-color 1.4s ease, width 1.4s ease, height 1.4s ease;
       flex-shrink: 0;
       background: rgba(0,0,0,0.4);
-      opacity: 0;
-      transform: translateY(30px) scale(0.9);
       z-index: 1;
       border: 1px solid rgba(255,255,255,0.1);
       will-change: transform, opacity, filter;
@@ -766,9 +1232,6 @@
       margin: 50px auto;
       max-width: 1200px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      opacity: 0;
-      transform: translateY(50px);
-      animation: slideUp 1s ease-out 2.2s forwards;
     }
 
     .contact h2 { 
@@ -822,71 +1285,59 @@
 
     
 
-    /* BOTTOM SOLID LAYER */
-    .bottom-solid {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(20, 20, 20, 0.95);
-      backdrop-filter: blur(10px);
+    /* NEW FOOTER STYLES */
+    .footer {
+      background: #1a1a1a;
+      padding: 40px 50px;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 20px 0;
-      z-index: 100;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transform: translateY(100%);
-      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      justify-content: space-between;
+      min-height: 80px;
     }
-    
-    .bottom-solid.visible {
-      opacity: 1;
-      transform: translateY(0);
+
+    .footer-message {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 500;
+      text-align: left;
     }
-    
-    .bottom-solid-text {
-      font-family: 'Arial', sans-serif;
-      font-size: 0.8em;
-      color: #fff;
-      font-weight: 400;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-      text-transform: lowercase;
+
+    .footer-message .highlight {
+      color: #1e90ff;
+      font-weight: 600;
     }
-    
-    .bottom-letter-images {
+
+    .footer-social {
       display: flex;
-      gap: 0;
-      justify-content: center;
+      gap: 20px;
       align-items: center;
     }
-    
-    .bottom-letter-img {
-      width: 16px;
-      height: 16px;
-      object-fit: contain;
-      margin: 0 -2px;
-      animation: bounceLetter 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      display: none;
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    
-    @keyframes bounceLetter {
-      0% { transform: translateY(-100px) rotate(-15deg); opacity: 0; }
-      60% { transform: translateY(20px) rotate(5deg); opacity: 1; }
-      80% { transform: translateY(-10px) rotate(-2deg); }
-      100% { transform: translateY(0) rotate(0); opacity: 1; }
+
+    .social-icon:hover {
+      background: #1e90ff;
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 8px 20px rgba(30, 144, 255, 0.3);
+      border-color: #1e90ff;
     }
-    
-    /* Add delay for each letter */
-    .bottom-letter-img:nth-child(1) { animation-delay: 0.1s; }
-    .bottom-letter-img:nth-child(2) { animation-delay: 0.2s; }
-    .bottom-letter-img:nth-child(3) { animation-delay: 0.3s; }
-    .bottom-letter-img:nth-child(4) { animation-delay: 0.4s; }
-    .bottom-letter-img:nth-child(5) { animation-delay: 0.5s; }
-    .bottom-letter-img:nth-child(6) { animation-delay: 0.6s; }
+
+    .social-icon i {
+      font-size: 18px;
+    }
 
     /* BOTTOM VIDEO SECTION */
     .bottom-video-section {
@@ -990,10 +1441,21 @@
         transform: none;
       }
       
-      .small-video { 
+      .typewriter-container { 
         width: 95vw; 
         height: 50vh;
         max-width: 400px;
+      }
+      
+      .terminal-window {
+        min-width: 350px;
+        max-width: 90vw;
+        padding: 30px;
+        min-height: 250px;
+      }
+      
+      .typewriter-text {
+        font-size: 24px;
       }
       
       .small-video-wrap {
@@ -1038,19 +1500,65 @@
         padding: 20px;
       }
       
-      .bottom-solid-text {
-        font-size: 0.7em;
-        margin-bottom: 10px;
+      /* Footer mobile styles */
+      .footer {
+        flex-direction: column;
+        gap: 20px;
+        padding: 30px 20px;
+        text-align: center;
       }
       
-      .bottom-letter-img {
-        width: 15px;
-        height: 15px;
-        margin: 0 -1px;
+      .footer-message {
+        font-size: 16px;
+      }
+      
+      .footer-social {
+        gap: 15px;
+      }
+      
+      .social-icon {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .social-icon i {
+        font-size: 16px;
       }
       
       .bottom-video {
         height: 3px;
+      }
+      
+      /* Right menu mobile styles */
+      .menu-toggle {
+        top: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+      }
+      
+      .right-menu {
+        top: 20px;
+        right: 20px;
+      }
+      
+      .right-menu-item {
+        padding: 6px 12px;
+        min-width: 70px;
+      }
+      
+      .right-menu-text {
+        font-size: 10px;
+      }
+      
+      .menu-icon {
+        width: 12px;
+        height: 12px;
+        margin-right: 5px;
+      }
+      
+      .hamburger-bar {
+        width: 18px;
       }
     }
     
@@ -1101,8 +1609,19 @@
         margin: 20px 10px;
       }
       
-      .small-video {
+      .typewriter-container {
         height: 40vh;
+      }
+      
+      .terminal-window {
+        min-width: 300px;
+        max-width: 95vw;
+        padding: 25px;
+        min-height: 200px;
+      }
+      
+      .typewriter-text {
+        font-size: 20px;
       }
       
       .letter-img {
@@ -1117,14 +1636,89 @@
         top: 60%;
       }
       
+      /* Right menu mobile styles for small screens */
+      .menu-toggle {
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+      }
+      
+      .right-menu {
+        top: 15px;
+        right: 15px;
+      }
+      
+      .right-menu-item {
+        padding: 5px 10px;
+        min-width: 60px;
+      }
+      
+      .right-menu-text {
+        font-size: 9px;
+      }
+      
+      .menu-icon {
+        width: 10px;
+        height: 10px;
+        margin-right: 4px;
+      }
+      
+      .hamburger-bar {
+        width: 16px;
+      }
+      
+      /* Footer mobile styles for small screens */
+      .footer {
+        padding: 25px 15px;
+      }
+      
+      .footer-message {
+        font-size: 14px;
+      }
+      
+      .social-icon {
+        width: 32px;
+        height: 32px;
+      }
+      
+      .social-icon i {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="scroll-indicator" id="scroll-indicator"></div>
 
-  <video class="bg-video" src="bgvideo.mp4" autoplay muted loop playsinline></video>
+  <video class="bg-video parallax-slow" src="bgvideo.mp4" autoplay muted loop playsinline></video>
   <div class="bg-overlay"></div>
+  
+  <!-- Navbar Background -->
+  <div class="navbar-background" id="navbar-background"></div>
+  
+  <!-- Hamburger Menu Toggle -->
+  <div class="menu-toggle" id="menu-toggle" onclick="toggleMenu()">
+    <div class="hamburger-bar"></div>
+    <div class="hamburger-bar"></div>
+    <div class="hamburger-bar"></div>
+  </div>
+  
+  <!-- Right Side Dropdown Menu -->
+  <div class="right-menu" id="right-menu">
+    <div class="right-menu-item" onclick="scrollToSection('about'); toggleMenu();">
+      <span class="menu-icon about"></span>
+      <span class="right-menu-text">About Me</span>
+    </div>
+    <div class="right-menu-item" onclick="scrollToSection('work'); toggleMenu();">
+      <span class="menu-icon work"></span>
+      <span class="right-menu-text">My Work</span>
+    </div>
+    <div class="right-menu-item" onclick="scrollToSection('contact'); toggleMenu();">
+      <span class="menu-icon contact"></span>
+      <span class="right-menu-text">Contact</span>
+    </div>
+  </div>
   
   <nav class="navbar">
     <div class="nav-items-left">
@@ -1143,7 +1737,27 @@
   <section class="hero">
     <div class="hero-content">
       <div class="small-video-wrap">
-        <img class="small-video" src="small video.gif" alt="Small video" />
+        <div class="typewriter-container">
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <div class="terminal-dot"></div>
+                <div class="terminal-dot"></div>
+                <div class="terminal-dot"></div>
+              </div>
+              <div class="terminal-title">Terminal - Portfolio</div>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-prompt">$</span> ./start_portfolio.sh
+            </div>
+            <div class="typewriter-text" id="typewriter-output">
+              <span class="cursor"></span>
+            </div>
+            <div class="terminal-line" id="second-line" style="opacity: 0;">
+              
+            </div>
+          </div>
+        </div>
         <div class="letter-images">
           <img src="m_letter.png" class="letter-img m-letter" alt="M" />
           <img src="a_letter.png" class="letter-img a-letter" alt="A" />
@@ -1157,22 +1771,22 @@
     </div>
   </section>
 
-  <section id="about" class="about">
-    <div class="about-image">
-      <div class="profile-placeholder">M</div>
+  <section id="about" class="about scroll-reveal">
+    <div class="about-image scroll-reveal-left">
+      <div class="profile-placeholder float-animation">M</div>
     </div>
     <div class="about-content">
-      <h2>About Me</h2>
-      <p>Hello! I'm Manjot, a passionate creative professional dedicated to bringing innovative ideas to life through stunning design and seamless user experiences.</p>
+      <h2 class="text-reveal">About Me</h2>
+      <p class="text-reveal">Hello! I'm Manjot, a passionate creative professional dedicated to bringing innovative ideas to life through stunning design and seamless user experiences.</p>
     </div>
   </section>
 
   <section id="work" class="work">
-    <h2>My Work</h2>
-    <div class="work-container">
+    <h2 class="text-reveal">My Work</h2>
+    <div class="work-container scroll-reveal-scale">
       <div class="work-layout">
-        <div class="work-grid">
-          <div class="work-item">
+        <div class="work-grid stagger-container">
+          <div class="work-item image-fade-scale hover-lift">
             <a href="#scribbling">
               <div class="work-placeholder design1">
                 <div>🎨 Creative<br>Sketches</div>
@@ -1185,7 +1799,7 @@
             </div>
             <iframe class="preview-iframe" src="about:blank" title="Scribbling preview"></iframe>
           </div>
-          <div class="work-item">
+          <div class="work-item image-slide-up hover-scale">
             <a href="#graphic-design">
               <div class="work-placeholder design2">
                 <div>🖼️ Graphic<br>Design</div>
@@ -1198,7 +1812,7 @@
             </div>
             <iframe class="preview-iframe" src="about:blank" title="Graphic design preview"></iframe>
           </div>
-          <div class="work-item">
+          <div class="work-item image-rotate-in hover-rotate">
             <a href="#illustrator">
               <div class="work-placeholder design3">
                 <div>💡 Professional<br>Artwork</div>
@@ -1216,9 +1830,9 @@
     </div>
   </section>
 
-  <section id="contact" class="contact">
-    <h2>Let's Work Together</h2>
-    <p>Ready to bring your ideas to life? Get in touch and let's create something amazing together.</p>
+  <section id="contact" class="contact scroll-reveal">
+    <h2 class="text-reveal glitch-effect">Let's Work Together</h2>
+    <p class="text-reveal">Ready to bring your ideas to life? Get in touch and let's create something amazing together.</p>
 
     <form id="work-form" style="max-width:720px;margin:30px auto 0;display:grid;gap:18px;text-align:left;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.1);padding:24px;border-radius:16px">
       <div style="display:grid;gap:8px">
@@ -1245,21 +1859,23 @@
     </div>
   </section>
 
-  <section class="bottom-video-section">
-    <video class="bottom-video" src="bottom.mp4" autoplay muted loop playsinline></video>
-  </section>
-  
-  <div class="bottom-solid">
-    <span class="bottom-solid-text">lets me something fun</span>
-    <div class="bottom-letter-images">
-      <img src="m_letter.png" class="bottom-letter-img" alt="M" />
-      <img src="a_letter.png" class="bottom-letter-img" alt="A" />
-      <img src="n_letter.png" class="bottom-letter-img" alt="N" />
-      <img src="j_letter.png" class="bottom-letter-img" alt="J" />
-      <img src="o_letter.png" class="bottom-letter-img" alt="O" />
-      <img src="t_letter.png" class="bottom-letter-img" alt="T" />
+  <!-- New Footer -->
+  <footer class="footer">
+    <div class="footer-message">
+      Have a <span class="highlight">project in mind?</span> Let's connect
     </div>
-  </div>
+    <div class="footer-social">
+      <a href="https://behance.net/manjot" class="social-icon" target="_blank" title="Behance">
+        <i class="fab fa-behance"></i>
+      </a>
+      <a href="https://instagram.com/manjot" class="social-icon" target="_blank" title="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="mailto:manjot@example.com" class="social-icon" target="_blank" title="Email">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </div>
+  </footer>
 
   <script>
     class SmoothPortfolio {
@@ -1279,7 +1895,6 @@
           if (!ticking) {
             window.requestAnimationFrame(() => {
               this.updateScrollIndicator();
-              this.updateBottomSolidVisibility();
               ticking = false;
             });
             ticking = true;
@@ -1326,23 +1941,18 @@
         const totalHeight = document.body.scrollHeight - window.innerHeight;
         const progress = (window.pageYOffset / totalHeight) * 100;
         scrollIndicator.style.width = progress + '%';
-      }
-      
-      updateBottomSolidVisibility() {
-        const bottomSolid = document.querySelector('.bottom-solid');
-        if (!bottomSolid) return;
         
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
+        // Show navbar background when scrolling
+        const navbarBackground = document.getElementById('navbar-background');
+        const scrollThreshold = 50;
         
-        // Show bottom solid when scrolled to bottom (within 100px)
-        if (scrollTop + windowHeight >= documentHeight - 100) {
-          bottomSolid.classList.add('visible');
+        if (window.pageYOffset > scrollThreshold) {
+          navbarBackground?.classList.add('visible');
         } else {
-          bottomSolid.classList.remove('visible');
+          navbarBackground?.classList.remove('visible');
         }
       }
+      
 
       setupScrollAnimations() {
         const observer = new IntersectionObserver((entries) => {
@@ -1350,7 +1960,7 @@
             if (entry.isIntersecting) {
               entry.target.classList.add('in');
               entry.target.classList.add('reveal-in');
-              if (entry.target.classList.contains('small-video')) {
+              if (entry.target.classList.contains('typewriter-container')) {
                 entry.target.classList.add('in-view');
               }
               // Animate letter images on scroll (explode effect)
@@ -1390,11 +2000,25 @@
           });
         }, { threshold: 0.22, rootMargin: '0px 0px -12% 0px' });
 
-        const els = document.querySelectorAll('.about, .work-container, .work-item, .contact, .small-video, .overlay-image, .bottom-video, .letter-images');
+        const els = document.querySelectorAll('.about, .work-container, .work-item, .contact, .typewriter-container, .overlay-image, .bottom-video, .letter-images');
         els.forEach(el => {
           el.classList.add('reveal-init');
           observer.observe(el);
         });
+
+        // Special observer for terminal window
+        const terminalObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('scroll-animate');
+            }
+          });
+        }, { threshold: 0.3 });
+
+        const terminalWindow = document.querySelector('.terminal-window');
+        if (terminalWindow) {
+          terminalObserver.observe(terminalWindow);
+        }
       }
 
       setupIframePreviews() {
@@ -1472,9 +2096,141 @@
       return c / 2 * (t * t * t + 2) + b;
     }
 
+    // Toggle dropdown menu
+    function toggleMenu() {
+      const menuToggle = document.getElementById('menu-toggle');
+      const rightMenu = document.getElementById('right-menu');
+      
+      if (rightMenu && menuToggle) {
+        const isExpanded = rightMenu.classList.contains('expanded');
+        
+        if (isExpanded) {
+          rightMenu.classList.remove('expanded');
+          menuToggle.classList.remove('active');
+        } else {
+          rightMenu.classList.add('expanded');
+          menuToggle.classList.add('active');
+        }
+      }
+    }
+
+    // Typewriter Animation Class
+    class TypewriterAnimation {
+      constructor() {
+        this.outputElement = document.getElementById('typewriter-output');
+        this.secondLineElement = document.getElementById('second-line');
+        this.cursorElement = this.outputElement.querySelector('.cursor');
+        this.isTyping = false;
+        this.init();
+      }
+
+      init() {
+        // Start the animation after a short delay
+        setTimeout(() => {
+          this.startAnimation();
+        }, 1000);
+      }
+
+      async startAnimation() {
+        this.isTyping = true;
+        
+        // Type "MANJOT"
+        await this.typeText('MANJOT', 150);
+        
+        // Wait a moment
+        await this.delay(400);
+        
+        // Clear the text
+        await this.clearText();
+        
+        // Wait a moment
+        await this.delay(200);
+        
+        // Show second line
+        this.secondLineElement.style.opacity = '0.8';
+        
+        // Type "OFFBEAT.EXE" without $ sign
+        await this.typeText('OFFBEAT.EXE', 120);
+        
+        // Add some terminal-style effects
+        await this.addTerminalEffects();
+        
+        this.isTyping = false;
+        
+        // Loop the animation after a longer pause
+        setTimeout(() => {
+          this.reset();
+          this.startAnimation();
+        }, 5000);
+      }
+
+      async typeText(text, speed = 100) {
+        for (let i = 0; i <= text.length; i++) {
+          if (!this.isTyping) break;
+          
+          const currentText = text.substring(0, i);
+          this.outputElement.innerHTML = currentText + '<span class="cursor"></span>';
+          
+          // Add random typing sound effect simulation
+          if (Math.random() < 0.3) {
+            this.addGlitchEffect();
+          }
+          
+          await this.delay(speed + Math.random() * 50);
+        }
+      }
+
+      async clearText() {
+        const currentText = this.outputElement.textContent.replace('|', '');
+        for (let i = currentText.length; i >= 0; i--) {
+          if (!this.isTyping) break;
+          
+          const newText = currentText.substring(0, i);
+          this.outputElement.innerHTML = newText + '<span class="cursor"></span>';
+          
+          await this.delay(50);
+        }
+      }
+
+      addGlitchEffect() {
+        const originalText = this.outputElement.textContent.replace('|', '');
+        this.outputElement.classList.add('glitch-effect');
+        this.outputElement.setAttribute('data-text', originalText);
+        
+        setTimeout(() => {
+          this.outputElement.classList.remove('glitch-effect');
+          this.outputElement.removeAttribute('data-text');
+        }, 200);
+      }
+
+      async addTerminalEffects() {
+        // Add some terminal-style blinking and effects
+        for (let i = 0; i < 3; i++) {
+          this.outputElement.style.textShadow = '0 0 20px rgba(255, 255, 255, 0.8)';
+          await this.delay(300);
+          this.outputElement.style.textShadow = '0 0 10px rgba(255, 255, 255, 0.5)';
+          await this.delay(300);
+        }
+      }
+
+      delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      reset() {
+        this.isTyping = false;
+        this.outputElement.innerHTML = '<span class="cursor"></span>';
+        this.secondLineElement.style.opacity = '0';
+        this.outputElement.style.textShadow = '0 0 10px rgba(255, 255, 255, 0.5)';
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const sp = new SmoothPortfolio();
       if (sp && typeof sp.setupIframePreviews === 'function') sp.setupIframePreviews();
+
+      // Initialize typewriter animation
+      const typewriter = new TypewriterAnimation();
 
       // Fast scroll
       document.documentElement.style.scrollBehavior = 'smooth';
@@ -1501,5 +2257,8 @@
       }
     });
   </script>
+  
+  <!-- Scroll Animation System -->
+  <script src="scroll-animations.js"></script>
 </body>
 </html>
