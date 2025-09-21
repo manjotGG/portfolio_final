@@ -2359,19 +2359,19 @@
         await this.typeText('MANJOT', 150);
         
         // Wait a moment
-        await this.delay(400);
+        await this.delay(2000);
         
         // Clear the text
         await this.clearText();
         
         // Wait a moment
-        await this.delay(200);
+        await this.delay(300);
         
         // Show second line
         this.secondLineElement.style.opacity = '0.8';
         
         // Type "OFFBEAT.EXE" without $ sign
-        await this.typeText('OFFBEAT.EXE', 120);
+        await this.typeText('OFFBEAT.EXE', 50);
         
         // Add some terminal-style effects
         await this.addTerminalEffects();
@@ -2382,7 +2382,7 @@
         setTimeout(() => {
           this.reset();
           this.startAnimation();
-        }, 5000);
+        }, 500);
       }
 
       async typeText(text, speed = 100) {
