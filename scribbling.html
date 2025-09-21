@@ -66,8 +66,23 @@
     /* gallery section */
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .featured-image {
+      grid-column: 1;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .side-by-side {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     .image-card {
@@ -99,6 +114,8 @@
     .image-card.small img { height: 180px; }
     .image-card.medium img { height: 250px; }
     .image-card.large img { height: 320px; }
+    .image-card.featured img { height: 400px; }
+    .image-card.side img { height: 280px; }
 
     @keyframes slideInUp {
       to {
@@ -173,8 +190,17 @@
         padding: 1rem;
       }
       .gallery {
-        grid-template-columns: 1fr !important;
-        gap: 1.5rem;
+        gap: 2rem;
+      }
+      .side-by-side {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .image-card.featured img {
+        height: 300px !important;
+      }
+      .image-card.side img {
+        height: 220px !important;
       }
       .image-card img {
         height: 220px !important;
@@ -200,54 +226,60 @@
 
     <!-- Gallery -->
     <div class="gallery">
-      <div class="image-card small">
-        <img src="image1.jpeg" alt="Art 1">
-        <div class="image-overlay"><div class="image-title">relax</div></div>
+      <!-- Featured big image -->
+      <div class="featured-image">
+        <div class="image-card featured">
+          <img src="image1.jpeg" alt="Featured Art">
+          <div class="image-overlay"><div class="image-title">Featured Work</div></div>
+        </div>
       </div>
 
-      <div class="image-card large">
-        <img src="image2.jpeg" alt="Art 2">
-        <div class="image-overlay"><div class="image-title">relax</div></div>
+      <!-- Side by side images -->
+      <div class="side-by-side">
+        <div class="image-card side">
+          <img src="image2.jpeg" alt="Art 2">
+          <div class="image-overlay"><div class="image-title">Creative Design</div></div>
+        </div>
+        <div class="image-card side">
+          <img src="image3.jpeg" alt="Art 3">
+          <div class="image-overlay"><div class="image-title">Visual Art</div></div>
+        </div>
       </div>
 
+      <!-- Additional images in grid -->
       <div class="image-card medium">
-        <img src="image3.jpeg" alt="Art 3">
-        <div class="image-overlay"><div class="image-title">relax</div></div>
-      </div>
-
-      <div class="image-card small">
         <img src="image4.jpeg" alt="Art 4">
-        <div class="image-overlay"><div class="image-title">relax</div></div>
-      </div>
-
-      <div class="image-card medium">
-        <img src="image5.jpeg" alt="Art 5">
-        <div class="image-overlay"><div class="image-title">relax</div></div>
+        <div class="image-overlay"><div class="image-title">Design Concept</div></div>
       </div>
 
       <div class="image-card large">
+        <img src="image5.jpeg" alt="Art 5">
+        <div class="image-overlay"><div class="image-title">Creative Vision</div></div>
+      </div>
+
+      <div class="image-card small">
         <img src="image6.jpeg" alt="Art 6">
-        <div class="image-overlay"><div class="image-title">relax</div></div>
+        <div class="image-overlay"><div class="image-title">Artistic Touch</div></div>
       </div>
 
       <div class="image-card medium">
         <img src="image7.jpeg" alt="Art 7">
-        <div class="image-overlay"><div class="image-title">relax</div></div>
-      </div>
-
-      <div class="image-card small">
-        <img src="image8.jpeg" alt="Art 8">
-        <div class="image-overlay"><div class="image-title">relax</div></div>
+        <div class="image-overlay"><div class="image-title">Visual Story</div></div>
       </div>
 
       <div class="image-card large">
+        <img src="image8.jpeg" alt="Art 8">
+        <div class="image-overlay"><div class="image-title">Creative Expression</div></div>
+      </div>
+
+      <div class="image-card small">
         <img src="image9.jpeg" alt="Art 9">
-        <div class="image-overlay"><div class="image-title">relax</div></div>
+        <div class="image-overlay"><div class="image-title">Design Innovation</div></div>
       </div>
 
       <div class="image-card medium">
         <img src="image10.jpeg" alt="Art 10">
-        <div class="image-overlay"><div class="image-title">relax</div></div>
+        <div class="image-overlay"><div class="image-title">Artistic Journey</div></div>
       </div>
     </div>
   </div>
