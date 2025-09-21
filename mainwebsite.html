@@ -95,10 +95,10 @@
       background: rgba(0, 0, 0, 0.85);
       border: 2px solid #ffffff;
       border-radius: 15px;
-      padding: 60px;
-      min-width: 850px;
-      max-width: 950px;
-      min-height: 400px;
+      padding: 80px;
+      min-width: 1100px;
+      max-width: 1200px;
+      min-height: 500px;
       box-shadow: 
         0 0 15px rgba(255, 255, 255, 0.2),
         inset 0 0 15px rgba(255, 255, 255, 0.08);
@@ -146,10 +146,12 @@
     .terminal-header {
       display: flex;
       align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #ffffff;
+      justify-content: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #ffffff;
       transition: all 0.4s ease;
+      position: relative;
     }
 
     .terminal-window:hover .terminal-header {
@@ -164,13 +166,16 @@
 
     .terminal-dots {
       display: flex;
-      gap: 8px;
-      margin-right: 15px;
+      gap: 10px;
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .terminal-dot {
-      width: 12px;
-      height: 12px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
     }
 
@@ -207,19 +212,27 @@
 
     .terminal-title {
       color: #ffffff;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: bold;
+      letter-spacing: 1px;
+      text-align: center;
+      flex-grow: 1;
     }
 
     .typewriter-text {
       color: #ffffff;
-      font-size: 36px;
-      line-height: 1.4;
-      min-height: 100px;
+      font-size: 56px;
+      line-height: 1.5;
+      min-height: 140px;
       font-weight: bold;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
       transition: all 0.4s ease;
       text-transform: uppercase;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 2px;
     }
 
     .terminal-window:hover .typewriter-text {
@@ -230,12 +243,13 @@
 
     .cursor {
       display: inline-block;
-      width: 4px;
-      height: 36px;
+      width: 5px;
+      height: 56px;
       background: #ffffff;
-      margin-left: 3px;
+      margin-left: 5px;
       animation: blink 1s infinite;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+      border-radius: 1px;
     }
 
     @keyframes blink {
@@ -244,22 +258,25 @@
     }
 
     .terminal-line {
-      margin: 15px 0;
-      font-size: 22px;
+      margin: 20px 0;
+      font-size: 28px;
       color: #ffffff;
       opacity: 0.8;
       transition: all 0.4s ease;
+      text-align: center;
+      letter-spacing: 1px;
     }
 
     .terminal-window:hover .terminal-line {
       opacity: 1;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-      transform: translateX(5px);
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+      transform: translateY(-2px);
     }
 
     .terminal-prompt {
       color: #ffffff;
-      margin-right: 10px;
+      margin-right: 15px;
+      font-weight: bold;
     }
 
     .glitch-effect {
@@ -1339,6 +1356,97 @@
       font-size: 18px;
     }
 
+    /* LOADING ANIMATION */
+    .loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.8s ease-out;
+    }
+
+    .loader-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .loader-spinner {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid #1e90ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .loader-text {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      opacity: 0.8;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .loader-dots {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .loader-dot {
+      width: 8px;
+      height: 8px;
+      background: #1e90ff;
+      border-radius: 50%;
+      animation: bounce 1.4s ease-in-out infinite both;
+    }
+
+    .loader-dot:nth-child(1) { animation-delay: -0.32s; }
+    .loader-dot:nth-child(2) { animation-delay: -0.16s; }
+    .loader-dot:nth-child(3) { animation-delay: 0s; }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes bounce {
+      0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+      40% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+    }
+
+    /* Hide loader when removed */
+    .loader-overlay.removed {
+      display: none;
+    }
+
     /* BOTTOM VIDEO SECTION */
     .bottom-video-section {
       position: fixed;
@@ -1525,6 +1633,20 @@
         font-size: 16px;
       }
       
+      /* Loader mobile styles */
+      .loader-spinner {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .loader-text {
+        font-size: 16px;
+      }
+      
+      .loader-content {
+        gap: 25px;
+      }
+      
       .bottom-video {
         height: 3px;
       }
@@ -1685,10 +1807,42 @@
       .social-icon i {
         font-size: 14px;
       }
+      
+      /* Loader mobile styles for small screens */
+      .loader-spinner {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .loader-text {
+        font-size: 14px;
+      }
+      
+      .loader-content {
+        gap: 20px;
+      }
+      
+      .loader-dot {
+        width: 6px;
+        height: 6px;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Loading Animation -->
+  <div class="loader-overlay" id="loader-overlay">
+    <div class="loader-content">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">Loading Portfolio</div>
+      <div class="loader-dots">
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="scroll-indicator" id="scroll-indicator"></div>
 
   <video class="bg-video parallax-slow" src="bgvideo.mp4" autoplay muted loop playsinline></video>
@@ -1878,6 +2032,73 @@
   </footer>
 
   <script>
+    // Loading Animation Controller
+    class LoadingController {
+      constructor() {
+        this.loader = document.getElementById('loader-overlay');
+        this.isLoaded = false;
+        this.minLoadTime = 2000; // Minimum loading time in milliseconds
+        this.startTime = Date.now();
+        this.init();
+      }
+
+      init() {
+        // Hide body content initially
+        document.body.style.overflow = 'hidden';
+        
+        // Wait for all resources to load
+        window.addEventListener('load', () => {
+          this.handleLoadComplete();
+        });
+
+        // Fallback: hide loader after maximum time
+        setTimeout(() => {
+          if (!this.isLoaded) {
+            this.handleLoadComplete();
+          }
+        }, 5000);
+      }
+
+      handleLoadComplete() {
+        const elapsedTime = Date.now() - this.startTime;
+        const remainingTime = Math.max(0, this.minLoadTime - elapsedTime);
+        
+        setTimeout(() => {
+          this.hideLoader();
+        }, remainingTime);
+      }
+
+      hideLoader() {
+        if (this.isLoaded) return;
+        this.isLoaded = true;
+        
+        const loader = this.loader;
+        
+        // Add fade-out class
+        loader.classList.add('fade-out');
+        
+        // Remove loader from DOM after animation completes
+        setTimeout(() => {
+          loader.classList.add('removed');
+          document.body.style.overflow = '';
+          
+          // Trigger any post-load animations
+          this.triggerPostLoadAnimations();
+        }, 800);
+      }
+
+      triggerPostLoadAnimations() {
+        // Trigger typewriter animation
+        const typewriterOutput = document.getElementById('typewriter-output');
+        if (typewriterOutput) {
+          // Small delay to ensure smooth transition
+          setTimeout(() => {
+            // The typewriter animation should already be initialized
+          }, 100);
+        }
+      }
+    }
+
     class SmoothPortfolio {
       constructor() {
         this.init();
@@ -2226,6 +2447,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Initialize loading controller first
+      const loadingController = new LoadingController();
+      
       const sp = new SmoothPortfolio();
       if (sp && typeof sp.setupIframePreviews === 'function') sp.setupIframePreviews();
 
