@@ -1418,6 +1418,121 @@
       display: none;
     }
 
+    /* PAGE TRANSITION LOADING SCREEN */
+    .page-transition-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease-out;
+    }
+
+    .page-transition-loader.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .page-transition-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .page-transition-text {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      opacity: 0.8;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .page-transition-bar {
+      width: 300px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .page-transition-progress {
+      height: 100%;
+      background: linear-gradient(90deg, #1e90ff, #00bfff, #1e90ff);
+      background-size: 200% 100%;
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.3s ease;
+      animation: shimmer 1.5s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .page-transition-dots {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .page-transition-dot {
+      width: 8px;
+      height: 8px;
+      background: #1e90ff;
+      border-radius: 50%;
+      animation: bounce 1.4s ease-in-out infinite both;
+    }
+
+      .page-transition-dot:nth-child(1) { animation-delay: -0.32s; }
+      .page-transition-dot:nth-child(2) { animation-delay: -0.16s; }
+      .page-transition-dot:nth-child(3) { animation-delay: 0s; }
+
+      /* Mobile responsiveness for page transition loader */
+      @media (max-width: 768px) {
+        .page-transition-bar {
+          width: 250px;
+        }
+        
+        .page-transition-text {
+          font-size: 16px;
+        }
+        
+        .page-transition-content {
+          gap: 25px;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .page-transition-bar {
+          width: 200px;
+        }
+        
+        .page-transition-text {
+          font-size: 14px;
+        }
+        
+        .page-transition-content {
+          gap: 20px;
+        }
+        
+        .page-transition-dot {
+          width: 6px;
+          height: 6px;
+        }
+      }
+
     /* BOTTOM VIDEO SECTION */
     .bottom-video-section {
       position: fixed;
@@ -1898,6 +2013,21 @@
     </div>
   </div>
 
+  <!-- Page Transition Loading Screen -->
+  <div class="page-transition-loader" id="page-transition-loader">
+    <div class="page-transition-content">
+      <div class="page-transition-text">Loading Page</div>
+      <div class="page-transition-bar">
+        <div class="page-transition-progress" id="page-transition-progress"></div>
+      </div>
+      <div class="page-transition-dots">
+        <div class="page-transition-dot"></div>
+        <div class="page-transition-dot"></div>
+        <div class="page-transition-dot"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="scroll-indicator" id="scroll-indicator"></div>
 
   <video class="bg-video parallax-slow" src="bgvideo.mp4" autoplay muted loop playsinline></video>
@@ -2177,6 +2307,71 @@
             // The typewriter animation should already be initialized
           }, 100);
         }
+      }
+    }
+
+    // Page Transition Controller
+    class PageTransitionController {
+      constructor() {
+        this.transitionLoader = document.getElementById('page-transition-loader');
+        this.progressBar = document.getElementById('page-transition-progress');
+        this.isTransitioning = false;
+        this.init();
+      }
+
+      init() {
+        this.setupWorkItemListeners();
+      }
+
+      setupWorkItemListeners() {
+        const workItems = document.querySelectorAll('.work-item a');
+        workItems.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const href = link.getAttribute('href');
+            if (href && !this.isTransitioning) {
+              this.startTransition(href);
+            }
+          });
+        });
+      }
+
+      startTransition(targetUrl) {
+        if (this.isTransitioning) return;
+        
+        this.isTransitioning = true;
+        
+        // Show transition loader
+        this.transitionLoader.classList.add('active');
+        
+        // Animate progress bar
+        this.animateProgressBar(() => {
+          // Navigate to target page after animation completes
+          window.location.href = targetUrl;
+        });
+      }
+
+      animateProgressBar(callback) {
+        let progress = 0;
+        const duration = 2000; // 2 seconds total
+        const interval = 50; // Update every 50ms
+        const increment = (interval / duration) * 100;
+        
+        const progressInterval = setInterval(() => {
+          progress += increment;
+          
+          if (progress >= 100) {
+            progress = 100;
+            clearInterval(progressInterval);
+            
+            // Wait a bit before navigating
+            setTimeout(() => {
+              if (callback) callback();
+            }, 300);
+          }
+          
+          this.progressBar.style.width = progress + '%';
+        }, interval);
       }
     }
 
@@ -2557,6 +2752,9 @@
     document.addEventListener('DOMContentLoaded', () => {
       // Initialize loading controller first
       const loadingController = new LoadingController();
+      
+      // Initialize page transition controller
+      const pageTransitionController = new PageTransitionController();
       
       const sp = new SmoothPortfolio();
       if (sp && typeof sp.setupIframePreviews === 'function') sp.setupIframePreviews();
