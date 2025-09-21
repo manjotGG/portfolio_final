@@ -826,6 +826,14 @@
       z-index: 10;
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .about.in-view {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     @keyframes slideUp {
@@ -839,28 +847,30 @@
       overflow: hidden;
       border-radius: 20px;
       position: relative;
+      opacity: 0;
+      transform: translateX(-80px) scale(0.9);
+      transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    .about-image .profile-placeholder {
+    .about-image.in-view {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .about-image .profile-image {
       width: 100%;
-      max-width: 400px;
-      height: 500px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      max-width: 600px;
+      height: 700px;
       border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4em;
-      color: white;
-      font-weight: bold;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      object-fit: cover;
       transition: transform 0.8s ease, filter 0.8s ease, box-shadow 0.8s ease;
       position: relative;
       overflow: hidden;
       animation: floatY 10s ease-in-out infinite;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
 
-    .about-image .profile-placeholder::before {
+    .about-image .profile-image::before {
       content: '';
       position: absolute;
       top: 0;
@@ -870,6 +880,7 @@
       background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
                   radial-gradient(circle at 70% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
       animation: shimmer 3s ease-in-out infinite;
+      border-radius: 20px;
     }
 
     @keyframes shimmer {
@@ -883,39 +894,88 @@
       100% { transform: translateY(0); }
     }
 
-    .about-image:hover .profile-placeholder { transform: scale(1.03) rotate(-0.5deg); filter: brightness(1.08); box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+    .about-image:hover .profile-image { 
+      transform: scale(1.05) rotate(-1deg); 
+      filter: brightness(1.1) contrast(1.05); 
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6); 
+    }
+
+    .about:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .about-content:hover h2 {
+      background: linear-gradient(45deg, #fff, #1e90ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transform: translateY(-2px);
+    }
+
+    .about-content:hover p {
+      color: #ffffff;
+      transform: translateX(5px);
+    }
 
     .about .about-content h2, .about .about-content p { opacity: 0; transform: translateY(20px); }
     .about.in .about-content h2, .about.in .about-content p { opacity: 1; transform: translateY(0); transition: all 0.8s ease; }
     .about.in .about-content p { transition-delay: 150ms; }
 
+    .about-content {
+      opacity: 0;
+      transform: translateX(80px) scale(0.95);
+      transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .about-content.in-view {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
     .about-content h2 { 
-      font-size: 3em; 
-      margin-bottom: 30px;
+      font-size: 2.5em; 
+      margin-bottom: 20px;
       background: linear-gradient(45deg, #fff, #ccc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       opacity: 0;
-      transform: translateX(-30px);
-      animation: slideInLeft 1s ease-out 0.8s forwards;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       font-weight: 700;
       letter-spacing: 1px;
     }
 
-    .about-content p { 
-      font-size: 1.3em; 
-      line-height: 1.9; 
-      opacity: 0;
-      transform: translateX(-30px);
-      animation: slideInLeft 1s ease-out 1s forwards;
-      font-weight: 400;
-      color: #e0e0e0;
-      margin-bottom: 20px;
+    .about-content.in-view h2 {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.3s;
     }
 
-    .about-content p:last-child {
-      animation: slideInLeft 1s ease-out 1.2s forwards;
+    .about-content p { 
+      font-size: 1.1em; 
+      line-height: 1.6; 
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      font-weight: 400;
+      color: #e0e0e0;
+      margin-bottom: 15px;
+    }
+
+    .about-content.in-view p {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .about-content.in-view p:first-of-type {
+      transition-delay: 0.5s;
+    }
+
+    .about-content.in-view p:last-of-type {
+      transition-delay: 0.7s;
     }
 
     @keyframes slideInLeft {
@@ -1403,22 +1463,22 @@
         padding: 60px 30px;
       }
       
-      .about-image .profile-placeholder {
-        height: 300px;
-        font-size: 3em;
+      .about-image .profile-image {
+        height: 400px;
+        max-width: 100%;
       }
       
       .about-content h2 {
-        font-size: 2.2em;
-        margin-bottom: 20px;
+        font-size: 2em;
+        margin-bottom: 15px;
         letter-spacing: 0.5px;
       }
       
       .about-content p {
-        font-size: 1.1em;
-        line-height: 1.7;
+        font-size: 1em;
+        line-height: 1.5;
         color: #e0e0e0;
-        margin-bottom: 15px;
+        margin-bottom: 12px;
       }
 
       .work {
@@ -1631,21 +1691,22 @@
         margin: 0 10px;
       }
       
-      .about-image .profile-placeholder {
-        height: 250px;
-        font-size: 2.5em;
+      .about-image .profile-image {
+        height: 350px;
+        max-width: 100%;
       }
       
       .about-content h2 {
-        font-size: 1.8em;
+        font-size: 1.6em;
         letter-spacing: 0.3px;
+        margin-bottom: 12px;
       }
       
       .about-content p {
-        font-size: 1em;
-        line-height: 1.6;
+        font-size: 0.9em;
+        line-height: 1.4;
         color: #e0e0e0;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
       }
       
       .work {
@@ -1946,7 +2007,7 @@
 
   <section id="about" class="about scroll-reveal">
     <div class="about-image scroll-reveal-left">
-      <div class="profile-placeholder float-animation">M</div>
+      <img src="manjot.jpeg" alt="Manjot Singh" class="profile-image float-animation">
     </div>
     <div class="about-content">
       <h2 class="text-reveal">About Me</h2>
@@ -1965,7 +2026,7 @@
               <div class="work-placeholder design1">
                 <div>🎨 Creative<br>Sketches</div>
               </div>
-              <div class="work-text">First steps → Sketching ✏️ to Designing 🎨</div>
+              <div class="work-text">Where it all started</div>
             </a>
             <div class="work-description">
               <h4>Scribbling Journey</h4>
@@ -1978,7 +2039,7 @@
               <div class="work-placeholder design2">
                 <div>🖼️ Graphic<br>Design</div>
               </div>
-              <div class="work-text">Drawing ✏️ → Graphics 🎨 → Illustrator 💻</div>
+              <div class="work-text">Where it evolved</div>
             </a>
             <div class="work-description">
               <h4>Graphic Design Evolution</h4>
@@ -1991,7 +2052,7 @@
               <div class="work-placeholder design3">
                 <div>💡 Professional<br>Artwork</div>
               </div>
-              <div class="work-text">Ideas 💡 → Professional Work 🚀</div>
+              <div class="work-text">Where it leads</div>
             </a>
             <div class="work-description">
               <h4>Professional Artworks</h4>
@@ -2246,6 +2307,33 @@
           el.classList.add('reveal-init');
           observer.observe(el);
         });
+
+        // Special observer for about section elements
+        const aboutObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              
+              // Add staggered animation for about content elements
+              if (entry.target.classList.contains('about')) {
+                const aboutImage = entry.target.querySelector('.about-image');
+                const aboutContent = entry.target.querySelector('.about-content');
+                
+                if (aboutImage) {
+                  setTimeout(() => aboutImage.classList.add('in-view'), 200);
+                }
+                if (aboutContent) {
+                  setTimeout(() => aboutContent.classList.add('in-view'), 400);
+                }
+              }
+            }
+          });
+        }, { threshold: 0.2 });
+
+        const aboutSection = document.querySelector('.about');
+        if (aboutSection) {
+          aboutObserver.observe(aboutSection);
+        }
 
         // Special observer for terminal window
         const terminalObserver = new IntersectionObserver((entries) => {
