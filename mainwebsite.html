@@ -1188,7 +1188,10 @@
       width: 100%; 
       height: 100%; 
       text-decoration: none; 
-      color: inherit; 
+      color: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .work-text {
@@ -2316,24 +2319,89 @@
         this.transitionLoader = document.getElementById('page-transition-loader');
         this.progressBar = document.getElementById('page-transition-progress');
         this.isTransitioning = false;
+        this.progressInterval = null;
         this.init();
       }
 
       init() {
         this.setupWorkItemListeners();
+        this.resetLoader(); // Reset loader on page load
+        this.setupPageVisibilityListener();
+      }
+
+      setupPageVisibilityListener() {
+        // Reset loader when page becomes visible again (user returns from another page)
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) {
+            this.resetLoader();
+          }
+        });
+
+        // Also reset on page focus (for mobile)
+        window.addEventListener('focus', () => {
+          this.resetLoader();
+        });
+
+        // Reset on page load (back button navigation)
+        window.addEventListener('pageshow', () => {
+          this.resetLoader();
+        });
       }
 
       setupWorkItemListeners() {
         const workItems = document.querySelectorAll('.work-item a');
         workItems.forEach(link => {
-          link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const href = link.getAttribute('href');
-            if (href && !this.isTransitioning) {
-              this.startTransition(href);
-            }
-          });
+          // Remove any existing listeners to prevent duplicates
+          link.removeEventListener('click', this.handleWorkItemClick);
+          link.removeEventListener('touchend', this.handleWorkItemClick);
+          
+          // Add both click and touchend for better mobile support
+          link.addEventListener('click', this.handleWorkItemClick.bind(this));
+          link.addEventListener('touchend', this.handleWorkItemClick.bind(this));
         });
+      }
+
+      handleWorkItemClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const href = e.currentTarget.getAttribute('href');
+        if (!href || this.isTransitioning) return;
+        
+        // Check if it's a mobile device
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                        ('ontouchstart' in window) || 
+                        (navigator.maxTouchPoints > 0);
+        
+        if (isMobile) {
+          // For mobile, use a simpler approach - shorter transition or direct navigation
+          this.startMobileTransition(href);
+        } else {
+          // For desktop, use full transition
+          this.startTransition(href);
+        }
+      }
+
+      startMobileTransition(targetUrl) {
+        if (this.isTransitioning) return;
+        
+        this.isTransitioning = true;
+        
+        // Show transition loader
+        this.transitionLoader.classList.add('active');
+        
+        // Shorter animation for mobile
+        this.animateProgressBar(() => {
+          window.location.href = targetUrl;
+        }, 800); // 0.8 seconds for mobile
+        
+        // Fallback timeout
+        setTimeout(() => {
+          if (this.isTransitioning) {
+            this.resetLoader();
+            window.location.href = targetUrl;
+          }
+        }, 1500);
       }
 
       startTransition(targetUrl) {
@@ -2347,31 +2415,64 @@
         // Animate progress bar
         this.animateProgressBar(() => {
           // Navigate to target page after animation completes
-          window.location.href = targetUrl;
+          try {
+            window.location.href = targetUrl;
+          } catch (error) {
+            // Fallback for mobile devices
+            console.log('Navigation fallback triggered');
+            window.location.assign(targetUrl);
+          }
         });
+
+        // Fallback timeout for mobile devices (in case animation gets stuck)
+        setTimeout(() => {
+          if (this.isTransitioning) {
+            console.log('Fallback navigation triggered');
+            this.resetLoader();
+            window.location.href = targetUrl;
+          }
+        }, 3000);
       }
 
-      animateProgressBar(callback) {
+      animateProgressBar(callback, duration = 1500) {
+        // Clear any existing interval
+        if (this.progressInterval) {
+          clearInterval(this.progressInterval);
+        }
+        
         let progress = 0;
-        const duration = 2000; // 2 seconds total
-        const interval = 50; // Update every 50ms
+        const interval = 30; // Update every 30ms for smoother animation
         const increment = (interval / duration) * 100;
         
-        const progressInterval = setInterval(() => {
+        this.progressInterval = setInterval(() => {
           progress += increment;
           
           if (progress >= 100) {
             progress = 100;
-            clearInterval(progressInterval);
+            clearInterval(this.progressInterval);
+            this.progressInterval = null;
             
             // Wait a bit before navigating
             setTimeout(() => {
               if (callback) callback();
-            }, 300);
+            }, 200);
           }
           
           this.progressBar.style.width = progress + '%';
         }, interval);
+      }
+
+      resetLoader() {
+        // Reset all states
+        this.isTransitioning = false;
+        this.transitionLoader.classList.remove('active');
+        this.progressBar.style.width = '0%';
+        
+        // Clear any running intervals
+        if (this.progressInterval) {
+          clearInterval(this.progressInterval);
+          this.progressInterval = null;
+        }
       }
     }
 
