@@ -2,60 +2,86 @@
    SCROLL-DRIVEN ANIMATIONS SYSTEM
    ======================================== */
 
-/* Performance optimizations */
+/* Performance optimizations for 60fps */
 * {
   will-change: auto;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  scroll-behavior: smooth;
+  overscroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .animate-element {
   will-change: transform, opacity, filter;
   backface-visibility: hidden;
   perspective: 1000px;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Hardware acceleration for all animated elements */
+.scroll-reveal,
+.scroll-reveal-left,
+.scroll-reveal-right,
+.scroll-reveal-scale,
+.scroll-reveal-rotate,
+.parallax-slow,
+.parallax-medium,
+.parallax-fast {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 /* ========================================
    BASE ANIMATION CLASSES
    ======================================== */
 
-/* Initial states - elements start hidden/transformed */
+/* Initial states - elements start hidden/transformed with hardware acceleration */
 .scroll-reveal {
   opacity: 0;
-  transform: translateY(60px);
+  transform: translate3d(0, 60px, 0);
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .scroll-reveal-left {
   opacity: 0;
-  transform: translateX(-60px);
+  transform: translate3d(-60px, 0, 0);
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .scroll-reveal-right {
   opacity: 0;
-  transform: translateX(60px);
+  transform: translate3d(60px, 0, 0);
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .scroll-reveal-scale {
   opacity: 0;
-  transform: scale(0.8) translateY(40px);
+  transform: translate3d(0, 40px, 0) scale(0.8);
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .scroll-reveal-rotate {
   opacity: 0;
-  transform: rotate(-5deg) translateY(40px);
+  transform: translate3d(0, 40px, 0) rotate(-5deg);
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Active states - when element is in viewport */
+/* Active states - when element is in viewport with hardware acceleration */
 .scroll-reveal.animate-in,
 .scroll-reveal-left.animate-in,
 .scroll-reveal-right.animate-in,
 .scroll-reveal-scale.animate-in,
 .scroll-reveal-rotate.animate-in {
   opacity: 1;
-  transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+  transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
 }
 
 /* ========================================
@@ -93,18 +119,24 @@
    ======================================== */
 
 .parallax-slow {
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
   will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .parallax-medium {
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
   will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .parallax-fast {
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
   will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 /* ========================================

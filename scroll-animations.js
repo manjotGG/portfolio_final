@@ -1,6 +1,7 @@
 /**
  * SCROLL-DRIVEN ANIMATIONS SYSTEM
  * Advanced intersection observer and scroll progress animations
+ * Optimized for 60fps performance with hardware acceleration
  */
 
 class ScrollAnimationSystem {
@@ -9,11 +10,13 @@ class ScrollAnimationSystem {
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px',
       staggerDelay: 100,
-      parallaxSpeed: 0.5,
+      parallaxSpeed: 0.3, // Reduced for smoother performance
       enableParallax: true,
       enableProgress: true,
       enableStagger: true,
       mobileOptimized: true,
+      useRAF: true, // Use requestAnimationFrame for all animations
+      hardwareAcceleration: true, // Force hardware acceleration
       ...options
     };
     
@@ -22,6 +25,9 @@ class ScrollAnimationSystem {
     this.progressElements = new Map();
     this.isMobile = window.innerWidth <= 768;
     this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.rafId = null;
+    this.lastScrollTime = 0;
+    this.scrollThrottle = 16; // ~60fps
     
     this.init();
   }
@@ -144,34 +150,49 @@ class ScrollAnimationSystem {
   }
 
   /**
-   * Setup parallax scrolling
+   * Setup parallax scrolling with 60fps optimization
    */
   setupParallaxScrolling() {
-    if (!this.options.enableParallax || this.isMobile) return;
+    if (!this.options.enableParallax) return;
 
     let ticking = false;
+    let lastScrollY = 0;
     
     const updateParallax = () => {
       const scrollY = window.pageYOffset;
       
+      // Only update if scroll position changed significantly
+      if (Math.abs(scrollY - lastScrollY) < 1) {
+        ticking = false;
+        return;
+      }
+      
+      lastScrollY = scrollY;
+      
       this.parallaxElements.forEach((element, speed) => {
         const yPos = -(scrollY * speed);
+        // Use transform3d for hardware acceleration
         element.style.transform = `translate3d(0, ${yPos}px, 0)`;
+        // Force hardware acceleration
+        if (this.options.hardwareAcceleration) {
+          element.style.willChange = 'transform';
+        }
       });
       
       ticking = false;
     };
 
+    // Throttled scroll listener for 60fps
     window.addEventListener('scroll', () => {
       if (!ticking) {
         requestAnimationFrame(updateParallax);
         ticking = true;
       }
-    });
+    }, { passive: true });
   }
 
   /**
-   * Setup parallax elements
+   * Setup parallax elements with hardware acceleration
    */
   setupParallaxElements() {
     const parallaxElements = document.querySelectorAll(`
@@ -189,6 +210,14 @@ class ScrollAnimationSystem {
         speed = 0.4;
       } else if (element.classList.contains('parallax-fast')) {
         speed = 0.6;
+      }
+
+      // Enable hardware acceleration
+      if (this.options.hardwareAcceleration) {
+        element.style.willChange = 'transform';
+        element.style.backfaceVisibility = 'hidden';
+        element.style.perspective = '1000px';
+        element.style.transform = 'translate3d(0, 0, 0)';
       }
 
       this.parallaxElements.set(element, speed);
@@ -288,25 +317,84 @@ class ScrollAnimationSystem {
   }
 
   /**
-   * Setup performance optimizations
+   * Setup performance optimizations for 60fps
    */
   setupPerformanceOptimizations() {
-    // Throttle scroll events
+    // Enable hardware acceleration for all animated elements
+    if (this.options.hardwareAcceleration) {
+      const animatedElements = document.querySelectorAll(`
+        .scroll-reveal,
+        .scroll-reveal-left,
+        .scroll-reveal-right,
+        .scroll-reveal-scale,
+        .scroll-reveal-rotate,
+        .parallax-slow,
+        .parallax-medium,
+        .parallax-fast
+      `);
+      
+      animatedElements.forEach(element => {
+        element.style.willChange = 'transform, opacity';
+        element.style.backfaceVisibility = 'hidden';
+        element.style.perspective = '1000px';
+        element.style.transform = 'translate3d(0, 0, 0)';
+      });
+    }
+
+    // Optimize scroll events with RAF throttling
     let scrollTimeout;
+    let isScrolling = false;
     
     const throttledScroll = () => {
-      if (!scrollTimeout) {
-        scrollTimeout = setTimeout(() => {
+      if (!isScrolling) {
+        requestAnimationFrame(() => {
           this.updateScrollAnimations();
-          scrollTimeout = null;
-        }, 16); // ~60fps
+          isScrolling = false;
+        });
+        isScrolling = true;
       }
     };
 
-    window.addEventListener('scroll', throttledScroll);
+    window.addEventListener('scroll', throttledScroll, { passive: true });
 
     // Preload critical animations
     this.preloadAnimations();
+    
+    // Setup intersection observer with performance optimizations
+    this.setupOptimizedIntersectionObserver();
+  }
+
+  /**
+   * Setup optimized intersection observer for better performance
+   */
+  setupOptimizedIntersectionObserver() {
+    // Use a more efficient intersection observer with better thresholds
+    const optimizedObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Use requestAnimationFrame for smooth animations
+          requestAnimationFrame(() => {
+            this.animateElement(entry.target);
+          });
+        }
+      });
+    }, {
+      threshold: [0, 0.1, 0.5, 1.0], // Multiple thresholds for better performance
+      rootMargin: '0px 0px -10% 0px'
+    });
+
+    // Observe all animation elements
+    const elements = document.querySelectorAll(`
+      .scroll-reveal,
+      .scroll-reveal-left,
+      .scroll-reveal-right,
+      .scroll-reveal-scale,
+      .scroll-reveal-rotate
+    `);
+    
+    elements.forEach(element => {
+      optimizedObserver.observe(element);
+    });
   }
 
   /**
