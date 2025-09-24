@@ -389,6 +389,20 @@
         min-height: 220px !important; 
       }
       h1 { font-size: 2.5rem; }
+      
+      .header-background {
+        height: 80vh;
+        min-height: 500px;
+        margin-bottom: 3rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header-background {
+        height: 70vh;
+        min-height: 400px;
+        margin-bottom: 2rem;
+      }
     }
 
     /* Loading animation */
@@ -400,6 +414,55 @@
     .loading .image-card {
       animation: loadingPulse 1.5s ease-in-out infinite;
     }
+
+    /* Hero Section with Full-Width Background */
+    .header-background {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      min-height: 600px;
+      margin-left: calc(-50vw + 50%);
+      margin-bottom: 4rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header-bg-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.7) contrast(1.2);
+      z-index: 1;
+    }
+
+    /* Enhanced fade transition with background visibility */
+    .header-background::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0.2) 10%,
+        rgba(0, 0, 0, 0.05) 20%,
+        rgba(0, 0, 0, 0.02) 30%,
+        rgba(0, 0, 0, 0.05) 50%,
+        rgba(0, 0, 0, 0.1) 70%,
+        rgba(0, 0, 0, 0.3) 85%,
+        rgba(0, 0, 0, 0.6) 100%
+      );
+      z-index: 2;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -409,14 +472,12 @@
     Your browser does not support HTML5 video.
   </video>
 
-  <div class="container">
-    <h1 class="text-reveal glitch-effect">Graphic Design</h1>
-    <p class="intro text-reveal">
-      Crafting creative visuals that inspire and communicate.  
-      A blend of typography, imagery, and imagination  
-      for impactful digital experiences.
-    </p>
+  <!-- Hero Section with Full-Width Background -->
+  <div class="header-background">
+    <img src="bg2.png" alt="Graphic Design Background" class="header-bg-image">
+  </div>
 
+  <div class="container">
     <!-- Gallery -->
     <div class="gallery stagger-container">
       <div class="image-card image-fade-scale hover-lift" data-desc="Relaxing vibe art with soothing colors and peaceful composition">
