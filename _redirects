@@ -1,0 +1,6 @@
+# Vercel redirects file
+/ /mainwebsite.html 200
+/scribbling /scribbling.html 200
+/graphic-design /graphic_design.html 200
+/illustrator /Illustrator.html 200
+/about /about-me.html 200

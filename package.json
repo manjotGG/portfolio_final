@@ -21,12 +21,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/manjot/portfolio"
+    "url": "https://github.com/manjotGG/portfolio_final"
   },
   "engines": {
-    "node": ">=14.0.0"
-  },
-  "devDependencies": {
-    "vercel": "^32.0.0"
+    "node": ">=18.0.0"
   }
 }
