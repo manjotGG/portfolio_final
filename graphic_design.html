@@ -40,7 +40,7 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      touch-action: manipulation;
+      touch-action: pan-y;
     }
 
     /* Background video with blur */
@@ -679,6 +679,72 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 1rem;
         padding: 0.5rem;
+      }
+    }
+
+    /* Mobile Scrolling Fixes */
+    @media (max-width: 768px) {
+      html, body {
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+      }
+      
+      body {
+        position: relative;
+        touch-action: pan-y;
+        -webkit-tap-highlight-color: transparent;
+      }
+      
+      /* Fix iOS Safari scroll bounce */
+      @supports (-webkit-touch-callout: none) {
+        body {
+          position: relative;
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+      }
+      
+      /* Fix Android Chrome touch delays */
+      @media screen and (-webkit-min-device-pixel-ratio: 0) {
+        * {
+          -webkit-tap-highlight-color: transparent;
+          -webkit-touch-callout: none;
+          touch-action: manipulation;
+        }
+        
+        .image-card, .modal-close {
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+        }
+      }
+    }
+
+    /* iOS Safari Specific Fixes */
+    @supports (-webkit-touch-callout: none) {
+      body {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
+      
+      .header-background {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    }
+
+    /* Android Chrome Specific Fixes */
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+      body {
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+      }
+      
+      .image-card, .modal-close {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
       }
     }
   </style>

@@ -16,6 +16,8 @@ body {
   scroll-behavior: smooth;
   overscroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .animate-element {
@@ -661,4 +663,83 @@ body {
 
 .ease-smooth {
   transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ========================================
+   MOBILE SCROLLING FIXES
+   ======================================== */
+
+/* Mobile Scrolling Fixes */
+@media (max-width: 768px) {
+  html, body {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    position: relative;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Fix iOS Safari scroll bounce */
+  @supports (-webkit-touch-callout: none) {
+    body {
+      position: relative;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+  
+  /* Fix Android Chrome touch delays */
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      touch-action: manipulation;
+    }
+    
+    .scroll-reveal,
+    .scroll-reveal-left,
+    .scroll-reveal-right,
+    .scroll-reveal-scale,
+    .scroll-reveal-rotate,
+    .parallax-slow,
+    .parallax-medium,
+    .parallax-fast {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+}
+
+/* iOS Safari Specific Fixes */
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+}
+
+/* Android Chrome Specific Fixes */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  body {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+  
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-rotate,
+  .parallax-slow,
+  .parallax-medium,
+  .parallax-fast {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
 }

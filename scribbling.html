@@ -50,7 +50,8 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      touch-action: manipulation;
+      touch-action: pan-y;
+      min-height: 100vh;
     }
 
     html {
@@ -1668,35 +1669,71 @@
       }
     }
 
-    /* iOS Safari Specific Fixes */
-    @supports (-webkit-touch-callout: none) {
-      /* Fix iOS Safari viewport issues */
-      .header-background {
-        padding-top: env(safe-area-inset-top);
-        padding-bottom: env(safe-area-inset-bottom);
+    /* Mobile Scrolling Fixes */
+    @media (max-width: 768px) {
+      html, body {
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+      }
+      
+      body {
+        position: relative;
+        touch-action: pan-y;
+        -webkit-tap-highlight-color: transparent;
       }
       
       /* Fix iOS Safari scroll bounce */
-      body {
-        position: fixed;
-        overflow: hidden;
-        width: 100%;
-        height: 100%;
+      @supports (-webkit-touch-callout: none) {
+        body {
+          position: relative;
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+        }
       }
       
-      .main-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
+      /* Fix Android Chrome touch delays */
+      @media screen and (-webkit-min-device-pixel-ratio: 0) {
+        * {
+          -webkit-tap-highlight-color: transparent;
+          -webkit-touch-callout: none;
+          touch-action: manipulation;
+        }
+        
+        .photo-frame, .nav-item {
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+        }
+      }
+    }
+
+    /* iOS Safari Specific Fixes */
+    @supports (-webkit-touch-callout: none) {
+      body {
         -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
+      
+      .header-background {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
       }
     }
 
     /* Android Chrome Specific Fixes */
     @media screen and (-webkit-min-device-pixel-ratio: 0) {
+      body {
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+      }
+      
+      .photo-frame, .nav-item {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+      
       /* Fix Android Chrome rendering issues */
       .polaroid-gallery,
       .header-background,
