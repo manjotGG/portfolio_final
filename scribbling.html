@@ -60,23 +60,22 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Background video with blur */
-    .bg-video {
+    /* Paper background image */
+    .paper-bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      z-index: -3;
-      opacity: 0.4;
-      filter: blur(4px);
+      background-image: url('paper.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -4;
+      opacity: 0.3;
       pointer-events: none;
     }
 
-    .bg-video.parallax-slow {
-      will-change: transform;
-    }
 
     .bg-overlay {
       position: fixed;
@@ -1365,7 +1364,7 @@
       z-index: 1;
     }
 
-    /* Enhanced fade transition with background visibility */
+    /* Enhanced fade transition with strong bottom black gradient */
     .header-background::after {
       content: '';
       position: absolute;
@@ -1375,14 +1374,13 @@
       bottom: 0;
       background: linear-gradient(
         180deg,
-        rgba(0, 0, 0, 0.8) 0%,
-        rgba(0, 0, 0, 0.4) 10%,
+        rgba(0, 0, 0, 0.3) 0%,
         rgba(0, 0, 0, 0.1) 20%,
-        rgba(0, 0, 0, 0.05) 30%,
-        rgba(0, 0, 0, 0.1) 50%,
-        rgba(0, 0, 0, 0.2) 70%,
-        rgba(0, 0, 0, 0.6) 85%,
-        rgba(0, 0, 0, 0.9) 100%
+        rgba(0, 0, 0, 0.05) 40%,
+        rgba(0, 0, 0, 0.1) 60%,
+        rgba(0, 0, 0, 0.3) 80%,
+        rgba(0, 0, 0, 0.7) 90%,
+        rgba(0, 0, 0, 0.95) 100%
       );
       z-index: 2;
       pointer-events: none;
@@ -1797,6 +1795,203 @@
         width: 32%;
       }
     }
+
+    /* 3-BAR MENU WITH DROPDOWN */
+    .menu-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .hamburger-menu {
+      width: 50px;
+      height: 50px;
+      background: rgba(30, 144, 255, 0.9);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      gap: 4px;
+    }
+
+    .hamburger-menu:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 10px 30px rgba(30, 144, 255, 0.5);
+      background: rgba(30, 144, 255, 1);
+    }
+
+    .hamburger-menu.active {
+      transform: rotate(180deg);
+      background: rgba(255, 255, 255, 0.95);
+      border-color: #1e90ff;
+    }
+
+    .hamburger-line {
+      width: 20px;
+      height: 3px;
+      background: #ffffff;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger-menu.active .hamburger-line:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger-menu.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger-menu.active .hamburger-line:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 70px;
+      right: 0;
+      background: rgba(0, 0, 0, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 20px;
+      min-width: 200px;
+      opacity: 0;
+      transform: translateY(-20px) scale(0.9);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .dropdown-menu.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 15px;
+      margin: 6px 0;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      position: relative;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .menu-item:hover {
+      background: rgba(30, 144, 255, 0.2);
+      transform: translateX(8px);
+      color: #1e90ff;
+    }
+
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3px;
+      height: 100%;
+      background: #1e90ff;
+      border-radius: 0 2px 2px 0;
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .menu-item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .menu-icon {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-item:hover .menu-icon {
+      transform: scale(1.2);
+    }
+
+    /* Mobile Responsive for 3-bar menu */
+    @media (max-width: 768px) {
+      .menu-container {
+        top: 15px;
+        right: 15px;
+      }
+      
+      .hamburger-menu {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .dropdown-menu {
+        min-width: 180px;
+        padding: 15px;
+      }
+      
+      .menu-item {
+        padding: 10px 12px;
+        font-size: 14px;
+        gap: 10px;
+      }
+      
+      .menu-icon {
+        width: 16px;
+        height: 16px;
+      }
+      
+      .hamburger-line {
+        width: 18px;
+        height: 2px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .menu-container {
+        top: 10px;
+        right: 10px;
+      }
+      
+      .hamburger-menu {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .dropdown-menu {
+        min-width: 160px;
+        padding: 12px;
+      }
+      
+      .menu-item {
+        padding: 8px 10px;
+        font-size: 13px;
+        gap: 8px;
+      }
+      
+      .menu-icon {
+        width: 14px;
+        height: 14px;
+      }
+      
+      .hamburger-line {
+        width: 16px;
+        height: 2px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1813,8 +2008,9 @@
     </div>
   </div>
 
-  <!-- Background video -->
-  <video class="bg-video parallax-slow" src="bgvideo.mp4" autoplay muted loop playsinline></video>
+  <!-- Paper background -->
+  <div class="paper-bg"></div>
+  
   <div class="bg-overlay"></div>
   
   <!-- Navbar Background -->
@@ -1826,10 +2022,51 @@
   <nav class="navbar">
     <div class="nav-circle" onclick="window.location.href='mainwebsite.html'">
       <div class="profile-img">M</div>
-      <span class="nav-text">Say hi!</span>
+        <span class="nav-text">Home</span>
       <span class="nav-arrow">→</span>
     </div>
   </nav>
+
+  <!-- 3-Bar Menu with Dropdown -->
+  <div class="menu-container">
+    <div class="hamburger-menu" id="hamburger-menu" onclick="toggleMenu()">
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+    </div>
+    <div class="dropdown-menu" id="dropdown-menu">
+      <a href="mainwebsite.html" class="menu-item">
+        <svg class="menu-icon" viewBox="0 0 24 24">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        Home
+      </a>
+      <a href="scribbling.html" class="menu-item">
+        <svg class="menu-icon" viewBox="0 0 24 24">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+        </svg>
+        Scribble
+      </a>
+      <a href="graphic_design.html" class="menu-item">
+        <svg class="menu-icon" viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        Graphic Design
+      </a>
+      <a href="Illustrator.html" class="menu-item">
+        <svg class="menu-icon" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        Illustrator
+      </a>
+      <a href="about-me.html" class="menu-item">
+        <svg class="menu-icon" viewBox="0 0 24 24">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+        About Me
+      </a>
+    </div>
+  </div>
   
 
   <div class="main-content">
@@ -2096,30 +2333,6 @@
         useRAF: true,
         hardwareAcceleration: true
       });
-      // Handle background video
-      const bgVideo = document.querySelector('.bg-video');
-      if (bgVideo) {
-        bgVideo.addEventListener('ended', () => {
-          bgVideo.currentTime = 0;
-          bgVideo.play();
-        });
-        
-        // Parallax effect for video
-        let ticking = false;
-        function updateVideoParallax() {
-          const scrolled = window.pageYOffset;
-          const rate = scrolled * 0.5;
-          bgVideo.style.transform = `translateY(${rate}px)`;
-          ticking = false;
-        }
-        
-        window.addEventListener('scroll', () => {
-          if (!ticking) {
-            requestAnimationFrame(updateVideoParallax);
-            ticking = true;
-          }
-        });
-      }
       
       // Modal functionality
       const modal = document.getElementById('imageModal');
@@ -2274,6 +2487,27 @@
         const rate = scrolled * -0.5;
         binding.style.transform = `translateY(${rate}px)`;
       });
+    });
+
+    // Menu toggle functionality
+    function toggleMenu() {
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const dropdownMenu = document.getElementById('dropdown-menu');
+      
+      hamburgerMenu.classList.toggle('active');
+      dropdownMenu.classList.toggle('active');
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      const menuContainer = document.querySelector('.menu-container');
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const dropdownMenu = document.getElementById('dropdown-menu');
+      
+      if (!menuContainer.contains(e.target)) {
+        hamburgerMenu.classList.remove('active');
+        dropdownMenu.classList.remove('active');
+      }
     });
   </script>
 </body>
