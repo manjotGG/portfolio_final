@@ -498,6 +498,167 @@ body {
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* ========================================
+   MOBILE OPTIMIZATIONS
+   ======================================== */
+
+/* iOS and Android Touch Optimizations */
+@media (max-width: 1024px) {
+  /* Touch-friendly interactions */
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-rotate {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+  }
+  
+  /* Prevent zoom on input focus */
+  input, textarea, select {
+    font-size: 16px;
+  }
+  
+  /* Smooth scrolling for iOS */
+  .animate-element {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Tablet and Large Mobile */
+@media (max-width: 768px) {
+  /* Reduce animation complexity on mobile */
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-rotate {
+    transform: translate3d(0, 20px, 0);
+    transition: all 0.6s ease-out;
+  }
+  
+  .scroll-reveal-scale {
+    transform: scale(0.9) translateY(20px);
+  }
+  
+  /* Disable parallax on mobile for performance */
+  .parallax-slow,
+  .parallax-medium,
+  .parallax-fast {
+    transform: none !important;
+  }
+  
+  /* Reduce stagger delays */
+  .stagger-container.animate-in > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger-container.animate-in > *:nth-child(2) { animation-delay: 0.1s; }
+  .stagger-container.animate-in > *:nth-child(3) { animation-delay: 0.15s; }
+  .stagger-container.animate-in > *:nth-child(4) { animation-delay: 0.2s; }
+  .stagger-container.animate-in > *:nth-child(5) { animation-delay: 0.25s; }
+  .stagger-container.animate-in > *:nth-child(6) { animation-delay: 0.3s; }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  /* Further reduce animations on small screens */
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-rotate {
+    transform: translate3d(0, 15px, 0);
+    transition: all 0.4s ease-out;
+  }
+  
+  .scroll-reveal-scale {
+    transform: scale(0.95) translateY(15px);
+  }
+  
+  /* Minimal stagger delays */
+  .stagger-container.animate-in > *:nth-child(1) { animation-delay: 0.02s; }
+  .stagger-container.animate-in > *:nth-child(2) { animation-delay: 0.04s; }
+  .stagger-container.animate-in > *:nth-child(3) { animation-delay: 0.06s; }
+  .stagger-container.animate-in > *:nth-child(4) { animation-delay: 0.08s; }
+  .stagger-container.animate-in > *:nth-child(5) { animation-delay: 0.1s; }
+  .stagger-container.animate-in > *:nth-child(6) { animation-delay: 0.12s; }
+}
+
+/* Extra Small Mobile Devices */
+@media (max-width: 360px) {
+  /* Minimal animations for very small screens */
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-rotate {
+    transform: translate3d(0, 10px, 0);
+    transition: all 0.3s ease-out;
+  }
+  
+  .scroll-reveal-scale {
+    transform: scale(0.98) translateY(10px);
+  }
+}
+
+/* iOS Safari Specific Fixes */
+@supports (-webkit-touch-callout: none) {
+  /* Fix iOS Safari scroll bounce */
+  .animate-element {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix iOS Safari viewport issues */
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-rotate {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Android Chrome Specific Fixes */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  /* Fix Android Chrome rendering issues */
+  .animate-element {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+  
+  /* Fix Android Chrome touch delays */
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-rotate {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+  }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Optimize for retina displays */
+  .animate-element {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Landscape Orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Reduce animations in landscape mode */
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-rotate {
+    transform: translate3d(0, 10px, 0);
+    transition: all 0.3s ease-out;
+  }
+}
+
 .ease-smooth {
   transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }

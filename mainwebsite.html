@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Manjot's Portfolio">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#111111">
+  <meta name="msapplication-TileColor" content="#111111">
+  <meta name="msapplication-navbutton-color" content="#111111">
   <title>Manjot's Portfolio</title>
   <link rel="stylesheet" href="scroll-animations.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -26,6 +33,14 @@
       background: #111;
       scroll-behavior: smooth;
       overscroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
     }
     
     * {
@@ -1998,6 +2013,302 @@
       
       .social-icon i {
         font-size: 13px;
+      }
+    }
+
+    /* ========================================
+       COMPREHENSIVE MOBILE OPTIMIZATIONS
+       ======================================== */
+
+    /* iOS and Android Touch Optimizations */
+    @media (max-width: 1024px) {
+      /* Touch-friendly button sizes */
+      .nav-circle {
+        min-width: 44px;
+        min-height: 44px;
+        touch-action: manipulation;
+      }
+      
+      /* Prevent zoom on input focus */
+      input, textarea, select {
+        font-size: 16px;
+      }
+      
+      /* Smooth scrolling for iOS */
+      .main-content {
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    /* Tablet and Large Mobile */
+    @media (max-width: 768px) {
+      /* Hero section mobile optimization */
+      .hero-content h1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+      }
+      
+      .hero-content p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+      }
+      
+      /* Work section mobile layout */
+      .work-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 2rem 1rem;
+      }
+      
+      .work-card {
+        padding: 1.5rem;
+        min-height: 200px;
+      }
+      
+      .work-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 0.8rem;
+      }
+      
+      .work-card p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+      
+      /* About section mobile */
+      .about-content {
+        padding: 2rem 1rem;
+        text-align: center;
+      }
+      
+      .about-content h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .about-content p {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+      
+      /* Contact section mobile */
+      .contact-content {
+        padding: 2rem 1rem;
+      }
+      
+      .contact-content h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .social-links {
+        justify-content: center;
+        gap: 1.5rem;
+      }
+      
+      .social-links a {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+    }
+
+    /* Small Mobile Devices */
+    @media (max-width: 480px) {
+      /* Hero section small mobile */
+      .hero-content {
+        padding: 1rem;
+        text-align: center;
+      }
+      
+      .hero-content h1 {
+        font-size: 2rem;
+        line-height: 1.1;
+        margin-bottom: 0.8rem;
+      }
+      
+      .hero-content p {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .cta-button {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+        min-width: 120px;
+        min-height: 44px;
+      }
+      
+      /* Work section small mobile */
+      .work-grid {
+        padding: 1.5rem 0.5rem;
+        gap: 1rem;
+      }
+      
+      .work-card {
+        padding: 1rem;
+        min-height: 180px;
+      }
+      
+      .work-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.6rem;
+      }
+      
+      .work-card p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
+      
+      /* About section small mobile */
+      .about-content {
+        padding: 1.5rem 0.5rem;
+      }
+      
+      .about-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+      }
+      
+      .about-content p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+      }
+      
+      /* Contact section small mobile */
+      .contact-content {
+        padding: 1.5rem 0.5rem;
+      }
+      
+      .contact-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+      }
+      
+      .social-links {
+        gap: 1rem;
+      }
+      
+      .social-links a {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+      }
+    }
+
+    /* Extra Small Mobile Devices */
+    @media (max-width: 360px) {
+      .hero-content h1 {
+        font-size: 1.8rem;
+      }
+      
+      .work-card {
+        padding: 0.8rem;
+        min-height: 160px;
+      }
+      
+      .work-card h3 {
+        font-size: 1rem;
+      }
+      
+      .work-card p {
+        font-size: 0.8rem;
+      }
+      
+      .about-content h2,
+      .contact-content h2 {
+        font-size: 1.6rem;
+      }
+      
+      .social-links a {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+    }
+
+    /* iOS Safari Specific Fixes */
+    @supports (-webkit-touch-callout: none) {
+      /* Fix iOS Safari viewport issues */
+      .hero-content {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      
+      /* Fix iOS Safari scroll bounce */
+      body {
+        position: fixed;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+      
+      .main-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    /* Android Chrome Specific Fixes */
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+      /* Fix Android Chrome rendering issues */
+      .work-card,
+      .about-content,
+      .contact-content {
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+      }
+      
+      /* Fix Android Chrome touch delays */
+      .nav-circle,
+      .cta-button,
+      .social-links a {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+    }
+
+    /* High DPI Displays */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      /* Optimize for retina displays */
+      .nav-circle,
+      .work-card,
+      .social-links a {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    }
+
+    /* Landscape Orientation */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .hero-content {
+        padding: 1rem;
+      }
+      
+      .hero-content h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .hero-content p {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+      }
+      
+      .work-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        padding: 1rem;
       }
     }
   </style>

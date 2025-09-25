@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Graphic Design Portfolio">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#111111">
+  <meta name="msapplication-TileColor" content="#111111">
+  <meta name="msapplication-navbutton-color" content="#111111">
   <title>Graphic Design - Manjot's Portfolio</title>
   <link rel="stylesheet" href="scroll-animations.css">
   <style>
@@ -26,6 +33,14 @@
       background: #0a0a0a;
       scroll-behavior: smooth;
       overscroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
     }
 
     /* Background video with blur */
@@ -462,6 +477,209 @@
       );
       z-index: 2;
       pointer-events: none;
+    }
+
+    /* ========================================
+       COMPREHENSIVE MOBILE OPTIMIZATIONS
+       ======================================== */
+
+    /* iOS and Android Touch Optimizations */
+    @media (max-width: 1024px) {
+      /* Touch-friendly button sizes */
+      .image-card img,
+      .modal-content img {
+        min-width: 44px;
+        min-height: 44px;
+        touch-action: manipulation;
+      }
+      
+      /* Prevent zoom on input focus */
+      input, textarea, select {
+        font-size: 16px;
+      }
+      
+      /* Smooth scrolling for iOS */
+      .main-content {
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    /* Tablet and Large Mobile */
+    @media (max-width: 768px) {
+      /* Header background mobile */
+      .header-background {
+        height: 60vh;
+        min-height: 400px;
+      }
+      
+      /* Main content mobile */
+      .main-content {
+        padding: 1rem;
+      }
+      
+      /* Gallery layout mobile */
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        padding: 1rem;
+      }
+      
+      .image-card {
+        padding: 1rem;
+        min-height: 200px;
+      }
+      
+      .image-card img {
+        max-width: 100%;
+        height: auto;
+        min-height: 150px;
+      }
+      
+      .image-title {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+    }
+
+    /* Small Mobile Devices */
+    @media (max-width: 480px) {
+      /* Header background small mobile */
+      .header-background {
+        height: 50vh;
+        min-height: 300px;
+      }
+      
+      /* Main content small mobile */
+      .main-content {
+        padding: 0.5rem;
+      }
+      
+      /* Gallery layout small mobile */
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0.5rem;
+      }
+      
+      .image-card {
+        padding: 0.8rem;
+        min-height: 180px;
+      }
+      
+      .image-card img {
+        min-height: 140px;
+      }
+      
+      .image-title {
+        font-size: 0.8rem;
+        padding: 0.4rem;
+      }
+    }
+
+    /* Extra Small Mobile Devices */
+    @media (max-width: 360px) {
+      .header-background {
+        height: 45vh;
+        min-height: 250px;
+      }
+      
+      .main-content {
+        padding: 0.3rem;
+      }
+      
+      .gallery-grid {
+        gap: 0.8rem;
+        padding: 0.3rem;
+      }
+      
+      .image-card {
+        padding: 0.6rem;
+        min-height: 160px;
+      }
+      
+      .image-card img {
+        min-height: 120px;
+      }
+      
+      .image-title {
+        font-size: 0.7rem;
+        padding: 0.3rem;
+      }
+    }
+
+    /* iOS Safari Specific Fixes */
+    @supports (-webkit-touch-callout: none) {
+      /* Fix iOS Safari viewport issues */
+      .header-background {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      
+      /* Fix iOS Safari scroll bounce */
+      body {
+        position: fixed;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+      
+      .main-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    /* Android Chrome Specific Fixes */
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+      /* Fix Android Chrome rendering issues */
+      .gallery-grid,
+      .header-background,
+      .image-card {
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+      }
+      
+      /* Fix Android Chrome touch delays */
+      .image-card img,
+      .modal-close {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+    }
+
+    /* High DPI Displays */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      /* Optimize for retina displays */
+      .image-card img,
+      .header-bg-image {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    }
+
+    /* Landscape Orientation */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .header-background {
+        height: 40vh;
+        min-height: 250px;
+      }
+      
+      .main-content {
+        padding: 0.5rem;
+      }
+      
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        padding: 0.5rem;
+      }
     }
   </style>
 </head>
