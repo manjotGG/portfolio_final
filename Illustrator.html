@@ -2,18 +2,1113 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Art</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Illustrator Portfolio">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#111111">
+  <meta name="msapplication-TileColor" content="#111111">
+  <meta name="msapplication-navbutton-color" content="#111111">
+  <title>Illustrator - Manjot's Portfolio</title>
+  <link rel="stylesheet" href="scroll-animations.css">
   <style>
-    body { font-family: 'Montserrat', sans-serif; background: #222; color: #64c8ff; margin: 0; padding: 0; }
-    .container { max-width: 700px; margin: 60px auto; padding: 40px; background: #181818; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
-    h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-    p { font-size: 1.2rem; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 20px;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      color: white;
+      background: #0a0a0a;
+      scroll-behavior: smooth;
+      overscroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
+    }
+
+    /* Background video with blur */
+    #bg-video {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -2;
+      transform: translate(-50%, -50%) translateZ(0);
+      will-change: transform;
+      backface-visibility: hidden;
+      object-fit: cover;
+      filter: brightness(0.6) blur(8px) saturate(1.2);
+      transition: filter 0.3s ease;
+    }
+
+    /* Overlay for better text readability */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(20,20,40,0.3));
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-family: 'Trebuchet MS', sans-serif;
+      margin-bottom: 1rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(45deg, #fff, #ccc, #fff);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(255,255,255,0.3);
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .intro {
+      font-size: 1.2rem;
+      color: #e0e0e0;
+      max-width: 700px;
+      margin: 0 auto 4rem auto;
+      line-height: 1.8;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 1rem 0;
+    }
+
+    .image-card {
+      position: relative;
+      border-radius: 0;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      will-change: transform, opacity;
+      transform: translateZ(0);
+      cursor: pointer;
+    }
+
+    .image-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, 
+        rgba(255,255,255,0.1) 0%, 
+        transparent 50%, 
+        rgba(255,255,255,0.05) 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .image-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Different sizes for variety */
+    .image-card:nth-child(1) { grid-row: span 1; }
+    .image-card:nth-child(2) { grid-row: span 2; }
+    .image-card:nth-child(3) { grid-row: span 1; }
+    .image-card:nth-child(4) { grid-row: span 2; }
+    .image-card:nth-child(5) { grid-row: span 1; }
+    .image-card:nth-child(6) { grid-row: span 2; }
+    .image-card:nth-child(7) { grid-row: span 1; }
+    .image-card:nth-child(8) { grid-row: span 2; }
+    .image-card:nth-child(9) { grid-row: span 1; }
+    .image-card:nth-child(10) { grid-row: span 2; }
+
+    .image-card.show {
+      animation: smoothFloat 0.6s ease forwards;
+    }
+
+    @keyframes smoothFloat {
+      0% { 
+        transform: translateY(80px) scale(0.8) rotateX(20deg); 
+        opacity: 0; 
+      }
+      50% { 
+        transform: translateY(-10px) scale(1.02) rotateX(-2deg); 
+        opacity: 0.8; 
+      }
+      100% { 
+        transform: translateY(0) scale(1) rotateX(0deg); 
+        opacity: 1; 
+      }
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 100%;
+      min-height: 250px;
+      object-fit: cover;
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: block;
+      position: relative;
+      z-index: 0;
+      filter: brightness(0.9) contrast(1.1);
+    }
+
+    .image-card:nth-child(even) img {
+      min-height: 350px;
+    }
+
+    .image-card:hover {
+      transform: translateY(-15px) scale(1.03) rotateX(2deg) rotateY(1deg);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255,255,255,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .image-card:hover img {
+      transform: scale(1.08) rotateZ(0.5deg);
+      filter: brightness(1.1) contrast(1.1) saturate(1.2);
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* Smooth overlay */
+    .image-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, 
+        rgba(0,0,0,0) 0%, 
+        rgba(0,0,0,0.1) 50%, 
+        rgba(0,0,0,0.3) 100%);
+      opacity: 0;
+      transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 1;
+    }
+
+    .image-card:hover::after {
+      opacity: 1;
+    }
+
+    /* Floating elements */
+    .image-card::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      z-index: 2;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 0.3s ease;
+    }
+
+    .image-card:hover::before {
+      opacity: 1;
+      transform: scale(1);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.2); opacity: 1; }
+    }
+
+    .image-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      color: white;
+      padding: 1.5rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 2;
+      backdrop-filter: blur(5px);
+    }
+
+    .image-card:hover .image-overlay {
+      transform: translateY(0);
+    }
+
+    .image-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* Modal with enhanced animations */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(12px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, 
+        rgba(20,20,20,0.95), 
+        rgba(40,40,60,0.9));
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 700px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+      animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .modal-content img {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-content img:hover {
+      transform: scale(1.02);
+    }
+
+    .modal-description {
+      font-size: 1.1rem;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 2rem;
+      color: #aaa;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      color: white;
+      background: rgba(255,255,255,0.1);
+      transform: scale(1.1);
+    }
+
+    @keyframes modalSlideIn {
+      0% { 
+        transform: scale(0.7) translateY(-50px); 
+        opacity: 0; 
+      }
+      100% { 
+        transform: scale(1) translateY(0); 
+        opacity: 1; 
+      }
+    }
+
+    /* Smooth scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.2);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.2));
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      .gallery { 
+        grid-template-columns: 1fr !important; 
+        gap: 1.5rem; 
+      }
+      .image-card { 
+        grid-row: span 1 !important; 
+      }
+      .image-card img { 
+        min-height: 220px !important; 
+      }
+      h1 { font-size: 2.5rem; }
+      
+      .header-background {
+        height: 80vh;
+        min-height: 500px;
+        margin-bottom: 3rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header-background {
+        height: 70vh;
+        min-height: 400px;
+        margin-bottom: 2rem;
+      }
+    }
+
+    /* Optimized loading animation */
+    @keyframes loadingPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .loading .image-card {
+      animation: loadingPulse 1.5s ease-in-out infinite;
+    }
+
+    /* Prevent initial flash and improve loading */
+    body {
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
+    }
+
+    body.loaded {
+      opacity: 1;
+    }
+
+    /* Optimize image loading */
+    img {
+      opacity: 0;
+      transition: opacity 0.4s ease-out;
+    }
+
+    img.loaded {
+      opacity: 1;
+    }
+
+    /* Hero Section with Full-Width Background */
+    .header-background {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      min-height: 600px;
+      margin-left: calc(-50vw + 50%);
+      margin-bottom: 4rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header-bg-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.7) contrast(1.2);
+      z-index: 1;
+    }
+
+    /* Enhanced fade transition with background visibility */
+    .header-background::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0.2) 10%,
+        rgba(0, 0, 0, 0.05) 20%,
+        rgba(0, 0, 0, 0.02) 30%,
+        rgba(0, 0, 0, 0.05) 50%,
+        rgba(0, 0, 0, 0.1) 70%,
+        rgba(0, 0, 0, 0.3) 85%,
+        rgba(0, 0, 0, 0.6) 100%
+      );
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* ========================================
+       COMPREHENSIVE MOBILE OPTIMIZATIONS
+       ======================================== */
+
+    /* iOS and Android Touch Optimizations */
+    @media (max-width: 1024px) {
+      /* Touch-friendly button sizes */
+      .image-card img,
+      .modal-content img {
+        min-width: 44px;
+        min-height: 44px;
+        touch-action: manipulation;
+      }
+      
+      /* Prevent zoom on input focus */
+      input, textarea, select {
+        font-size: 16px;
+      }
+      
+      /* Smooth scrolling for iOS */
+      .main-content {
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    /* Tablet and Large Mobile */
+    @media (max-width: 768px) {
+      /* Header background mobile */
+      .header-background {
+        height: 60vh;
+        min-height: 400px;
+      }
+      
+      /* Main content mobile */
+      .main-content {
+        padding: 1rem;
+      }
+      
+      /* Gallery layout mobile */
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        padding: 1rem;
+      }
+      
+      .image-card {
+        padding: 1rem;
+        min-height: 200px;
+      }
+      
+      .image-card img {
+        max-width: 100%;
+        height: auto;
+        min-height: 150px;
+      }
+      
+      .image-title {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+    }
+
+    /* Small Mobile Devices */
+    @media (max-width: 480px) {
+      /* Header background small mobile */
+      .header-background {
+        height: 50vh;
+        min-height: 300px;
+      }
+      
+      /* Main content small mobile */
+      .main-content {
+        padding: 0.5rem;
+      }
+      
+      /* Gallery layout small mobile */
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0.5rem;
+      }
+      
+      .image-card {
+        padding: 0.8rem;
+        min-height: 180px;
+      }
+      
+      .image-card img {
+        min-height: 140px;
+      }
+      
+      .image-title {
+        font-size: 0.8rem;
+        padding: 0.4rem;
+      }
+    }
+
+    /* Extra Small Mobile Devices */
+    @media (max-width: 360px) {
+      .header-background {
+        height: 45vh;
+        min-height: 250px;
+      }
+      
+      .main-content {
+        padding: 0.3rem;
+      }
+      
+      .gallery-grid {
+        gap: 0.8rem;
+        padding: 0.3rem;
+      }
+      
+      .image-card {
+        padding: 0.6rem;
+        min-height: 160px;
+      }
+      
+      .image-card img {
+        min-height: 120px;
+      }
+      
+      .image-title {
+        font-size: 0.7rem;
+        padding: 0.3rem;
+      }
+    }
+
+    /* iOS Safari Specific Fixes */
+    @supports (-webkit-touch-callout: none) {
+      /* Fix iOS Safari viewport issues */
+      .header-background {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      
+      /* Fix iOS Safari scroll bounce */
+      body {
+        position: fixed;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+      
+      .main-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    /* Android Chrome Specific Fixes */
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+      /* Fix Android Chrome rendering issues */
+      .gallery-grid,
+      .header-background,
+      .image-card {
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+      }
+      
+      /* Fix Android Chrome touch delays */
+      .image-card img,
+      .modal-close {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+    }
+
+    /* High DPI Displays */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      /* Optimize for retina displays */
+      .image-card img,
+      .header-bg-image {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    }
+
+    /* Landscape Orientation */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .header-background {
+        height: 40vh;
+        min-height: 250px;
+      }
+      
+      .main-content {
+        padding: 0.5rem;
+      }
+      
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        padding: 0.5rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Art</h1>
-    <p>Welcome to my art portfolio! Here you'll find my digital illustrations, sketches, and creative experiments. I love exploring new styles and techniques to express ideas visually.</p>
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bg-video" class="parallax-slow">
+    <source src="bgvideo.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+
+  <!-- Hero Section with Full-Width Background -->
+  <div class="header-background">
+    <img src="bg2.png" alt="Graphic Design Background" class="header-bg-image">
   </div>
+
+  <div class="container">
+    <!-- Gallery -->
+    <div class="gallery stagger-container">
+      <div class="image-card image-fade-scale hover-lift" data-desc="Relaxing vibe art with soothing colors and peaceful composition">
+        <img src="gimage1.jpeg" alt="gimage1" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Relaxing Vibe</div>
+        </div>
+      </div>
+      <div class="image-card image-slide-up hover-scale" data-desc="Creative illustration showcasing artistic expression and unique style">
+        <img src="gimage2.jpeg" alt="gimage2" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Creative Illustration</div>
+        </div>
+      </div>
+      <div class="image-card image-rotate-in hover-rotate" data-desc="Digital poster design with modern typography and bold visuals">
+        <img src="gimage3.jpeg" alt="gimage3" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Digital Poster</div>
+        </div>
+      </div>
+      <div class="image-card image-fade-scale hover-lift" data-desc="Abstract artwork exploring form, color, and conceptual depth">
+        <img src="gimage4.jpeg" alt="gimage4" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Abstract Art</div>
+        </div>
+      </div>
+      <div class="image-card image-slide-up hover-scale" data-desc="Modern typography design featuring clean lines and innovative lettering">
+        <img src="gimage5.jpeg" alt="gimage5" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Modern Typography</div>
+        </div>
+      </div>
+      <div class="image-card image-rotate-in hover-rotate" data-desc="Illustrator sketch demonstrating technical skill and artistic vision">
+        <img src="gimage6.jpeg" alt="gimage6" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Illustrator Sketch</div>
+        </div>
+      </div>
+      <div class="image-card image-fade-scale hover-lift" data-desc="Creative doodle expressing spontaneous artistic thoughts and ideas">
+        <img src="preview1.jpeg" alt="preview1" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Creative Doodle</div>
+        </div>
+      </div>
+      <div class="image-card image-slide-up hover-scale" data-desc="Photo manipulation blending reality with digital artistry">
+        <img src="preview2.png" alt="preview2" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Photo Manipulation</div>
+        </div>
+      </div>
+      <div class="image-card image-rotate-in hover-rotate" data-desc="3D style render showcasing dimensional design and lighting techniques">
+        <img src="preview3.jpeg" alt="preview3" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">3D Render</div>
+        </div>
+      </div>
+      <div class="image-card image-fade-scale hover-lift" data-desc="Experimental design pushing creative boundaries and exploring new concepts">
+        <img src="circle.jpeg" alt="circle" loading="lazy">
+        <div class="image-overlay">
+          <div class="image-title">Experimental Design</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="imgModal">
+    <div class="modal-content">
+      <span class="modal-close" id="modalClose">&times;</span>
+      <img id="modalImg" src="" alt="Expanded">
+      <div class="modal-description" id="modalDesc"></div>
+    </div>
+  </div>
+
+  <script>
+    // Optimized smooth scrolling and animations
+    class SmoothPortfolio {
+      constructor() {
+        this.cards = document.querySelectorAll('.image-card');
+        this.modal = document.getElementById('imgModal');
+        this.modalImg = document.getElementById('modalImg');
+        this.modalDesc = document.getElementById('modalDesc');
+        this.modalClose = document.getElementById('modalClose');
+        this.gallery = document.querySelector('.gallery');
+        this.isInitialized = false;
+        
+        this.init();
+      }
+
+      init() {
+        // Optimize initial loading
+        this.optimizeInitialLoad();
+        this.setupIntersectionObserver();
+        this.setupModalEvents();
+        this.setupSmoothScrolling();
+        this.setupParallaxEffect();
+        this.setupImageLoading();
+        this.isInitialized = true;
+      }
+
+      optimizeInitialLoad() {
+        // Remove loading class immediately for better performance
+        if (this.gallery) {
+          this.gallery.classList.remove('loading');
+        }
+        
+        // Preload critical images
+        this.preloadCriticalImages();
+        
+        // Optimize body for smooth scrolling
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease-out';
+        
+        // Show content after minimal delay
+        requestAnimationFrame(() => {
+          document.body.style.opacity = '1';
+        });
+      }
+
+      preloadCriticalImages() {
+        // Preload first few images for better perceived performance
+        const criticalImages = Array.from(this.cards).slice(0, 3);
+        criticalImages.forEach(card => {
+          const img = card.querySelector('img');
+          if (img && img.src) {
+            const preloadImg = new Image();
+            preloadImg.src = img.src;
+          }
+        });
+      }
+
+      setupIntersectionObserver() {
+        const observerOptions = {
+          threshold: [0, 0.1, 0.5],
+          rootMargin: '0px 0px -20px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+              // Optimized stagger animation with requestAnimationFrame
+              requestAnimationFrame(() => {
+                entry.target.classList.add('show');
+              });
+              
+              // Unobserve after animation to improve performance
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        this.cards.forEach(card => {
+          // Enable hardware acceleration for cards
+          card.style.willChange = 'transform, opacity';
+          card.style.transform = 'translateZ(0)';
+          observer.observe(card);
+        });
+      }
+
+      setupModalEvents() {
+        // Show modal on click
+        this.cards.forEach(card => {
+          card.addEventListener('click', (e) => {
+            e.preventDefault();
+            const img = card.querySelector('img').src;
+            const desc = card.getAttribute('data-desc');
+            
+            this.modalImg.src = img;
+            this.modalDesc.textContent = desc;
+            this.modal.style.display = 'flex';
+            
+            // Prevent body scroll when modal is open
+            document.body.style.overflow = 'hidden';
+          });
+        });
+
+        // Close modal events
+        this.modalClose.addEventListener('click', () => this.closeModal());
+        
+        this.modal.addEventListener('click', (e) => {
+          if (e.target === this.modal) this.closeModal();
+        });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.modal.style.display === 'flex') {
+            this.closeModal();
+          }
+        });
+      }
+
+      closeModal() {
+        this.modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+
+      setupSmoothScrolling() {
+        // Simple smooth scrolling without interference
+        document.documentElement.style.scrollBehavior = 'smooth';
+      }
+
+      smoothScrollTo(target, duration) {
+        const start = window.pageYOffset;
+        const distance = target - start;
+        let startTime = null;
+
+        const animation = (currentTime) => {
+          if (startTime === null) startTime = currentTime;
+          const timeElapsed = currentTime - startTime;
+          const run = this.easeInOutQuad(timeElapsed, start, distance, duration);
+          
+          window.scrollTo(0, run);
+          
+          if (timeElapsed < duration) {
+            requestAnimationFrame(animation);
+          }
+        };
+
+        requestAnimationFrame(animation);
+      }
+
+      easeInOutQuad(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+      }
+
+      setupParallaxEffect() {
+        // Optimized parallax for better performance
+        let ticking = false;
+        let lastScrollY = 0;
+        const bgVideo = document.getElementById('bg-video');
+        
+        if (!bgVideo) return;
+        
+        // Enable hardware acceleration
+        bgVideo.style.willChange = 'transform';
+        bgVideo.style.transform = 'translate(-50%, -50%) translateZ(0)';
+        
+        const updateParallax = () => {
+          const scrolled = window.pageYOffset;
+          
+          // Only update if scroll position changed significantly
+          if (Math.abs(scrolled - lastScrollY) > 2) {
+            const parallax = scrolled * 0.05; // Further reduced for smoother performance
+            bgVideo.style.transform = `translate(-50%, calc(-50% + ${parallax}px)) translateZ(0)`;
+            lastScrollY = scrolled;
+          }
+          
+          ticking = false;
+        };
+        
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            requestAnimationFrame(updateParallax);
+            ticking = true;
+          }
+        }, { passive: true });
+      }
+
+      setupImageLoading() {
+        // Optimized lazy loading with smooth fade-in
+        const imageObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              
+              // Enable hardware acceleration
+              img.style.willChange = 'opacity';
+              img.style.transform = 'translateZ(0)';
+              img.style.opacity = '0';
+              img.style.transition = 'opacity 0.4s ease-out';
+              
+              // Check if image is already loaded
+              if (img.complete && img.naturalHeight !== 0) {
+                img.style.opacity = '1';
+              } else {
+                img.onload = () => {
+                  requestAnimationFrame(() => {
+                    img.style.opacity = '1';
+                  });
+                };
+                
+                img.onerror = () => {
+                  // Handle image load errors gracefully
+                  img.style.opacity = '0.5';
+                };
+              }
+              
+              imageObserver.unobserve(img);
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: '50px'
+        });
+
+        document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+          imageObserver.observe(img);
+        });
+      }
+    }
+
+    // Loading Controller for smooth initial load
+    class LoadingController {
+      constructor() {
+        this.minLoadTime = 300; // Reduced for faster loading
+        this.startTime = Date.now();
+        this.init();
+      }
+
+      init() {
+        // Hide body initially to prevent flash
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease-out';
+        
+        // Wait for minimum load time or all critical resources
+        Promise.all([
+          this.waitForMinTime(),
+          this.waitForImages(),
+          this.waitForDOM()
+        ]).then(() => {
+          this.showContent();
+        });
+      }
+
+      waitForMinTime() {
+        return new Promise(resolve => {
+          const elapsed = Date.now() - this.startTime;
+          const remaining = Math.max(0, this.minLoadTime - elapsed);
+          setTimeout(resolve, remaining);
+        });
+      }
+
+      waitForImages() {
+        return new Promise(resolve => {
+          const images = document.querySelectorAll('img');
+          let loadedCount = 0;
+          const totalImages = images.length;
+
+          if (totalImages === 0) {
+            resolve();
+            return;
+          }
+
+          const checkComplete = () => {
+            loadedCount++;
+            if (loadedCount >= totalImages) {
+              resolve();
+            }
+          };
+
+          images.forEach(img => {
+            if (img.complete) {
+              checkComplete();
+            } else {
+              img.addEventListener('load', checkComplete);
+              img.addEventListener('error', checkComplete);
+            }
+          });
+        });
+      }
+
+      waitForDOM() {
+        return new Promise(resolve => {
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', resolve);
+          } else {
+            resolve();
+          }
+        });
+      }
+
+      showContent() {
+        requestAnimationFrame(() => {
+          document.body.style.opacity = '1';
+          
+          // Initialize portfolio after content is visible
+          setTimeout(() => {
+            new SmoothPortfolio();
+          }, 100);
+        });
+      }
+    }
+
+    // Initialize loading controller
+    new LoadingController();
+  </script>
+  
+  <!-- Scroll Animation System -->
+  <script src="scroll-animations.js"></script>
 </body>
 </html>
