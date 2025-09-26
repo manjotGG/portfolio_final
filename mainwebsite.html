@@ -848,6 +848,12 @@
       transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
+    .about:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
+      background: rgba(44, 44, 44, 0.95);
+    }
+
     .about.in-view {
       opacity: 1;
       transform: translateY(0);
@@ -2525,7 +2531,7 @@
     </div>
   </section>
 
-  <section id="about" class="about scroll-reveal">
+  <section id="about" class="about scroll-reveal" onclick="window.location.href='about-me.html'" style="cursor: pointer;">
     <div class="about-image scroll-reveal-left">
       <img src="manjot.jpeg" alt="Manjot Singh" class="profile-image float-animation">
     </div>

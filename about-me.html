@@ -1,271 +1,1230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scribble</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="About Me - Manjot's Portfolio">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#111111">
+  <meta name="msapplication-TileColor" content="#111111">
+  <meta name="msapplication-navbutton-color" content="#111111">
+  <title>About Me - Manjot's Portfolio</title>
+  <link rel="stylesheet" href="scroll-animations.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 20px;
+    }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
+    body {
+      font-family: 'Arial', sans-serif;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      color: white;
+      background: #0a0a0a;
+      scroll-behavior: smooth;
+      overscroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      touch-action: pan-y;
+    }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(120, 219, 226, 0.3) 0%, transparent 50%);
-            z-index: -1;
-            animation: float 20s ease-in-out infinite;
-        }
+    /* MINIMALIST LOADING ANIMATION - APARNA.WORK STYLE */
+    .loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.8s ease-out;
+    }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
+    .loader-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+    .loader-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
 
-        .heading {
-            text-align: center;
-            margin: 4rem 0;
-            position: relative;
-        }
+    /* Logo/Text Animation */
+    .loader-logo {
+      font-family: 'Arial', sans-serif;
+      font-size: 48px;
+      font-weight: 300;
+      color: #ffffff;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: logoFadeIn 1.2s ease-out 0.3s forwards;
+      position: relative;
+    }
 
-        .heading h1 {
-            font-size: 4rem;
-            font-weight: 300;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            letter-spacing: 0.5rem;
-            text-transform: lowercase;
-            opacity: 0;
-            animation: fadeInUp 1.5s ease-out forwards;
-        }
+    .loader-logo::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      animation: lineDraw 1.5s ease-out 0.8s forwards;
+    }
 
-        .heading::after {
-            content: '';
-            position: absolute;
-            bottom: -1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, white, transparent);
-            opacity: 0;
-            animation: fadeInUp 1.5s ease-out 0.5s forwards;
-        }
+    /* Subtle progress indicator */
+    .loader-progress {
+      width: 200px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .loader-progress::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, #ffffff, transparent);
+      animation: progressFlow 2s ease-in-out infinite;
+    }
 
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
+    /* Minimalist dots */
+    .loader-dots {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
 
-        .image-card {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            opacity: 0;
-            transform: translateY(50px);
-            animation: slideInUp 0.8s ease-out forwards;
-        }
+    .loader-dot {
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: dotPulse 1.5s ease-in-out infinite both;
+    }
 
-        .image-card:nth-child(1) { animation-delay: 0.2s; }
-        .image-card:nth-child(2) { animation-delay: 0.4s; }
-        .image-card:nth-child(3) { animation-delay: 0.6s; }
-        .image-card:nth-child(4) { animation-delay: 0.8s; }
-        .image-card:nth-child(5) { animation-delay: 1.0s; }
-        .image-card:nth-child(6) { animation-delay: 1.2s; }
+    .loader-dot:nth-child(1) { animation-delay: 0s; }
+    .loader-dot:nth-child(2) { animation-delay: 0.2s; }
+    .loader-dot:nth-child(3) { animation-delay: 0.4s; }
 
-        @keyframes slideInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    @keyframes logoFadeIn {
+      0% { 
+        opacity: 0; 
+        transform: translateY(20px);
+      }
+      100% { 
+        opacity: 1; 
+        transform: translateY(0);
+      }
+    }
 
-        .image-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
+    @keyframes lineDraw {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
 
-        .image-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
+    @keyframes progressFlow {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
 
-        .image-card:hover img {
-            transform: scale(1.1);
-        }
+    @keyframes dotPulse {
+      0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
 
-        .image-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-            color: white;
-            padding: 2rem 1.5rem 1.5rem;
-            transform: translateY(100%);
-            transition: transform 0.4s ease;
-        }
+    /* Hide loader when removed */
+    .loader-overlay.removed {
+      display: none;
+    }
 
-        .image-card:hover .image-overlay {
-            transform: translateY(0);
-        }
+    /* NAVBAR - CENTERED AT TOP */
+    .navbar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      width: auto;
+      transition: all 0.8s cubic-bezier(.2,.9,.2,1);
+    }
 
-        .image-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
+    .nav-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, rgba(20,20,20,0.6), rgba(30,30,30,0.6));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow: hidden;
+      position: relative;
+      animation: wiggle 4s ease-in-out infinite;
+      z-index: 10;
+      will-change: transform;
+    }
 
-        .image-description {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            line-height: 1.4;
-        }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(0.8deg); }
+      50% { transform: rotate(-0.8deg); }
+      75% { transform: rotate(0.4deg); }
+    }
 
-        .scroll-indicator {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-            color: white;
-            font-size: 2rem;
-            opacity: 0.7;
-        }
+    .nav-circle:hover {
+      transition-delay: 600ms;
+      width: 220px;
+      border-radius: 30px;
+      background: linear-gradient(90deg, rgba(80,30,120,0.18), rgba(30,130,180,0.12));
+      justify-content: flex-start;
+      padding-left: 10px;
+      animation: none;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.45);
+      transform: translateY(0px);
+      transition-delay: 300ms;
+    }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-10px); }
-            60% { transform: translateX(-50%) translateY(-5px); }
-        }
+    .nav-circle .profile-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #1b1b1f, #2b2f36);
+      transition: all 0.6s ease;
+      position: absolute;
+      left: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #ddd;
+    }
 
-        @media (max-width: 768px) {
-            .heading h1 {
-                font-size: 2.5rem;
-                letter-spacing: 0.2rem;
-            }
-            
-            .container {
-                padding: 1rem;
-            }
-            
-            .row-2, .row-3 {
-                grid-template-columns: 1fr !important;
-                gap: 1.5rem;
-            }
-            
-            .image-card.large img,
-            .image-card.medium img,
-            .image-card.small img {
-                height: 250px;
-            }
-        }
-    </style>
+    .nav-circle:hover .profile-img { 
+      left: 15px; 
+      transform: scale(0.9);
+    }
+
+    .nav-text {
+      margin-left: 0;
+      white-space: nowrap;
+      opacity: 0;
+      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      font-weight: bold;
+      color: #fff;
+      width: 100%;
+      padding-left: 60px;
+      transform: translateX(-10px);
+      font-size: 1.2em;
+    }
+    
+    .nav-circle:hover .nav-text { 
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .nav-arrow {
+      position: absolute;
+      right: 15px;
+      opacity: 0;
+      transition: all 0.6s ease;
+      font-size: 18px;
+      transform: translateX(-10px);
+      animation: none;
+    }
+    
+    .nav-circle:hover .nav-arrow { 
+      opacity: 1; 
+      transform: translateX(0);
+      animation: arrowBounce 0.8s infinite;
+    }
+    
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateX(0) scale(1); }
+      25% { transform: translateX(8px) scale(1.1); }
+      50% { transform: translateX(12px) scale(1.2); }
+      75% { transform: translateX(8px) scale(1.1); }
+    }
+
+    /* 3-BAR MENU WITH DROPDOWN */
+    .menu-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .hamburger-menu {
+      width: 50px;
+      height: 50px;
+      background: rgba(30, 144, 255, 0.9);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      gap: 4px;
+    }
+
+    .hamburger-menu:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 10px 30px rgba(30, 144, 255, 0.5);
+      background: rgba(30, 144, 255, 1);
+    }
+
+    .hamburger-menu.active {
+      transform: rotate(180deg);
+      background: rgba(255, 255, 255, 0.95);
+      border-color: #1e90ff;
+    }
+
+    .hamburger-line {
+      width: 20px;
+      height: 3px;
+      background: #ffffff;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger-menu.active .hamburger-line:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger-menu.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger-menu.active .hamburger-line:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 70px;
+      right: 0;
+      background: rgba(0, 0, 0, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 20px;
+      min-width: 200px;
+      opacity: 0;
+      transform: translateY(-20px) scale(0.9);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .dropdown-menu.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 15px;
+      margin: 6px 0;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      position: relative;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .menu-item:hover {
+      background: rgba(30, 144, 255, 0.2);
+      transform: translateX(8px);
+      color: #1e90ff;
+    }
+
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3px;
+      height: 100%;
+      background: #1e90ff;
+      border-radius: 0 2px 2px 0;
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .menu-item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .menu-icon {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-item:hover .menu-icon {
+      transform: scale(1.2);
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 120px 2rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      display: flex;
+      align-items: center;
+      gap: 4rem;
+      margin-bottom: 6rem;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease-out;
+    }
+
+    .hero-section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .profile-image {
+      flex: 0 0 300px;
+      position: relative;
+    }
+
+    .profile-image img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease;
+    }
+
+    .profile-image:hover img {
+      transform: scale(1.05);
+    }
+
+    .hero-content {
+      flex: 1;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, #fff, #1e90ff, #fff);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+      color: #1e90ff;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #ccc;
+      margin-bottom: 2rem;
+    }
+
+    /* Experience Section */
+    .experience-section {
+      margin-bottom: 6rem;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease-out 0.2s;
+    }
+
+    .experience-section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 3rem;
+      text-align: center;
+      color: #fff;
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .experience-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .experience-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: #1e90ff;
+    }
+
+    .experience-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #1e90ff;
+      margin-bottom: 1rem;
+    }
+
+    .experience-company {
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .experience-duration {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .experience-description {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #ccc;
+    }
+
+    /* Skills Section */
+    .skills-section {
+      margin-bottom: 6rem;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease-out 0.4s;
+    }
+
+    .skills-section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skills-container {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .skills-scroll {
+      display: flex;
+      gap: 2rem;
+      overflow-x: auto;
+      padding: 1rem 0;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .skills-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .skill-item {
+      flex: 0 0 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .skill-item:hover {
+      transform: translateY(-5px) scale(1.05);
+      background: rgba(30, 144, 255, 0.1);
+      border-color: #1e90ff;
+      box-shadow: 0 10px 30px rgba(30, 144, 255, 0.2);
+    }
+
+    .skill-icon {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #1e90ff;
+      background: rgba(30, 144, 255, 0.1);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .skill-item:hover .skill-icon {
+      background: rgba(30, 144, 255, 0.2);
+      transform: scale(1.1);
+    }
+
+    .skill-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #fff;
+      text-align: center;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease-out 0.6s;
+    }
+
+    .contact-section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: rgba(30, 144, 255, 0.1);
+      border: 1px solid rgba(30, 144, 255, 0.3);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .contact-link:hover {
+      background: rgba(30, 144, 255, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(30, 144, 255, 0.3);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .navbar { 
+        left: 50%; 
+        transform: translateX(-50%);
+        top: 15px;
+      }
+      
+      .nav-circle { 
+        margin: 0 auto;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .nav-circle .profile-img {
+        position: relative;
+        left: auto;
+        transform: none;
+      }
+      
+      .nav-circle:hover,
+      .navbar.expanded .nav-circle {
+        width: 180px;
+        transition-delay: 400ms;
+      }
+
+      .main-content {
+        padding: 100px 1rem 2rem;
+      }
+
+      .hero-section {
+        flex-direction: column;
+        gap: 2rem;
+        text-align: center;
+      }
+
+      .profile-image {
+        flex: none;
+        max-width: 250px;
+        margin: 0 auto;
+      }
+
+      .profile-image img {
+        height: 300px;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .experience-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skills-scroll {
+        gap: 1rem;
+      }
+
+      .skill-item {
+        flex: 0 0 100px;
+        padding: 1rem;
+      }
+
+      .skill-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+      }
+
+      .contact-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .menu-container {
+        top: 15px;
+        right: 15px;
+      }
+      
+      .hamburger-menu {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .dropdown-menu {
+        min-width: 180px;
+        padding: 15px;
+      }
+      
+      .menu-item {
+        padding: 10px 12px;
+        font-size: 14px;
+        gap: 10px;
+      }
+      
+      .menu-icon {
+        width: 16px;
+        height: 16px;
+      }
+      
+      .hamburger-line {
+        width: 18px;
+        height: 2px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .profile-image {
+        max-width: 200px;
+      }
+
+      .profile-image img {
+        height: 250px;
+      }
+
+      .skill-item {
+        flex: 0 0 80px;
+        padding: 0.8rem;
+      }
+
+      .skill-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+
+      .skill-name {
+        font-size: 0.8rem;
+      }
+
+      .menu-container {
+        top: 10px;
+        right: 10px;
+      }
+      
+      .hamburger-menu {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .dropdown-menu {
+        min-width: 160px;
+        padding: 12px;
+      }
+      
+      .menu-item {
+        padding: 8px 10px;
+        font-size: 13px;
+        gap: 8px;
+      }
+      
+      .menu-icon {
+        width: 14px;
+        height: 14px;
+      }
+      
+      .hamburger-line {
+        width: 16px;
+        height: 2px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="heading">
-            <h1>scribble</h1>
-        </div>
-        
-        <div class="gallery">
-            <div class="image-card">
-                <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=300&fit=crop&auto=format" alt="Abstract Art">
-                <div class="image-overlay">
-                    <div class="image-title">Abstract Expression</div>
-                    <div class="image-description">Flowing colors and dynamic brushstrokes create an emotional journey through abstract space.</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&auto=format" alt="Watercolor">
-                <div class="image-overlay">
-                    <div class="image-title">Watercolor Dreams</div>
-                    <div class="image-description">Soft watercolor textures blend seamlessly, creating dreamlike landscapes of imagination.</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop&auto=format" alt="Sketches">
-                <div class="image-overlay">
-                    <div class="image-title">Raw Sketches</div>
-                    <div class="image-description">Pure pencil work capturing the essence of form and movement in simple lines.</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <img src="https://images.unsplash.com/photo-1596548438137-d51ea5c83ca4?w=400&h=300&fit=crop&auto=format" alt="Digital Art">
-                <div class="image-overlay">
-                    <div class="image-title">Digital Canvas</div>
-                    <div class="image-description">Modern digital techniques merge traditional artistry with contemporary innovation.</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&auto=format" alt="Mixed Media">
-                <div class="image-overlay">
-                    <div class="image-title">Mixed Media</div>
-                    <div class="image-description">Experimental combinations of materials create unique textural experiences.</div>
-                </div>
-            </div>
-            
-            <div class="image-card">
-                <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=300&fit=crop&auto=format" alt="Color Study">
-                <div class="image-overlay">
-                    <div class="image-title">Color Studies</div>
-                    <div class="image-description">Explorations in color theory and emotional resonance through vibrant palettes.</div>
-                </div>
-            </div>
-        </div>
+  <!-- Minimalist Loading Animation -->
+  <div class="loader-overlay" id="loader-overlay">
+    <div class="loader-content">
+      <div class="loader-logo">ABOUT ME</div>
+      <div class="loader-progress"></div>
+      <div class="loader-dots">
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+      </div>
     </div>
-    
-    <div class="scroll-indicator">↓</div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-circle" onclick="window.location.href='mainwebsite.html'">
+      <div class="profile-img">M</div>
+      <span class="nav-text">Home</span>
+      <span class="nav-arrow">→</span>
+    </div>
+  </nav>
+
+  <!-- 3-Bar Menu with Dropdown -->
+  <div class="menu-container">
+    <div class="hamburger-menu" id="hamburger-menu" onclick="toggleMenu()">
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+    </div>
+    <div class="dropdown-menu" id="dropdown-menu">
+      <a href="mainwebsite.html" class="menu-item">
+        <svg class="menu-icon" viewBox="0 0 24 24">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        Home
+      </a>
+      <a href="scribbling.html" class="menu-item">
+        <svg class="menu-icon" viewBox="0 0 24 24">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+        </svg>
+        Scribble
+      </a>
+      <a href="graphic_design.html" class="menu-item">
+        <svg class="menu-icon" viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        Graphic Design
+      </a>
+      <a href="Illustrator.html" class="menu-item">
+        <svg class="menu-icon" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        Illustrator
+      </a>
+      <a href="about-me.html" class="menu-item">
+        <svg class="menu-icon" viewBox="0 0 24 24">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+        About Me
+      </a>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="profile-image">
+        <img src="manjot.jpeg" alt="Manjot Singh">
+      </div>
+      <div class="hero-content">
+        <h1 class="hero-title">Manjot Singh</h1>
+        <h2 class="hero-subtitle">Creative Designer & Digital Artist</h2>
+        <p class="hero-description">
+          Passionate about bringing ideas to life through design. With expertise in graphic design, 
+          illustration, and digital art, I create visually stunning experiences that tell compelling stories. 
+          My work spans across various mediums, from traditional sketching to modern digital design, 
+          always pushing the boundaries of creativity and innovation.
+        </p>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="experience-section">
+      <h2 class="section-title">Experience</h2>
+      <div class="experience-grid">
+        <div class="experience-card">
+          <h3 class="experience-title">Senior Graphic Designer</h3>
+          <p class="experience-company">Creative Studio</p>
+          <p class="experience-duration">2022 - Present</p>
+          <p class="experience-description">
+            Leading design projects for major brands, creating visual identities, 
+            and mentoring junior designers. Specialized in brand development and 
+            digital marketing materials.
+          </p>
+        </div>
+        <div class="experience-card">
+          <h3 class="experience-title">Freelance Illustrator</h3>
+          <p class="experience-company">Self-Employed</p>
+          <p class="experience-duration">2020 - 2022</p>
+          <p class="experience-description">
+            Created custom illustrations for books, magazines, and digital platforms. 
+            Worked with clients worldwide to bring their stories to life through 
+            unique artistic visions.
+          </p>
+        </div>
+        <div class="experience-card">
+          <h3 class="experience-title">Junior Designer</h3>
+          <p class="experience-company">Design Agency</p>
+          <p class="experience-duration">2019 - 2020</p>
+          <p class="experience-description">
+            Started my professional journey creating marketing materials, 
+            social media graphics, and web designs. Gained valuable experience 
+            in client communication and project management.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills-section">
+      <h2 class="section-title">Skills & Tools</h2>
+      <div class="skills-container">
+        <div class="skills-scroll">
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fab fa-adobe"></i>
+            </div>
+            <span class="skill-name">Adobe Photoshop</span>
+          </div>
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fab fa-adobe"></i>
+            </div>
+            <span class="skill-name">Adobe Illustrator</span>
+          </div>
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fab fa-adobe"></i>
+            </div>
+            <span class="skill-name">Adobe Premiere Pro</span>
+          </div>
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fab fa-adobe"></i>
+            </div>
+            <span class="skill-name">After Effects</span>
+          </div>
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fab fa-adobe"></i>
+            </div>
+            <span class="skill-name">Lightroom</span>
+          </div>
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fab fa-adobe"></i>
+            </div>
+            <span class="skill-name">Adobe XD</span>
+          </div>
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fab fa-adobe"></i>
+            </div>
+            <span class="skill-name">InDesign</span>
+          </div>
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fas fa-paint-brush"></i>
+            </div>
+            <span class="skill-name">Digital Art</span>
+          </div>
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fas fa-pencil-alt"></i>
+            </div>
+            <span class="skill-name">Sketching</span>
+          </div>
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fas fa-palette"></i>
+            </div>
+            <span class="skill-name">Color Theory</span>
+          </div>
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fas fa-vector-square"></i>
+            </div>
+            <span class="skill-name">Vector Design</span>
+          </div>
+          <div class="skill-item">
+            <div class="skill-icon">
+              <i class="fas fa-camera"></i>
+            </div>
+            <span class="skill-name">Photography</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+      <h2 class="section-title">Let's Connect</h2>
+      <p style="color: #ccc; margin-bottom: 2rem; font-size: 1.1rem;">
+        Ready to bring your ideas to life? Let's collaborate on your next project.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:manjot@example.com" class="contact-link">
+          <i class="fas fa-envelope"></i>
+          Email Me
+        </a>
+        <a href="https://behance.net/manjot" class="contact-link" target="_blank">
+          <i class="fab fa-behance"></i>
+          Behance
+        </a>
+        <a href="https://instagram.com/manjot" class="contact-link" target="_blank">
+          <i class="fab fa-instagram"></i>
+          Instagram
+        </a>
+        <a href="https://linkedin.com/in/manjot" class="contact-link" target="_blank">
+          <i class="fab fa-linkedin"></i>
+          LinkedIn
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Minimalist Loading Animation Controller
+    class LoadingController {
+      constructor() {
+        this.loader = document.getElementById('loader-overlay');
+        this.isLoaded = false;
+        this.minLoadTime = 1500; // Minimum loading time in milliseconds (1.5s)
+        this.startTime = Date.now();
+        this.init();
+      }
+
+      init() {
+        // Hide body content initially and add fade-in class
+        document.body.style.overflow = 'hidden';
+        document.body.style.opacity = '0';
+        
+        // Wait for all resources to load
+        window.addEventListener('load', () => {
+          this.handleLoadComplete();
+        });
+
+        // Fallback: hide loader after maximum time
+        setTimeout(() => {
+          if (!this.isLoaded) {
+            this.handleLoadComplete();
+          }
+        }, 5000);
+      }
+
+      handleLoadComplete() {
+        const elapsedTime = Date.now() - this.startTime;
+        const remainingTime = Math.max(0, this.minLoadTime - elapsedTime);
+        
+        setTimeout(() => {
+          this.hideLoader();
+        }, remainingTime);
+      }
+
+      hideLoader() {
+        if (this.isLoaded) return;
+        this.isLoaded = true;
+        
+        const loader = this.loader;
+        
+        // Add fade-out class
+        loader.classList.add('fade-out');
+        
+        // Fade in page content
+        document.body.style.transition = 'opacity 0.8s ease-out';
+        document.body.style.opacity = '1';
+        
+        // Remove loader from DOM after animation completes
+        setTimeout(() => {
+          loader.classList.add('removed');
+          document.body.style.overflow = '';
+        }, 800);
+      }
+    }
+
+    // Smooth scroll animations
+    class ScrollAnimations {
+      constructor() {
+        this.init();
+      }
+
+      init() {
+        this.setupIntersectionObserver();
+        this.setupSmoothScrolling();
+      }
+
+      setupIntersectionObserver() {
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('show');
+            }
+          });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('.hero-section, .experience-section, .skills-section, .contact-section').forEach(section => {
+          observer.observe(section);
+        });
+      }
+
+      setupSmoothScrolling() {
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+              target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          });
+        });
+      }
+    }
+
+    // Menu toggle functionality
+    function toggleMenu() {
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const dropdownMenu = document.getElementById('dropdown-menu');
+      
+      hamburgerMenu.classList.toggle('active');
+      dropdownMenu.classList.toggle('active');
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      const menuContainer = document.querySelector('.menu-container');
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const dropdownMenu = document.getElementById('dropdown-menu');
+      
+      if (!menuContainer.contains(e.target)) {
+        hamburgerMenu.classList.remove('active');
+        dropdownMenu.classList.remove('active');
+      }
+    });
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize loading controller first
+      const loadingController = new LoadingController();
+      
+      // Initialize scroll animations
+      new ScrollAnimations();
+    });
+  </script>
 </body>
 </html>

@@ -430,6 +430,136 @@
       animation: loadingPulse 1.5s ease-in-out infinite;
     }
 
+    /* MINIMALIST LOADING ANIMATION - APARNA.WORK STYLE */
+    .loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.8s ease-out;
+    }
+
+    .loader-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    /* Logo/Text Animation */
+    .loader-logo {
+      font-family: 'Arial', sans-serif;
+      font-size: 48px;
+      font-weight: 300;
+      color: #ffffff;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: logoFadeIn 1.2s ease-out 0.3s forwards;
+      position: relative;
+    }
+
+    .loader-logo::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      animation: lineDraw 1.5s ease-out 0.8s forwards;
+    }
+
+    /* Subtle progress indicator */
+    .loader-progress {
+      width: 200px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loader-progress::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, #ffffff, transparent);
+      animation: progressFlow 2s ease-in-out infinite;
+    }
+
+    /* Minimalist dots */
+    .loader-dots {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .loader-dot {
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: dotPulse 1.5s ease-in-out infinite both;
+    }
+
+    .loader-dot:nth-child(1) { animation-delay: 0s; }
+    .loader-dot:nth-child(2) { animation-delay: 0.2s; }
+    .loader-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes logoFadeIn {
+      0% { 
+        opacity: 0; 
+        transform: translateY(20px);
+      }
+      100% { 
+        opacity: 1; 
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes lineDraw {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    @keyframes progressFlow {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    @keyframes dotPulse {
+      0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+
+    /* Hide loader when removed */
+    .loader-overlay.removed {
+      display: none;
+    }
+
     /* Hero Section with Full-Width Background */
     .header-background {
       position: relative;
@@ -1097,6 +1227,19 @@
   </style>
 </head>
 <body>
+  <!-- Minimalist Loading Animation -->
+  <div class="loader-overlay" id="loader-overlay">
+    <div class="loader-content">
+      <div class="loader-logo">GRAPHIC DESIGN</div>
+      <div class="loader-progress"></div>
+      <div class="loader-dots">
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Navbar -->
   <nav class="navbar">
     <div class="nav-circle" onclick="window.location.href='mainwebsite.html'">
@@ -1234,6 +1377,64 @@
   </div>
 
   <script>
+    // Minimalist Loading Animation Controller
+    class LoadingController {
+      constructor() {
+        this.loader = document.getElementById('loader-overlay');
+        this.isLoaded = false;
+        this.minLoadTime = 1500; // Minimum loading time in milliseconds (1.5s)
+        this.startTime = Date.now();
+        this.init();
+      }
+
+      init() {
+        // Hide body content initially and add fade-in class
+        document.body.style.overflow = 'hidden';
+        document.body.style.opacity = '0';
+        
+        // Wait for all resources to load
+        window.addEventListener('load', () => {
+          this.handleLoadComplete();
+        });
+
+        // Fallback: hide loader after maximum time
+        setTimeout(() => {
+          if (!this.isLoaded) {
+            this.handleLoadComplete();
+          }
+        }, 5000);
+      }
+
+      handleLoadComplete() {
+        const elapsedTime = Date.now() - this.startTime;
+        const remainingTime = Math.max(0, this.minLoadTime - elapsedTime);
+        
+        setTimeout(() => {
+          this.hideLoader();
+        }, remainingTime);
+      }
+
+      hideLoader() {
+        if (this.isLoaded) return;
+        this.isLoaded = true;
+        
+        const loader = this.loader;
+        
+        // Add fade-out class
+        loader.classList.add('fade-out');
+        
+        // Fade in page content
+        document.body.style.transition = 'opacity 0.8s ease-out';
+        document.body.style.opacity = '1';
+        
+        // Remove loader from DOM after animation completes
+        setTimeout(() => {
+          loader.classList.add('removed');
+          document.body.style.overflow = '';
+        }, 800);
+      }
+    }
+
     // Enhanced smooth scrolling and animations
     class SmoothPortfolio {
       constructor() {
@@ -1396,6 +1597,10 @@
 
     // Initialize when DOM is loaded
     document.addEventListener('DOMContentLoaded', () => {
+      // Initialize loading controller first
+      const loadingController = new LoadingController();
+      
+      // Initialize smooth portfolio
       new SmoothPortfolio();
     });
 
