@@ -829,15 +829,15 @@
 
 
     .about {
-      padding: 100px 50px;
+      padding: 60px 50px;
       background: rgba(34, 34, 34, 0.95);
       backdrop-filter: blur(20px);
       display: flex;
       align-items: center;
-      gap: 60px;
-      max-width: 1200px;
+      gap: 50px;
+      max-width: 1300px;
       margin: 0 auto;
-      border-radius: 20px;
+      border-radius: 15px;
       margin-top: -50px;
       position: relative;
       z-index: 10;
@@ -849,9 +849,56 @@
     }
 
     .about:hover {
-      transform: translateY(-5px);
+      animation: singleBounce 0.4s ease-out;
       box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
       background: rgba(44, 44, 44, 0.95);
+    }
+
+    @keyframes singleBounce {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-12px) scale(1.03); }
+      100% { transform: translateY(-5px) scale(1.01); }
+    }
+
+    .read-more-btn {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px) scale(0.8);
+      background: linear-gradient(45deg, #1e90ff, #00bfff);
+      color: white;
+      border: none;
+      padding: 18px 36px;
+      border-radius: 30px;
+      font-family: 'Arial', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      box-shadow: 0 10px 30px rgba(30, 144, 255, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      min-width: 160px;
+    }
+
+    .about:hover .read-more-btn {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0) scale(1);
+      animation: buttonPulse 2s ease-in-out infinite;
+    }
+
+    .read-more-btn:hover {
+      background: linear-gradient(45deg, #00bfff, #1e90ff);
+      transform: translateX(-50%) translateY(-3px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(30, 144, 255, 0.5);
+    }
+
+    @keyframes buttonPulse {
+      0%, 100% { box-shadow: 0 10px 30px rgba(30, 144, 255, 0.3); }
+      50% { box-shadow: 0 10px 30px rgba(30, 144, 255, 0.6); }
     }
 
     .about.in-view {
@@ -958,8 +1005,8 @@
     }
 
     .about-content h2 { 
-      font-size: 2.5em; 
-      margin-bottom: 20px;
+      font-size: 3.2em; 
+      margin-bottom: 25px;
       background: linear-gradient(45deg, #fff, #ccc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -968,7 +1015,7 @@
       transform: translateY(30px);
       transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
     }
 
     .about-content.in-view h2 {
@@ -978,14 +1025,14 @@
     }
 
     .about-content p { 
-      font-size: 1.1em; 
-      line-height: 1.6; 
+      font-size: 1.4em; 
+      line-height: 1.7; 
       opacity: 0;
       transform: translateY(20px);
       transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       font-weight: 400;
       color: #e0e0e0;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     .about-content.in-view p {
@@ -1607,9 +1654,9 @@
       .about {
         flex-direction: column;
         text-align: center;
-        gap: 30px;
+        gap: 25px;
         margin: 0 15px;
-        padding: 60px 30px;
+        padding: 45px 25px;
       }
       
       .about-image .profile-image {
@@ -1618,16 +1665,16 @@
       }
       
       .about-content h2 {
-        font-size: 2em;
-        margin-bottom: 15px;
-        letter-spacing: 0.5px;
+        font-size: 2.4em;
+        margin-bottom: 18px;
+        letter-spacing: 0.7px;
       }
       
       .about-content p {
-        font-size: 1em;
-        line-height: 1.5;
+        font-size: 1.2em;
+        line-height: 1.6;
         color: #e0e0e0;
-        margin-bottom: 12px;
+        margin-bottom: 15px;
       }
 
       .work {
@@ -1836,7 +1883,7 @@
       }
       
       .about {
-        padding: 40px 20px;
+        padding: 35px 18px;
         margin: 0 10px;
       }
       
@@ -1846,16 +1893,16 @@
       }
       
       .about-content h2 {
-        font-size: 1.6em;
-        letter-spacing: 0.3px;
-        margin-bottom: 12px;
+        font-size: 2em;
+        letter-spacing: 0.5px;
+        margin-bottom: 15px;
       }
       
       .about-content p {
-        font-size: 0.9em;
-        line-height: 1.4;
+        font-size: 1.1em;
+        line-height: 1.5;
         color: #e0e0e0;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
       
       .work {
@@ -1997,7 +2044,7 @@
       
       .about {
         margin: 0 5px;
-        padding: 30px 15px;
+        padding: 25px 12px;
       }
       
       .work-container {
@@ -2451,7 +2498,7 @@
         <svg class="menu-icon" viewBox="0 0 24 24">
           <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
         </svg>
-        Scribble
+        Sketchbook
       </a>
       <a href="graphic_design.html" class="menu-item">
         <svg class="menu-icon" viewBox="0 0 24 24">
@@ -2540,6 +2587,7 @@
       <p class="text-reveal">Hi, I'm Manjot Singh, a Delhi-based graphic and web designer with 5+ years of hands-on experience in Photoshop and other design tools. What started as a childhood passion for drawing has grown into a professional journey in graphic design, website design, illustration, and video editing.</p>
       <p class="text-reveal">I specialize in creating clean, creative, and impactful visuals that bring ideas to life—whether it's digital graphics, websites, or visual storytelling.</p>
     </div>
+    <button class="read-more-btn">Read More</button>
   </section>
 
   <section id="work" class="work">
